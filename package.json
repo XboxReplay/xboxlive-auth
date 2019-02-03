@@ -13,6 +13,7 @@
         "email": "alexis.bize@gmail.com"
     },
     "scripts": {
+        "prepublishOnly": "npm run build",
         "build": "npm run clean; tsc",
         "watch": "npm run clean; tsc-watch",
         "clean": "rm -rf ./dist"
