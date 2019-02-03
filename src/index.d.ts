@@ -1,13 +1,22 @@
-import {
-    IAuthUserResponse as IResponse,
-    IUserCredentials as ICredentials
-} from './__typings__';
-
 export namespace XboxLiveAuth {
-    export { IResponse as IAuthUserResponse };
-    export { ICredentials as IUserCredentials };
-    export function authenticate(
-        email: string,
-        password: string
-    ): Promise<IResponse>;
+	export {
+		IAuthUserResponse,
+		IUserCredentials,
+		IExchangeUserTokenResponse,
+		IExchangeRPSTicketResponse
+	} from './__typings__';
+
+	export function exchangeAccessTokenForUserToken(
+		accessToken: string
+	): Promise<IExchangeRPSTicketResponse>;
+
+	export function exchangeUserTokenForXSTSIdentity(
+		userToken: string,
+		XSTSRelyingParty: string
+	): Promise<IExchangeRPSTicketResponse>;
+
+	export function authenticate(
+		email: string,
+		password: string
+	): Promise<IAuthUserResponse>;
 }

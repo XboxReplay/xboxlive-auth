@@ -144,7 +144,9 @@ const _logUser = (
 		);
 	});
 
-const _exchangeAccessTokenForUserToken = (
+// ***** PUBLIC METHODS ***** //
+
+export const exchangeAccessTokenForUserToken = (
 	accessToken: string
 ): Promise<IExchangeRPSTicketResponse> =>
 	new Promise((resolve, reject) => {
@@ -152,7 +154,10 @@ const _exchangeAccessTokenForUserToken = (
 			{
 				uri: XboxLiveEndpoints.UserAuthenticate,
 				method: 'POST',
-				headers: BASE_HEADERS,
+				headers: {
+					...BASE_HEADERS,
+					'x-xbl-contract-version': 0
+				},
 				json: {
 					RelyingParty: 'http://auth.xboxlive.com',
 					TokenType: 'JWT',
@@ -176,7 +181,7 @@ const _exchangeAccessTokenForUserToken = (
 		);
 	});
 
-const _exchangeUserTokenForXSTSIdentity = (
+export const exchangeUserTokenForXSTSIdentity = (
 	userToken: string,
 	XSTSRelyingParty: string = 'http://xboxlive.com'
 ): Promise<IExchangeUserTokenResponse> =>
@@ -185,7 +190,10 @@ const _exchangeUserTokenForXSTSIdentity = (
 			{
 				uri: XboxLiveEndpoints.XSTSAuthorize,
 				method: 'POST',
-				headers: BASE_HEADERS,
+				headers: {
+					...BASE_HEADERS,
+					'x-xbl-contract-version': 0
+				},
 				json: {
 					RelyingParty: XSTSRelyingParty,
 					TokenType: 'JWT',
@@ -212,8 +220,6 @@ const _exchangeUserTokenForXSTSIdentity = (
 		);
 	});
 
-// ***** PUBLIC METHODS ***** //
-
 export const authenticate = async (
 	email: string,
 	password: string,
@@ -221,11 +227,11 @@ export const authenticate = async (
 ): Promise<IAuthUserResponse> => {
 	const preAuthResponse = await _preAuth();
 	const logUser = await _logUser(preAuthResponse, { email, password });
-	const userToken = await _exchangeAccessTokenForUserToken(
+	const userToken = await exchangeAccessTokenForUserToken(
 		logUser.accessToken
 	);
 
-	return _exchangeUserTokenForXSTSIdentity(
+	return exchangeUserTokenForXSTSIdentity(
 		userToken,
 		options.XSTSRelyingParty
 	);
