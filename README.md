@@ -17,7 +17,7 @@ $ git clone git@github.com:XboxReplay/xboxlive-auth.git
 $ npm run build
 ```
 
-### Usage
+### Module - Usage
 
 ```
 import XboxLiveAuth from '@xboxreplay/xboxlive-auth';
@@ -27,7 +27,7 @@ XboxLiveAuth.authenticate('user@live.com', '*********')
     .catch(console.error);
 ```
 
-### Sample response
+### Module - Sample response
 
 ```
 {
@@ -36,12 +36,27 @@ XboxLiveAuth.authenticate('user@live.com', '*********')
 }
 ```
 
-### Sample call
+### cURL - Sample call
 
 ```
-curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings'
-    -H 'Authorization: XBL3.0 x={userHash};{XSTSToken}'
+$ curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings' \
+    -H 'Authorization: XBL3.0 x={userHash};{XSTSToken}' \
     -H 'x-xbl-contract-version: 2'
+```
+
+### cURL - Sample response
+
+```
+{
+    "profileUsers": [
+        {
+            "id": "2535465515082324",
+            "hostId": "2535465515082324",
+            "settings": [],
+            "isSponsoredUser": false
+        }
+    ]
+}
 ```
 
 ### Arguments
