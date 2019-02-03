@@ -58,3 +58,7 @@ The "XSTSRelyingParty" is a domain configured by Microsoft and / or its partners
 ### What about 2FA (Two-factor authentication)?
 
 2FA, or guidelines update detection, are not supported by this module (yet) which may cause some issues if you try to run this code in a production environment. As said, it's a simple one! Feel free to open a pull request if you have a workaround.
+
+### I'm unable to connect even with valid credentials and no 2FA
+
+Take a look at https://account.live.com/activity. Recent activities (from unknown location, as a production server) may be blocked.
