@@ -1,7 +1,8 @@
 {
     "name": "@xboxreplay/xboxlive-auth",
     "description": "Simple Xbox Live authentication module.",
-    "version": "0.0.1",
+    "version": "0.0.2",
+    "keywords": ["xboxreplay", "xboxlive", "auth"],
     "repository": {
         "type": "git",
         "url": "https://github.com/XboxReplay/xboxlive-auth"
