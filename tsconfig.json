@@ -2,11 +2,15 @@
     "compilerOptions": {
         "module": "commonjs",
         "target": "es6",
+        "removeComments": true,
         "noImplicitAny": true,
         "strict": true,
         "declaration": true,
-        "outDir": "./dist"
+        "outDir": "./dist",
+        "typeRoots": [
+            "./node_modules/@types/"
+        ]
     },
     "include": ["./src/**/*"],
-    "exclude": ["./dist", "./node_modules"]
+    "exclude": ["./src/__tests__/**/*"]
 }

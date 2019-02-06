@@ -1,13 +1,6 @@
 import { CookieJar } from 'request';
 
-export interface IUriQueryParameters {
-	client_id: string;
-	redirect_uri: string;
-	response_type: string;
-	scope: string;
-	display: string;
-	locale: string;
-}
+// ***** ENUM ***** //
 
 export enum LiveEndpoints {
 	Authorize = 'https://login.live.com/oauth20_authorize.srf'
@@ -16,6 +9,17 @@ export enum LiveEndpoints {
 export enum XboxLiveEndpoints {
 	UserAuthenticate = 'https://user.auth.xboxlive.com/user/authenticate',
 	XSTSAuthorize = 'https://xsts.auth.xboxlive.com/xsts/authorize'
+}
+
+// ***** INTERFACES ***** //
+
+export interface IUriQueryParameters {
+	client_id: string;
+	redirect_uri: string;
+	response_type: string;
+	scope: string;
+	display: string;
+	locale: string;
 }
 
 export interface IRequestHeaders {
@@ -42,7 +46,6 @@ export interface ILogUserMatchesParameters {
 	refreshToken: string | null;
 }
 
-export interface ILogUserResponse extends ILogUserMatchesParameters {}
 export interface IExchangeUserTokenResponse {
 	userHash: string;
 	XSTSToken: string;
@@ -52,9 +55,8 @@ export interface IAuthUserResponse extends IExchangeUserTokenResponse {
 	wlRefreshToken?: string | null;
 }
 
-export type IExchangeRPSTicketResponse = string;
-export type XSTSRelyingParty = 'http://xboxlive.com' | string;
-
 export interface IAuthOptions {
-	XSTSRelyingParty?: XSTSRelyingParty;
+	XSTSRelyingParty?: string;
 }
+
+export interface ILogUserResponse extends ILogUserMatchesParameters {}
