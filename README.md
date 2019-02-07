@@ -39,7 +39,7 @@ XboxLiveAuth.authenticate('user@live.com', '*********')
 }
 ```
 
-### Arguments
+### Parameters
 
 -   email {string}
 -   password {string}
