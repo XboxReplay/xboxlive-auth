@@ -50,7 +50,7 @@ export interface IExchangeUserTokenResponse {
     userXUID: string;
     userHash: string;
     XSTSToken: string;
-    expiresOn: string | null;
+    expiresOn: string;
 }
 
 export interface IAuthUserResponse extends IExchangeUserTokenResponse {
