@@ -3,60 +3,62 @@ import { CookieJar } from 'request';
 // ***** ENUM ***** //
 
 export enum LiveEndpoints {
-	Authorize = 'https://login.live.com/oauth20_authorize.srf'
+    Authorize = 'https://login.live.com/oauth20_authorize.srf'
 }
 
 export enum XboxLiveEndpoints {
-	UserAuthenticate = 'https://user.auth.xboxlive.com/user/authenticate',
-	XSTSAuthorize = 'https://xsts.auth.xboxlive.com/xsts/authorize'
+    UserAuthenticate = 'https://user.auth.xboxlive.com/user/authenticate',
+    XSTSAuthorize = 'https://xsts.auth.xboxlive.com/xsts/authorize'
 }
 
 // ***** INTERFACES ***** //
 
 export interface IUriQueryParameters {
-	client_id: string;
-	redirect_uri: string;
-	response_type: string;
-	scope: string;
-	display: string;
-	locale: string;
+    client_id: string;
+    redirect_uri: string;
+    response_type: string;
+    scope: string;
+    display: string;
+    locale: string;
 }
 
 export interface IRequestHeaders {
-	[key: string]: string;
+    [key: string]: string;
 }
 
 export interface IPreAuthMatchesParameters {
-	PPFT: string;
-	urlPost: string;
+    PPFT: string;
+    urlPost: string;
 }
 
 export interface IPreAuthResponse {
-	jar: CookieJar;
-	matches: IPreAuthMatchesParameters;
+    jar: CookieJar;
+    matches: IPreAuthMatchesParameters;
 }
 
 export interface IUserCredentials {
-	email: string;
-	password: string;
+    email: string;
+    password: string;
 }
 
 export interface ILogUserMatchesParameters {
-	accessToken: string;
-	refreshToken: string | null;
+    accessToken: string;
+    refreshToken: string | null;
 }
 
 export interface IExchangeUserTokenResponse {
-	userHash: string;
-	XSTSToken: string;
+    userXUID: string | null;
+    userHash: string;
+    XSTSToken: string;
+    expiresOn: string | null;
 }
 
 export interface IAuthUserResponse extends IExchangeUserTokenResponse {
-	wlRefreshToken?: string | null;
+    wlRefreshToken?: string | null;
 }
 
 export interface IAuthOptions {
-	XSTSRelyingParty?: string;
+    XSTSRelyingParty?: string;
 }
 
 export interface ILogUserResponse extends ILogUserMatchesParameters {}

@@ -1,6 +1,6 @@
 // ***** INTERFACES ***** //
 
 export interface IExtraErrorProperties {
-	statusCode?: number;
-	reason?: string;
+    statusCode?: number;
+    reason?: string;
 }
