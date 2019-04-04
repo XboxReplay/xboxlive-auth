@@ -212,10 +212,12 @@ export const exchangeUserTokenForXSTSIdentity = (
                     );
 
                 return resolve({
-                    userXUID: String(body.DisplayClaims.xui[0].xid),
+                    userXUID: body.DisplayClaims.xui[0].xid
+                        ? String(body.DisplayClaims.xui[0].xid)
+                        : null,
                     userHash: String(body.DisplayClaims.xui[0].uhs),
                     XSTSToken: String(body.Token),
-                    expiresOn: String(body.NotAfter)
+                    expiresOn: body.NotAfter ? String(body.NotAfter) : null
                 });
             }
         );

@@ -47,10 +47,10 @@ export interface ILogUserMatchesParameters {
 }
 
 export interface IExchangeUserTokenResponse {
-    userXUID: string;
+    userXUID: string | null;
     userHash: string;
     XSTSToken: string;
-    expiresOn: string;
+    expiresOn: string | null;
 }
 
 export interface IAuthUserResponse extends IExchangeUserTokenResponse {
