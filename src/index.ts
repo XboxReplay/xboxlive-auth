@@ -1,11 +1,11 @@
 export {
-	exchangeAccessTokenForUserToken,
-	exchangeUserTokenForXSTSIdentity,
-	authenticate
+    exchangeAccessTokenForUserToken,
+    exchangeUserTokenForXSTSIdentity,
+    authenticate
 } from './modules/main';
 
 export {
-	IExchangeUserTokenResponse,
-	IAuthUserResponse,
-	IAuthOptions
+    IExchangeUserTokenResponse,
+    IAuthUserResponse,
+    IAuthOptions
 } from './modules/__typings__/main';
