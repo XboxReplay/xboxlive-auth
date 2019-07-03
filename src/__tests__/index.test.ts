@@ -1,4 +1,5 @@
-import * as XboxLiveAuth from '../';
+import * as XboxLiveAuth from '..';
+import { AuthUserResponse } from '../..';
 
 beforeEach(() => {
     jest.clearAllMocks();
@@ -6,7 +7,7 @@ beforeEach(() => {
 });
 
 it('should authenticate with success', async () => {
-    const authorization: XboxLiveAuth.IAuthUserResponse = {
+    const authorization: AuthUserResponse = {
         userXUID: '123456789123456789',
         userHash: '1234567890123456',
         XSTSToken:
@@ -36,7 +37,7 @@ it('should exchange "accessToken" for "userToken"', async () => {
 });
 
 it('should exchange "userToken" for "XSTSIdentity"', async () => {
-    const authorization: XboxLiveAuth.IAuthUserResponse = {
+    const authorization: AuthUserResponse = {
         userXUID: '123456789123456789',
         userHash: '1234567890123456',
         XSTSToken:
