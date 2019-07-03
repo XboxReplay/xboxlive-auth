@@ -1,11 +1,11 @@
 import * as HTTPStatusCodes from 'http-status-codes';
-import { IExtraErrorProperties } from './__typings__/errors';
+import { ExtraErrorProperties } from '..';
 
 class XboxLiveAuthError extends Error {
     XBLAuthError: boolean = true;
-    extra: any;
+    extra: ExtraErrorProperties;
 
-    constructor(message: string = '', extra: IExtraErrorProperties = {}) {
+    constructor(message: string = '', extra: ExtraErrorProperties = {}) {
         super(message);
         Error.captureStackTrace(this, XboxLiveAuthError);
         this.name = 'XboxLiveAuthError';

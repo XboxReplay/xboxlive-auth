@@ -9,7 +9,7 @@ $ npm install @xboxreplay/xboxlive-auth
 
 ### Clone
 ```
-$ git clone git@github.com:XboxReplay/xboxlive-auth.git
+$ git clone https://github.com/XboxReplay/xboxlive-auth.git
 ```
 
 ### Build
@@ -34,10 +34,10 @@ XboxLiveAuth.authenticate('user@live.com', '*********')
 **Sample response:**
 ```
 {
-    "userXUID": "2535465515082324", // May be null
+    "userXUID": "2535465515082324",
     "userHash": "1890318589445465111",
     "XSTSToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoiYiJ9.iMrN7XT_jCcRXWKwUo_JPWeRO75dBOGTzerAO",
-    "expiresOn": "2019-04-05T05:43:32.6275675Z" // May be null
+    "expiresOn": "2019-04-05T05:43:32.6275675Z"
 }
 ```
 
