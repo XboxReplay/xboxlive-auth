@@ -1,4 +1,4 @@
-import * as HTTPStatusCodes from 'http-status-codes';
+import * as HTTPStatusCodes from './http-status-codes';
 import { ExtraErrorProperties } from '..';
 
 class XboxLiveAuthError extends Error {

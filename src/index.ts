@@ -1,5 +1,5 @@
 import * as request from 'request';
-import * as XboxLiveAuthError from './XboxLiveAuthError';
+import * as XboxLiveAuthError from './error';
 import { stringify } from 'querystring';
 
 import {
