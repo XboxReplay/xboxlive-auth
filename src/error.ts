@@ -29,6 +29,20 @@ const errors = {
             statusCode: HTTPStatusCodes.UNAUTHORIZED,
             reason: 'INVALID_CREDENTIALS'
         }),
+    unauthorizedActivity: (
+        message = 'Unauthorized activity, please refer to https://bit.ly/xr-xbl-auth-err-activity'
+    ) =>
+        new XboxLiveAuthError(message, {
+            statusCode: HTTPStatusCodes.UNAUTHORIZED,
+            reason: 'UNAUTHORIZED_ACTIVITY'
+        }),
+    twoFactorAuthenticationEnabled: (
+        message = '2FA enabled, please refer to https://bit.ly/xr-xbl-auth-err-2fa'
+    ) =>
+        new XboxLiveAuthError(message, {
+            statusCode: HTTPStatusCodes.FORBIDDEN,
+            reason: '2FA_ENABLED'
+        }),
     exchangeFailure: (message = 'Exchange failure') =>
         new XboxLiveAuthError(message, {
             statusCode: HTTPStatusCodes.BAD_REQUEST,

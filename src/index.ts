@@ -34,6 +34,8 @@ type PreAuthMatchesParameters = {
     urlPost: string;
 };
 
+type LogUserMatchesParameters = LogUserResponse;
+
 type PreAuthResponse = {
     jar: request.CookieJar;
     matches: PreAuthMatchesParameters;
@@ -41,8 +43,12 @@ type PreAuthResponse = {
 
 // ***** DEFINITIONS ***** //
 
+const CLIENT_ID = '0000000048093EE3'; // My Xbox Live
+const SCOPE = 'service::user.auth.xboxlive.com::MBI_SSL';
+const RESPONSE_TYPE = 'token';
+
 const USER_AGENT: string = [
-    'Mozilla/5.0 (XboxReplay; XboxLiveAuth/1.0)',
+    'Mozilla/5.0 (XboxReplay; XboxLiveAuth/1.1)',
     'AppleWebKit/537.36 (KHTML, like Gecko)',
     'Chrome/71.0.3578.98 Safari/537.36'
 ].join(' ');
@@ -73,17 +79,44 @@ const _getMatchForIndex = (
     const match = entry.match(regex);
     if (match === null) return null;
     if (match[index] === void 0) return null;
-    return String(match[index] || '');
+    return match[index];
+};
+
+const _getLogUserError = (body: string) => {
+    // TODO: Handle activity confirmation (POST method)
+    // prettier-ignore
+    const isUnautorizedActivity = _getMatchForIndex(
+        body, /identity\/confirm/
+    );
+
+    // TODO: Improve match
+    // prettier-ignore
+    const hasInvalidCredentials = _getMatchForIndex(
+        body, /idA_IL_ForgotPassword0/
+    );
+
+    // TODO: Improve match
+    // prettier-ignore
+    const hasTooManyAttemps = _getMatchForIndex(
+        body, /You\'ve tried to sign in too many times with an incorrect account or password./
+    );
+
+    if (isUnautorizedActivity !== null)
+        return XboxLiveAuthError.unauthorizedActivity();
+    else if (hasInvalidCredentials !== null || hasTooManyAttemps !== null)
+        return XboxLiveAuthError.invalidCredentials();
+    // TODO: Detect 2FA and don't make it as a default case
+    else return XboxLiveAuthError.twoFactorAuthenticationEnabled();
 };
 
 const _preAuth = (): Promise<PreAuthResponse> =>
     new Promise((resolve, reject) => {
         const jar = request.jar();
         const authorizeQuery: URIQueryParameters = {
-            client_id: '0000000048093EE3', // My Xbox Live
+            client_id: CLIENT_ID,
             redirect_uri: LIVE_ENDPOINTS.redirect,
-            response_type: 'token',
-            scope: 'service::user.auth.xboxlive.com::MBI_SSL',
+            response_type: RESPONSE_TYPE,
+            scope: SCOPE,
             display: 'touch',
             locale: 'en'
         };
@@ -94,6 +127,7 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                     LIVE_ENDPOINTS.authorize +
                     '?' +
                     unescape(stringify(authorizeQuery)),
+                gzip: true,
                 headers: BASE_HEADERS,
                 jar
             },
@@ -101,18 +135,18 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
 
                 // prettier-ignore
-                const matches = {
-                    PPFT: _getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
-                    urlPost: _getMatchForIndex(body, /urlPost:'([A-Za-z0-9:\?_\-\.&\\/=]+)/, 1)
-                } as any;
+                const matches: PreAuthMatchesParameters = {
+                    PPFT: _getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1) || '',
+                    urlPost: _getMatchForIndex(body, /urlPost:'([A-Za-z0-9:\?_\-\.&\\/=]+)/, 1) || ''
+                }
 
-                if (matches.PPFT === null) {
+                if (matches.PPFT.length === 0) {
                     return reject(
                         XboxLiveAuthError.matchError(
                             'Cannot match "PPFT" parameter'
                         )
                     );
-                } else if (matches.urlPost === null) {
+                } else if (matches.urlPost.length === 0) {
                     return reject(
                         XboxLiveAuthError.matchError(
                             'Cannot match "urlPost" parameter'
@@ -120,10 +154,7 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                     );
                 }
 
-                return resolve({
-                    jar,
-                    matches: matches as PreAuthMatchesParameters
-                });
+                return resolve({ jar, matches });
             }
         );
     });
@@ -137,6 +168,7 @@ const _logUser = (
             {
                 uri: preAuthResponse.matches.urlPost,
                 method: 'POST',
+                gzip: true,
                 followRedirect: false,
                 headers: {
                     ...BASE_HEADERS,
@@ -152,22 +184,22 @@ const _logUser = (
                     PPFT: preAuthResponse.matches.PPFT
                 })
             },
-            (err: any, response: request.Response) => {
+            (err: any, response: request.Response, body: any) => {
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
 
                 const location = response.headers.location;
 
                 if (location === void 0) {
-                    return reject(XboxLiveAuthError.invalidCredentials());
+                    return reject(_getLogUserError(body));
                 }
 
                 // prettier-ignore
-                const matches = {
-                    accessToken: _getMatchForIndex(location, /access_token=(.+?)&/, 1),
+                const matches: LogUserMatchesParameters = {
+                    accessToken: _getMatchForIndex(location, /access_token=(.+?)&/, 1) || '',
                     refreshToken: _getMatchForIndex(location, /refresh_token=(.+?)&/, 1)
-                } as any;
+                };
 
-                if (matches.accessToken === null) {
+                if (matches.accessToken.length === 0) {
                     return reject(
                         XboxLiveAuthError.matchError(
                             'Cannot match "access_token" parameter'
@@ -175,7 +207,7 @@ const _logUser = (
                     );
                 }
 
-                return resolve(matches as LogUserResponse);
+                return resolve(matches);
             }
         );
     });
@@ -190,6 +222,7 @@ export const exchangeAccessTokenForUserToken = (
             {
                 uri: XBOX_LIVE_ENDPOINTS.userAuthenticate,
                 method: 'POST',
+                gzip: true,
                 headers: {
                     ...BASE_HEADERS,
                     'x-xbl-contract-version': 0
@@ -226,6 +259,7 @@ export const exchangeUserTokenForXSTSIdentity = (
             {
                 uri: XBOX_LIVE_ENDPOINTS.XSTSAuthorize,
                 method: 'POST',
+                gzip: true,
                 headers: {
                     ...BASE_HEADERS,
                     'x-xbl-contract-version': 0
@@ -244,7 +278,7 @@ export const exchangeUserTokenForXSTSIdentity = (
                 else if (response.statusCode !== 200)
                     return reject(
                         XboxLiveAuthError.exchangeFailure(
-                            'Cannot exchange "userToken"'
+                            'Cannot exchange "userToken", please refer to http://bit.ly/xr-xbl-auth-user-token-issue'
                         )
                     );
 
