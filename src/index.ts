@@ -30,8 +30,8 @@ type UserCredentials = {
 };
 
 type PreAuthMatchesParameters = {
-    PPFT: string;
-    urlPost: string;
+    PPFT: string | null;
+    urlPost: string | null;
 };
 
 type LogUserMatchesParameters = {
@@ -39,16 +39,12 @@ type LogUserMatchesParameters = {
     refreshToken: string | null;
 };
 
-type ConfirmIdentityMatchParameters = {
-    fmHF: string | null;
-    ipt: string | null;
-    pprid: string | null;
-    uaid: string | null;
-};
-
 type PreAuthResponse = {
     jar: request.CookieJar;
-    matches: PreAuthMatchesParameters;
+    matches: {
+        PPFT: string;
+        urlPost: string;
+    };
 };
 
 // ***** DEFINITIONS ***** //
@@ -126,17 +122,17 @@ const _preAuth = (): Promise<PreAuthResponse> =>
 
                 // prettier-ignore
                 const matches: PreAuthMatchesParameters = {
-                    PPFT: _getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1) || '',
-                    urlPost: _getMatchForIndex(body, /urlPost:'([A-Za-z0-9:\?_\-\.&\\/=]+)/, 1) || ''
+                    PPFT: _getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
+                    urlPost: _getMatchForIndex(body, /urlPost:'([A-Za-z0-9:\?_\-\.&\\/=]+)/, 1)
                 }
 
-                if (matches.PPFT.length === 0) {
+                if (matches.PPFT === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
                             'Cannot match "PPFT" parameter'
                         )
                     );
-                } else if (matches.urlPost.length === 0) {
+                } else if (matches.urlPost === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
                             'Cannot match "urlPost" parameter'
@@ -144,7 +140,13 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                     );
                 }
 
-                return resolve({ jar, matches });
+                return resolve({
+                    jar,
+                    matches: {
+                        PPFT: matches.PPFT,
+                        urlPost: matches.urlPost
+                    }
+                });
             }
         );
     });
@@ -201,7 +203,10 @@ const _logUser = (
                     );
                 }
 
-                return resolve(matches as LogUserResponse);
+                return resolve({
+                    accessToken: matches.accessToken,
+                    refreshToken: matches.refreshToken
+                });
             }
         );
     });
