@@ -34,7 +34,17 @@ type PreAuthMatchesParameters = {
     urlPost: string;
 };
 
-type LogUserMatchesParameters = LogUserResponse;
+type LogUserMatchesParameters = {
+    accessToken: string | null;
+    refreshToken: string | null;
+};
+
+type ConfirmIdentityMatchParameters = {
+    fmHF: string | null;
+    ipt: string | null;
+    pprid: string | null;
+    uaid: string | null;
+};
 
 type PreAuthResponse = {
     jar: request.CookieJar;
@@ -46,6 +56,7 @@ type PreAuthResponse = {
 const CLIENT_ID = '0000000048093EE3'; // My Xbox Live
 const SCOPE = 'service::user.auth.xboxlive.com::MBI_SSL';
 const RESPONSE_TYPE = 'token';
+const DEFAULT_RELYING_PARTY = 'http://xboxlive.com';
 
 const USER_AGENT: string = [
     'Mozilla/5.0 (XboxReplay; XboxLiveAuth/1.1)',
@@ -82,31 +93,10 @@ const _getMatchForIndex = (
     return match[index];
 };
 
-const _getLogUserError = (body: string) => {
-    // TODO: Handle activity confirmation (POST method)
-    // prettier-ignore
-    const isUnautorizedActivity = _getMatchForIndex(
-        body, /identity\/confirm/
-    );
-
-    // TODO: Improve match
-    // prettier-ignore
-    const hasInvalidCredentials = _getMatchForIndex(
-        body, /idA_IL_ForgotPassword0/
-    );
-
-    // TODO: Improve match
-    // prettier-ignore
-    const hasTooManyAttemps = _getMatchForIndex(
-        body, /You\'ve tried to sign in too many times with an incorrect account or password./
-    );
-
-    if (isUnautorizedActivity !== null)
-        return XboxLiveAuthError.unauthorizedActivity();
-    else if (hasInvalidCredentials !== null || hasTooManyAttemps !== null)
-        return XboxLiveAuthError.invalidCredentials();
-    // TODO: Detect 2FA and don't make it as a default case
-    else return XboxLiveAuthError.twoFactorAuthenticationEnabled();
+const _requiresIdentityConfirmation = (body: string) => {
+    const m1 = _getMatchForIndex(body, /id=\"fmHF\" action=\"(.*?)\"/, 1);
+    const m2 = _getMatchForIndex(m1 || '', /identity\/confirm/, 0);
+    return m2 !== null;
 };
 
 const _preAuth = (): Promise<PreAuthResponse> =>
@@ -164,6 +154,7 @@ const _logUser = (
     credentials: UserCredentials
 ): Promise<LogUserResponse> =>
     new Promise((resolve, reject) => {
+        const jar = request.jar();
         request(
             {
                 uri: preAuthResponse.matches.urlPost,
@@ -182,7 +173,8 @@ const _logUser = (
                     loginfmt: credentials.email,
                     passwd: credentials.password,
                     PPFT: preAuthResponse.matches.PPFT
-                })
+                }),
+                jar
             },
             (err: any, response: request.Response, body: any) => {
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
@@ -190,16 +182,18 @@ const _logUser = (
                 const location = response.headers.location;
 
                 if (location === void 0) {
-                    return reject(_getLogUserError(body));
+                    return _requiresIdentityConfirmation(body)
+                        ? reject(XboxLiveAuthError.unauthorizedActivity())
+                        : reject(XboxLiveAuthError.invalidCredentials());
                 }
 
                 // prettier-ignore
                 const matches: LogUserMatchesParameters = {
-                    accessToken: _getMatchForIndex(location, /access_token=(.+?)&/, 1) || '',
+                    accessToken: _getMatchForIndex(location, /access_token=(.+?)&/, 1),
                     refreshToken: _getMatchForIndex(location, /refresh_token=(.+?)&/, 1)
                 };
 
-                if (matches.accessToken.length === 0) {
+                if (matches.accessToken === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
                             'Cannot match "access_token" parameter'
@@ -207,7 +201,7 @@ const _logUser = (
                     );
                 }
 
-                return resolve(matches);
+                return resolve(matches as LogUserResponse);
             }
         );
     });
@@ -252,7 +246,7 @@ export const exchangeAccessTokenForUserToken = (
 
 export const exchangeUserTokenForXSTSIdentity = (
     userToken: string,
-    XSTSRelyingParty: string = 'http://xboxlive.com'
+    XSTSRelyingParty: string = DEFAULT_RELYING_PARTY
 ): Promise<ExchangeUserTokenResponse> =>
     new Promise((resolve, reject) => {
         request(
@@ -275,12 +269,25 @@ export const exchangeUserTokenForXSTSIdentity = (
             },
             (err: any, response: request.Response, body: any) => {
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
-                else if (response.statusCode !== 200)
+                else if (response.statusCode !== 200) {
+                    const isDefaultRelyingParty =
+                        XSTSRelyingParty === DEFAULT_RELYING_PARTY;
+
+                    const errorMessage = [
+                        'Cannot exchange "userToken", please',
+                        'refer to https://bit.ly/xr-xbl-auth-user-token-issue'
+                    ];
+
+                    if (isDefaultRelyingParty === false)
+                        // prettier-ignore
+                        errorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
+
                     return reject(
                         XboxLiveAuthError.exchangeFailure(
-                            'Cannot exchange "userToken", please refer to http://bit.ly/xr-xbl-auth-user-token-issue'
+                            errorMessage.join(' ')
                         )
                     );
+                }
 
                 return resolve({
                     userXUID: String(body.DisplayClaims.xui[0].xid),
