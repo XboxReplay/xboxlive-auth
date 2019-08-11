@@ -27,14 +27,14 @@ $ npm run test
 ```
 import XboxLiveAuth from '@xboxreplay/xboxlive-auth';
 
-XboxLiveAuth.authenticate('user@live.com', '*********')
+XboxLiveAuth.authenticate('xbl-account@domain.com', '*********')
     .then(console.info)
     .catch(console.error);
 ```
 **Sample response:**
 ```
 {
-    "userXUID": "2535465515082324",
+    "userXUID": "2535465515082324", // May be null
     "userHash": "1890318589445465111",
     "XSTSToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoiYiJ9.iMrN7XT_jCcRXWKwUo_JPWeRO75dBOGTzerAO",
     "expiresOn": "2019-04-05T05:43:32.6275675Z"

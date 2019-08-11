@@ -1,4 +1,5 @@
 import * as request from 'request';
+import * as GitHubLinks from './github-links';
 import * as XboxLiveAuthError from './error';
 import { stringify } from 'querystring';
 
@@ -129,13 +130,17 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                 if (matches.PPFT === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
-                            'Cannot match "PPFT" parameter'
+                            `Could not match "PPFT" parameter, please fill an issue on ${
+                                GitHubLinks.createIssue
+                            }`
                         )
                     );
                 } else if (matches.urlPost === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
-                            'Cannot match "urlPost" parameter'
+                            `Could not match "urlPost" parameter, please fill an issue on ${
+                                GitHubLinks.createIssue
+                            }`
                         )
                     );
                 }
@@ -181,7 +186,7 @@ const _logUser = (
             (err: any, response: request.Response, body: any) => {
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
 
-                const location = response.headers.location;
+                const { location } = response.headers;
 
                 if (location === void 0) {
                     return _requiresIdentityConfirmation(body)
@@ -198,7 +203,9 @@ const _logUser = (
                 if (matches.accessToken === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
-                            'Cannot match "access_token" parameter'
+                            `Could not match "access_token" parameter, please fill an issue on ${
+                                GitHubLinks.createIssue
+                            }`
                         )
                     );
                 }
@@ -213,8 +220,8 @@ const _logUser = (
 
 // **** PUBLIC METHODS **** //
 
-export const exchangeAccessTokenForUserToken = (
-    accessToken: string
+export const exchangeRpsTicketForUserToken = (
+    RpsTicket: string
 ): Promise<string> =>
     new Promise((resolve, reject) => {
         request(
@@ -232,7 +239,7 @@ export const exchangeAccessTokenForUserToken = (
                     Properties: {
                         AuthMethod: 'RPS',
                         SiteName: 'user.auth.xboxlive.com',
-                        RpsTicket: accessToken
+                        RpsTicket
                     }
                 }
             },
@@ -241,13 +248,19 @@ export const exchangeAccessTokenForUserToken = (
                 else if (response.statusCode !== 200)
                     return reject(
                         XboxLiveAuthError.exchangeFailure(
-                            'Cannot exchange "accessToken"'
+                            'Could not exchange specified "RpsTicket"'
                         )
                     );
                 return resolve(body.Token);
             }
         );
     });
+
+/**
+ * @deprecated
+ */
+export const exchangeAccessTokenForUserToken = (accessToken: string) =>
+    exchangeRpsTicketForUserToken(accessToken);
 
 export const exchangeUserTokenForXSTSIdentity = (
     userToken: string,
@@ -278,24 +291,24 @@ export const exchangeUserTokenForXSTSIdentity = (
                     const isDefaultRelyingParty =
                         XSTSRelyingParty === DEFAULT_RELYING_PARTY;
 
-                    const errorMessage = [
-                        'Cannot exchange "userToken", please',
-                        'refer to https://bit.ly/xr-xbl-auth-user-token-issue'
+                    const computedErrorMessage = [
+                        'Could not exchange "userToken", please',
+                        `refer to ${GitHubLinks.seeUserTokenIssue}`
                     ];
 
                     if (isDefaultRelyingParty === false)
                         // prettier-ignore
-                        errorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
+                        computedErrorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
 
                     return reject(
                         XboxLiveAuthError.exchangeFailure(
-                            errorMessage.join(' ')
+                            computedErrorMessage.join(' ')
                         )
                     );
                 }
 
                 return resolve({
-                    userXUID: String(body.DisplayClaims.xui[0].xid),
+                    userXUID: body.DisplayClaims.xui[0].xid || null,
                     userHash: String(body.DisplayClaims.xui[0].uhs),
                     XSTSToken: String(body.Token),
                     expiresOn: String(body.NotAfter)
@@ -311,9 +324,7 @@ export const authenticate = async (
 ): Promise<AuthUserResponse> => {
     const preAuthResponse = await _preAuth();
     const logUser = await _logUser(preAuthResponse, { email, password });
-    const userToken = await exchangeAccessTokenForUserToken(
-        logUser.accessToken
-    );
+    const userToken = await exchangeRpsTicketForUserToken(logUser.accessToken);
 
     return exchangeUserTokenForXSTSIdentity(
         userToken,

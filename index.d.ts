@@ -5,7 +5,7 @@ declare namespace XboxLiveAuth {
     };
 
     type ExchangeUserTokenResponse = {
-        userXUID: string;
+        userXUID: string | null;
         userHash: string;
         XSTSToken: string;
         expiresOn: string;
