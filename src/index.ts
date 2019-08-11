@@ -56,7 +56,7 @@ const RESPONSE_TYPE = 'token';
 const DEFAULT_RELYING_PARTY = 'http://xboxlive.com';
 
 const USER_AGENT: string = [
-    'Mozilla/5.0 (XboxReplay; XboxLiveAuth/1.1)',
+    'Mozilla/5.0 (XboxReplay; XboxLiveAuth/2.0)',
     'AppleWebKit/537.36 (KHTML, like Gecko)',
     'Chrome/71.0.3578.98 Safari/537.36'
 ].join(' ');
