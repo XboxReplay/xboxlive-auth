@@ -58,17 +58,17 @@ it('should exchange "userToken" for "XSTSIdentity"', async () => {
 it('should try to authenticate, and fail', async () => {
     // prettier-ignore
     try { await XboxLiveAuth.authenticate('email', 'password'); }
-	catch (err) { expect(err.message).toMatch('Invalid credentials') }
+	catch (err) { expect(err.message).toBeTruthy() }
 });
 
 it('should try to exchange "accessToken", and fail', async () => {
     // prettier-ignore
     try { await XboxLiveAuth.exchangeAccessTokenForUserToken('fake'); }
-	catch (err) { expect(err.message).toMatch('Cannot exchange "accessToken"') }
+	catch (err) { expect(err.message).toBeTruthy() }
 });
 
 it('should try to exchange "userToken", and fail', async () => {
     // prettier-ignore
     try { await XboxLiveAuth.exchangeUserTokenForXSTSIdentity('fake'); }
-	catch (err) { expect(err.message).toMatch('Cannot exchange "userToken"') }
+	catch (err) { expect(err.message).toBeTruthy() }
 });
