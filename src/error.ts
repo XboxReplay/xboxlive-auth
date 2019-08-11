@@ -1,4 +1,5 @@
 import * as HTTPStatusCodes from './http-status-codes';
+import * as GitHubLinks from './github-links';
 import { ExtraErrorProperties } from '..';
 
 class XboxLiveAuthError extends Error {
@@ -24,10 +25,23 @@ const errors = {
             statusCode: HTTPStatusCodes.BAD_REQUEST,
             reason: 'MATCH_ERROR'
         }),
-    invalidCredentials: (message = 'Invalid credentials') =>
+    invalidCredentials: (
+        message = `Invalid credentials or 2FA enabled, please refer to ${
+            GitHubLinks.twoFactorAuthenticationError
+        }`
+    ) =>
         new XboxLiveAuthError(message, {
             statusCode: HTTPStatusCodes.UNAUTHORIZED,
             reason: 'INVALID_CREDENTIALS'
+        }),
+    unauthorizedActivity: (
+        message = `Activity confirmation required, please refer to ${
+            GitHubLinks.unauthorizedActivityError
+        }`
+    ) =>
+        new XboxLiveAuthError(message, {
+            statusCode: HTTPStatusCodes.UNAUTHORIZED,
+            reason: 'UNAUTHORIZED_ACTIVITY'
         }),
     exchangeFailure: (message = 'Exchange failure') =>
         new XboxLiveAuthError(message, {

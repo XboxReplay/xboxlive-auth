@@ -1,4 +1,5 @@
 import * as request from 'request';
+import * as GitHubLinks from './github-links';
 import * as XboxLiveAuthError from './error';
 import { stringify } from 'querystring';
 
@@ -30,19 +31,32 @@ type UserCredentials = {
 };
 
 type PreAuthMatchesParameters = {
-    PPFT: string;
-    urlPost: string;
+    PPFT: string | null;
+    urlPost: string | null;
+};
+
+type LogUserMatchesParameters = {
+    accessToken: string | null;
+    refreshToken: string | null;
 };
 
 type PreAuthResponse = {
     jar: request.CookieJar;
-    matches: PreAuthMatchesParameters;
+    matches: {
+        PPFT: string;
+        urlPost: string;
+    };
 };
 
 // ***** DEFINITIONS ***** //
 
+const CLIENT_ID = '0000000048093EE3'; // My Xbox Live
+const SCOPE = 'service::user.auth.xboxlive.com::MBI_SSL';
+const RESPONSE_TYPE = 'token';
+const DEFAULT_RELYING_PARTY = 'http://xboxlive.com';
+
 const USER_AGENT: string = [
-    'Mozilla/5.0 (XboxReplay; XboxLiveAuth/1.0)',
+    'Mozilla/5.0 (XboxReplay; XboxLiveAuth/2.0)',
     'AppleWebKit/537.36 (KHTML, like Gecko)',
     'Chrome/71.0.3578.98 Safari/537.36'
 ].join(' ');
@@ -73,17 +87,23 @@ const _getMatchForIndex = (
     const match = entry.match(regex);
     if (match === null) return null;
     if (match[index] === void 0) return null;
-    return String(match[index] || '');
+    return match[index];
+};
+
+const _requiresIdentityConfirmation = (body: string) => {
+    const m1 = _getMatchForIndex(body, /id=\"fmHF\" action=\"(.*?)\"/, 1);
+    const m2 = _getMatchForIndex(m1 || '', /identity\/confirm/, 0);
+    return m2 !== null;
 };
 
 const _preAuth = (): Promise<PreAuthResponse> =>
     new Promise((resolve, reject) => {
         const jar = request.jar();
         const authorizeQuery: URIQueryParameters = {
-            client_id: '0000000048093EE3', // My Xbox Live
+            client_id: CLIENT_ID,
             redirect_uri: LIVE_ENDPOINTS.redirect,
-            response_type: 'token',
-            scope: 'service::user.auth.xboxlive.com::MBI_SSL',
+            response_type: RESPONSE_TYPE,
+            scope: SCOPE,
             display: 'touch',
             locale: 'en'
         };
@@ -94,6 +114,7 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                     LIVE_ENDPOINTS.authorize +
                     '?' +
                     unescape(stringify(authorizeQuery)),
+                gzip: true,
                 headers: BASE_HEADERS,
                 jar
             },
@@ -101,28 +122,35 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
 
                 // prettier-ignore
-                const matches = {
+                const matches: PreAuthMatchesParameters = {
                     PPFT: _getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
                     urlPost: _getMatchForIndex(body, /urlPost:'([A-Za-z0-9:\?_\-\.&\\/=]+)/, 1)
-                } as any;
+                }
 
                 if (matches.PPFT === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
-                            'Cannot match "PPFT" parameter'
+                            `Could not match "PPFT" parameter, please fill an issue on ${
+                                GitHubLinks.createIssue
+                            }`
                         )
                     );
                 } else if (matches.urlPost === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
-                            'Cannot match "urlPost" parameter'
+                            `Could not match "urlPost" parameter, please fill an issue on ${
+                                GitHubLinks.createIssue
+                            }`
                         )
                     );
                 }
 
                 return resolve({
                     jar,
-                    matches: matches as PreAuthMatchesParameters
+                    matches: {
+                        PPFT: matches.PPFT,
+                        urlPost: matches.urlPost
+                    }
                 });
             }
         );
@@ -133,10 +161,12 @@ const _logUser = (
     credentials: UserCredentials
 ): Promise<LogUserResponse> =>
     new Promise((resolve, reject) => {
+        const jar = request.jar();
         request(
             {
                 uri: preAuthResponse.matches.urlPost,
                 method: 'POST',
+                gzip: true,
                 followRedirect: false,
                 headers: {
                     ...BASE_HEADERS,
@@ -150,46 +180,55 @@ const _logUser = (
                     loginfmt: credentials.email,
                     passwd: credentials.password,
                     PPFT: preAuthResponse.matches.PPFT
-                })
+                }),
+                jar
             },
-            (err: any, response: request.Response) => {
+            (err: any, response: request.Response, body: any) => {
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
 
-                const location = response.headers.location;
+                const { location } = response.headers;
 
                 if (location === void 0) {
-                    return reject(XboxLiveAuthError.invalidCredentials());
+                    return _requiresIdentityConfirmation(body)
+                        ? reject(XboxLiveAuthError.unauthorizedActivity())
+                        : reject(XboxLiveAuthError.invalidCredentials());
                 }
 
                 // prettier-ignore
-                const matches = {
+                const matches: LogUserMatchesParameters = {
                     accessToken: _getMatchForIndex(location, /access_token=(.+?)&/, 1),
                     refreshToken: _getMatchForIndex(location, /refresh_token=(.+?)&/, 1)
-                } as any;
+                };
 
                 if (matches.accessToken === null) {
                     return reject(
                         XboxLiveAuthError.matchError(
-                            'Cannot match "access_token" parameter'
+                            `Could not match "access_token" parameter, please fill an issue on ${
+                                GitHubLinks.createIssue
+                            }`
                         )
                     );
                 }
 
-                return resolve(matches as LogUserResponse);
+                return resolve({
+                    accessToken: matches.accessToken,
+                    refreshToken: matches.refreshToken
+                });
             }
         );
     });
 
 // **** PUBLIC METHODS **** //
 
-export const exchangeAccessTokenForUserToken = (
-    accessToken: string
+export const exchangeRpsTicketForUserToken = (
+    RpsTicket: string
 ): Promise<string> =>
     new Promise((resolve, reject) => {
         request(
             {
                 uri: XBOX_LIVE_ENDPOINTS.userAuthenticate,
                 method: 'POST',
+                gzip: true,
                 headers: {
                     ...BASE_HEADERS,
                     'x-xbl-contract-version': 0
@@ -200,7 +239,7 @@ export const exchangeAccessTokenForUserToken = (
                     Properties: {
                         AuthMethod: 'RPS',
                         SiteName: 'user.auth.xboxlive.com',
-                        RpsTicket: accessToken
+                        RpsTicket
                     }
                 }
             },
@@ -209,7 +248,7 @@ export const exchangeAccessTokenForUserToken = (
                 else if (response.statusCode !== 200)
                     return reject(
                         XboxLiveAuthError.exchangeFailure(
-                            'Cannot exchange "accessToken"'
+                            'Could not exchange specified "RpsTicket"'
                         )
                     );
                 return resolve(body.Token);
@@ -217,15 +256,22 @@ export const exchangeAccessTokenForUserToken = (
         );
     });
 
+/**
+ * @deprecated
+ */
+export const exchangeAccessTokenForUserToken = (accessToken: string) =>
+    exchangeRpsTicketForUserToken(accessToken);
+
 export const exchangeUserTokenForXSTSIdentity = (
     userToken: string,
-    XSTSRelyingParty: string = 'http://xboxlive.com'
+    XSTSRelyingParty: string = DEFAULT_RELYING_PARTY
 ): Promise<ExchangeUserTokenResponse> =>
     new Promise((resolve, reject) => {
         request(
             {
                 uri: XBOX_LIVE_ENDPOINTS.XSTSAuthorize,
                 method: 'POST',
+                gzip: true,
                 headers: {
                     ...BASE_HEADERS,
                     'x-xbl-contract-version': 0
@@ -241,15 +287,28 @@ export const exchangeUserTokenForXSTSIdentity = (
             },
             (err: any, response: request.Response, body: any) => {
                 if (err) return reject(XboxLiveAuthError.internal(err.message));
-                else if (response.statusCode !== 200)
+                else if (response.statusCode !== 200) {
+                    const isDefaultRelyingParty =
+                        XSTSRelyingParty === DEFAULT_RELYING_PARTY;
+
+                    const computedErrorMessage = [
+                        'Could not exchange "userToken", please',
+                        `refer to ${GitHubLinks.seeUserTokenIssue}`
+                    ];
+
+                    if (isDefaultRelyingParty === false)
+                        // prettier-ignore
+                        computedErrorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
+
                     return reject(
                         XboxLiveAuthError.exchangeFailure(
-                            'Cannot exchange "userToken"'
+                            computedErrorMessage.join(' ')
                         )
                     );
+                }
 
                 return resolve({
-                    userXUID: String(body.DisplayClaims.xui[0].xid),
+                    userXUID: body.DisplayClaims.xui[0].xid || null,
                     userHash: String(body.DisplayClaims.xui[0].uhs),
                     XSTSToken: String(body.Token),
                     expiresOn: String(body.NotAfter)
@@ -265,9 +324,7 @@ export const authenticate = async (
 ): Promise<AuthUserResponse> => {
     const preAuthResponse = await _preAuth();
     const logUser = await _logUser(preAuthResponse, { email, password });
-    const userToken = await exchangeAccessTokenForUserToken(
-        logUser.accessToken
-    );
+    const userToken = await exchangeRpsTicketForUserToken(logUser.accessToken);
 
     return exchangeUserTokenForXSTSIdentity(
         userToken,

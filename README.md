@@ -27,14 +27,14 @@ $ npm run test
 ```
 import XboxLiveAuth from '@xboxreplay/xboxlive-auth';
 
-XboxLiveAuth.authenticate('user@live.com', '*********')
+XboxLiveAuth.authenticate('xbl-account@domain.com', '*********')
     .then(console.info)
     .catch(console.error);
 ```
 **Sample response:**
 ```
 {
-    "userXUID": "2535465515082324",
+    "userXUID": "2535465515082324", // May be null
     "userHash": "1890318589445465111",
     "XSTSToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhIjoiYiJ9.iMrN7XT_jCcRXWKwUo_JPWeRO75dBOGTzerAO",
     "expiresOn": "2019-04-05T05:43:32.6275675Z"
@@ -85,7 +85,7 @@ The "XSTSRelyingParty" is a domain configured by Microsoft and / or its partners
 
 ### What about 2FA (Two-factor authentication)?
 
-2FA, or guidelines update detection, are not supported by this module (yet) which may cause some issues if you try to run this code in a production environment. As said, it's a simple one! Feel free to open a pull request if you have a workaround.
+2FA is not supported by this module which may cause authentication issues. Please disable it for the used account or create a dummy one with Xbox LIVE capabalities. Of course, a Gold account is not required.
 
 ### I'm unable to connect even with valid credentials and no 2FA
 
