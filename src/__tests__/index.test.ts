@@ -26,10 +26,10 @@ it('should exchange "accessToken" for "userToken"', async () => {
     const userToken: string =
         'EwAoAEwAoAEwAoAEwAoAEwAoAEwAoAEwAoAEwAoAEwAoAEwAoA';
 
-    const mock = jest.spyOn(XboxLiveAuth, 'exchangeAccessTokenForUserToken');
+    const mock = jest.spyOn(XboxLiveAuth, 'exchangeRpsTicketForUserToken');
     mock.mockReturnValueOnce(new Promise(resolve => resolve(userToken)));
 
-    const response = await XboxLiveAuth.exchangeAccessTokenForUserToken(
+    const response = await XboxLiveAuth.exchangeRpsTicketForUserToken(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.WyJaZW55IElDIl0.uhbX3bSPxuuAsz3wxWPIsdzlczxI1LHRGFaX1HoBnzM'
     );
 
@@ -61,9 +61,9 @@ it('should try to authenticate, and fail', async () => {
 	catch (err) { expect(err.message).toBeTruthy() }
 });
 
-it('should try to exchange "accessToken", and fail', async () => {
+it('should try to exchange "RpsTicket", and fail', async () => {
     // prettier-ignore
-    try { await XboxLiveAuth.exchangeAccessTokenForUserToken('fake'); }
+    try { await XboxLiveAuth.exchangeRpsTicketForUserToken('fake'); }
 	catch (err) { expect(err.message).toBeTruthy() }
 });
 
