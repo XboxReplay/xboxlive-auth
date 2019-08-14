@@ -24,9 +24,14 @@ declare namespace XboxLiveAuth {
         refreshToken: string | null;
     };
 
+    /**
+     * @deprecated
+     */
     function exchangeAccessTokenForUserToken(
         accessToken: string
     ): Promise<string>;
+
+    function exchangeRpsTicketForUserToken(RpsTicket: string): Promise<string>;
 
     function exchangeUserTokenForXSTSIdentity(
         userToken: string,
