@@ -1,27 +1,15 @@
+import { XboxReplayError } from '@xboxreplay/error';
 import * as HTTPStatusCodes from './http-status-codes';
 import * as GitHubLinks from './github-links';
-import { ExtraErrorProperties } from '..';
-
-class XboxLiveAuthError extends Error {
-    XBLAuthError: boolean = true;
-    extra: ExtraErrorProperties;
-
-    constructor(message: string = '', extra: ExtraErrorProperties = {}) {
-        super(message);
-        Error.captureStackTrace(this, XboxLiveAuthError);
-        this.name = 'XboxLiveAuthError';
-        this.extra = extra;
-    }
-}
 
 const errors = {
     internal: (message = 'Something went wrong...') =>
-        new XboxLiveAuthError(message, {
+        new XboxReplayError(message, {
             statusCode: HTTPStatusCodes.INTERNAL_SERVER_ERROR,
             reason: 'INTERNAL_ERROR'
         }),
     matchError: (message = 'Match error') =>
-        new XboxLiveAuthError(message, {
+        new XboxReplayError(message, {
             statusCode: HTTPStatusCodes.BAD_REQUEST,
             reason: 'MATCH_ERROR'
         }),
@@ -30,7 +18,7 @@ const errors = {
             GitHubLinks.twoFactorAuthenticationError
         }`
     ) =>
-        new XboxLiveAuthError(message, {
+        new XboxReplayError(message, {
             statusCode: HTTPStatusCodes.UNAUTHORIZED,
             reason: 'INVALID_CREDENTIALS'
         }),
@@ -39,12 +27,12 @@ const errors = {
             GitHubLinks.unauthorizedActivityError
         }`
     ) =>
-        new XboxLiveAuthError(message, {
+        new XboxReplayError(message, {
             statusCode: HTTPStatusCodes.UNAUTHORIZED,
             reason: 'UNAUTHORIZED_ACTIVITY'
         }),
     exchangeFailure: (message = 'Exchange failure') =>
-        new XboxLiveAuthError(message, {
+        new XboxReplayError(message, {
             statusCode: HTTPStatusCodes.BAD_REQUEST,
             reason: 'EXCHANGE_FAILURE'
         })
