@@ -1,6 +1,6 @@
 import * as request from 'request';
 import * as GitHubLinks from './github-links';
-import * as XboxLiveAuthError from './error';
+import * as errors from './errors';
 import { stringify } from 'querystring';
 
 import {
@@ -119,7 +119,7 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                 jar
             },
             (err: any, _: request.Response, body: any) => {
-                if (err) return reject(XboxLiveAuthError.internal(err.message));
+                if (err) return reject(errors.internal(err.message));
 
                 // prettier-ignore
                 const matches: PreAuthMatchesParameters = {
@@ -129,7 +129,7 @@ const _preAuth = (): Promise<PreAuthResponse> =>
 
                 if (matches.PPFT === null) {
                     return reject(
-                        XboxLiveAuthError.matchError(
+                        errors.matchError(
                             `Could not match "PPFT" parameter, please fill an issue on ${
                                 GitHubLinks.createIssue
                             }`
@@ -137,7 +137,7 @@ const _preAuth = (): Promise<PreAuthResponse> =>
                     );
                 } else if (matches.urlPost === null) {
                     return reject(
-                        XboxLiveAuthError.matchError(
+                        errors.matchError(
                             `Could not match "urlPost" parameter, please fill an issue on ${
                                 GitHubLinks.createIssue
                             }`
@@ -184,14 +184,14 @@ const _logUser = (
                 jar
             },
             (err: any, response: request.Response, body: any) => {
-                if (err) return reject(XboxLiveAuthError.internal(err.message));
+                if (err) return reject(errors.internal(err.message));
 
                 const { location } = response.headers;
 
                 if (location === void 0) {
                     return _requiresIdentityConfirmation(body)
-                        ? reject(XboxLiveAuthError.unauthorizedActivity())
-                        : reject(XboxLiveAuthError.invalidCredentials());
+                        ? reject(errors.unauthorizedActivity())
+                        : reject(errors.invalidCredentials());
                 }
 
                 // prettier-ignore
@@ -202,7 +202,7 @@ const _logUser = (
 
                 if (matches.accessToken === null) {
                     return reject(
-                        XboxLiveAuthError.matchError(
+                        errors.matchError(
                             `Could not match "access_token" parameter, please fill an issue on ${
                                 GitHubLinks.createIssue
                             }`
@@ -244,10 +244,10 @@ export const exchangeRpsTicketForUserToken = (
                 }
             },
             (err: any, response: request.Response, body: any) => {
-                if (err) return reject(XboxLiveAuthError.internal(err.message));
+                if (err) return reject(errors.internal(err.message));
                 else if (response.statusCode !== 200)
                     return reject(
-                        XboxLiveAuthError.exchangeFailure(
+                        errors.exchangeFailure(
                             'Could not exchange specified "RpsTicket"'
                         )
                     );
@@ -286,7 +286,7 @@ export const exchangeUserTokenForXSTSIdentity = (
                 }
             },
             (err: any, response: request.Response, body: any) => {
-                if (err) return reject(XboxLiveAuthError.internal(err.message));
+                if (err) return reject(errors.internal(err.message));
                 else if (response.statusCode !== 200) {
                     const isDefaultRelyingParty =
                         XSTSRelyingParty === DEFAULT_RELYING_PARTY;
@@ -301,9 +301,7 @@ export const exchangeUserTokenForXSTSIdentity = (
                         computedErrorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
 
                     return reject(
-                        XboxLiveAuthError.exchangeFailure(
-                            computedErrorMessage.join(' ')
-                        )
+                        errors.exchangeFailure(computedErrorMessage.join(' '))
                     );
                 }
 

@@ -1,7 +1,7 @@
 {
     "name": "@xboxreplay/xboxlive-auth",
     "description": "Simple Xbox Live authentication module.",
-    "version": "2.1.0",
+    "version": "2.2.0",
     "keywords": [
         "xboxreplay",
         "xboxlive",
@@ -26,7 +26,7 @@
         "watch": "npm run clean && ./node_modules/.bin/tsc-watch"
     },
     "dependencies": {
-        "@xboxreplay/error": "^0.1.0",
+        "@xboxreplay/errors": "^0.1.0",
         "request": "^2.88.0"
     },
     "devDependencies": {
