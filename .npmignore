@@ -1,5 +1,6 @@
 .gitignore
 .editorconfig
+.prettierrc
 tsconfig.json
 node_modules/
 __tests__/
