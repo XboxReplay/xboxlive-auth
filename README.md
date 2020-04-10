@@ -66,7 +66,7 @@ $ curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings?settin
 
 ### What's a "XSTSRelyingParty"?
 
-The "XSTSRelyingParty" is a domain configured by Microsoft and / or its partners to create a XSTS token which is intended to be used for a targeted service. For instance, if you use `http://beam.pro/` you will be able to interact with the private **Mixer.com** API. Please note that returned `DisplayClaims` may vary. A partial list can be found here: https://title.mgt.xboxlive.com/titles/default/endpoints?type=1.
+The "XSTSRelyingParty" is a domain configured by Microsoft and / or its partners to create a XSTS token which is intended to be used for a targeted service. For instance, if you use `http://beam.pro/` you will be able to interact with the private **Mixer.com** API. A partial list can be found here: https://title.mgt.xboxlive.com/titles/default/endpoints?type=1.
 
 ### What about 2FA (Two-factor authentication)?
 
