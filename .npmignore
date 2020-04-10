@@ -1,4 +1,5 @@
 .gitignore
+.editorconfig
 tsconfig.json
 node_modules/
 __tests__/
