@@ -13,7 +13,7 @@
 		"noUnusedParameters": true,
 		"skipLibCheck": false,
 		"esModuleInterop": true,
-        "declaration": true
+		"declaration": true
 	},
 	"include": ["./src/**/*"],
 	"exclude": ["./node_modules"]
