@@ -3,13 +3,13 @@
 Simple Xbox Live authentication module.
 
 ### Installation
-```
+```shell
 $ npm install @xboxreplay/xboxlive-auth
 ```
 
 ### Usage example
 
-```
+```javascript
 import XboxLiveAuth from '@xboxreplay/xboxlive-auth';
 
 XboxLiveAuth.authenticate('xbl-account@your-domain.com', '*********')
@@ -38,7 +38,7 @@ XboxLiveAuth.authenticate('xbl-account@your-domain.com', '*********')
 The best way to interact with the API is to use our [XboxLive-API](https://github.com/XboxReplay/xboxlive-api) module. That said, a cURL example is available below.
 
 **Sample call:**
-```
+```shell
 $ curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings?settings=Gamerscore' \
     -H 'Authorization: XBL3.0 x={userHash};{XSTSToken}' \
     -H 'x-xbl-contract-version: 2'
@@ -46,7 +46,7 @@ $ curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings?settin
 
 **Sample response:**
 
-```
+```javascript
 {
     "profileUsers": [
         {
