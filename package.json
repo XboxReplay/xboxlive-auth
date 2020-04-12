@@ -1,7 +1,7 @@
 {
     "name": "@xboxreplay/xboxlive-auth",
     "description": "Simple Xbox Live authentication module.",
-    "version": "3.1.1",
+    "version": "3.2.0",
     "keywords": [
         "xboxreplay",
         "xboxlive",
@@ -16,7 +16,7 @@
         "type": "git",
         "url": "https://github.com/XboxReplay/xboxlive-auth"
     },
-    "main": "./dist/index.js",
+    "main": "./dist/index.d.js",
     "types": "./dist/index.ts",
     "scripts": {
         "build": "npm run clean && ./node_modules/.bin/tsc && rm -rf ./dist/__tests__",
