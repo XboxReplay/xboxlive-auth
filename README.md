@@ -19,10 +19,10 @@ XboxLiveAuth.authenticate('xbl-account@your-domain.com', '*********')
 **Sample response:**
 ```
 {
-    "userXUID": "2535465515082324", // May be null
-    "userHash": "1890318589445465111",
+    "userXUID": "2584878536129841", // May be null
+    "userHash": "3218841136841218711",
     "XSTSToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiWGJveFJlcGxheS5uZXQifQ.c2UraxPmZ4STYozrjFEW8SBqU0WjnIV0h-jjnfsKtrA",
-    "expiresOn": "2019-04-05T05:43:32.6275675Z"
+    "expiresOn": "2020-04-13T05:43:32.6275675Z"
 }
 ```
 
@@ -39,7 +39,7 @@ The best way to interact with the API is to use our [XboxLive-API](https://githu
 
 **Sample call:**
 ```shell
-$ curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings?settings=Gamerscore' \
+$ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?settings=Gamerscore' \
     -H 'Authorization: XBL3.0 x={userHash};{XSTSToken}' \
     -H 'x-xbl-contract-version: 2'
 ```
@@ -50,12 +50,12 @@ $ curl 'https://profile.xboxlive.com/users/gt(Zeny%20IC)/profile/settings?settin
 {
     "profileUsers": [
         {
-            "id": "2500000000000000",
-            "hostId": "2500000000000000",
+            "id": "2584878536129841",
+            "hostId": "2584878536129841",
             "settings": [
                 {
                     "id": "Gamerscore",
-                    "value": "1000000"
+                    "value": "911540"
                 }
             ],
             "isSponsoredUser": false

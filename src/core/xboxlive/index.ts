@@ -6,7 +6,9 @@ import commonConfig from '../../config';
 import {
 	ExchangeRpsTicketResponse,
 	AuthenticateResponse,
-	ExchangeResponse
+	ExchangeResponse,
+	TokensExchangeProperties,
+	TokensExchangeOptions
 } from '../..';
 
 export const exchangeRpsTicketForUserToken = (
@@ -44,19 +46,22 @@ export const exchangeRpsTicketForUserToken = (
 			else throw errors.internal(err.message);
 		});
 
-export const exchangeUserTokenForXSTSIdentity = <T extends ExchangeResponse>(
-	userToken: string,
-	XSTSRelyingParty: string = xboxLiveConfig.defaultRelyingParty,
-	raw = false
+export const exchangeTokensForXSTSIdentity = <T extends ExchangeResponse>(
+	{ userToken, deviceToken, titleToken }: TokensExchangeProperties,
+	{ XSTSRelyingParty, optionalDisplayClaims, raw }: TokensExchangeOptions = {}
 ): Promise<T | AuthenticateResponse> =>
 	axios
 		.post(
 			xboxLiveConfig.uris.XSTSAuthorize,
 			{
-				RelyingParty: XSTSRelyingParty,
+				RelyingParty:
+					XSTSRelyingParty || xboxLiveConfig.defaultRelyingParty,
 				TokenType: 'JWT',
 				Properties: {
 					UserTokens: [userToken],
+					DeviceToken: deviceToken,
+					TitleToken: titleToken,
+					OptionalDisplayClaims: optionalDisplayClaims,
 					SandboxId: 'RETAIL'
 				}
 			},
@@ -64,7 +69,7 @@ export const exchangeUserTokenForXSTSIdentity = <T extends ExchangeResponse>(
 				headers: {
 					...commonConfig.request.baseHeaders,
 					Accept: 'application/json',
-					'x-xbl-contract-version': 0
+					'x-xbl-contract-version': 1
 				}
 			}
 		)
@@ -75,7 +80,7 @@ export const exchangeUserTokenForXSTSIdentity = <T extends ExchangeResponse>(
 				);
 			}
 
-			if (raw === false) {
+			if (raw !== true) {
 				const body = response.data as ExchangeResponse & {
 					DisplayClaims: { xui: [{ uhs: string; xid?: string }] };
 				};
@@ -101,8 +106,14 @@ export const exchangeUserTokenForXSTSIdentity = <T extends ExchangeResponse>(
 
 				// prettier-ignore
 				if (isDefaultRelyingParty === false)
-					computedErrorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
+			computedErrorMessage.splice(1, 0, 'double check the specified "XSTSRelyingParty" or');
 
 				throw errors.internal(computedErrorMessage.join(' '));
 			} else throw errors.internal(err.message);
 		});
+
+export const exchangeUserTokenForXSTSIdentity = <T extends ExchangeResponse>(
+	userToken: string,
+	options: TokensExchangeOptions
+): Promise<T | AuthenticateResponse> =>
+	exchangeTokensForXSTSIdentity<T>({ userToken }, options);

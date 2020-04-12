@@ -2,7 +2,8 @@ import { preAuth, logUser } from './core/live';
 
 import {
 	exchangeRpsTicketForUserToken,
-	exchangeUserTokenForXSTSIdentity
+	exchangeUserTokenForXSTSIdentity,
+	exchangeTokensForXSTSIdentity
 } from './core/xboxlive';
 
 //#region typings
@@ -12,7 +13,19 @@ export type Credentials = {
 	password: string;
 };
 
-export type AuthOptions = {
+export type TokensExchangeProperties = {
+	userToken: string;
+	deviceToken?: string;
+	titleToken?: string;
+};
+
+export type TokensExchangeOptions = {
+	XSTSRelyingParty?: string;
+	optionalDisplayClaims?: string[];
+	raw?: boolean;
+};
+
+export type AuthenticateOptions = {
 	XSTSRelyingParty?: string;
 };
 
@@ -57,7 +70,7 @@ export type AuthenticateResponse = {
 export const authenticate = async (
 	email: Credentials['email'],
 	password: Credentials['password'],
-	options: AuthOptions = {}
+	options: AuthenticateOptions = {}
 ): Promise<AuthenticateResponse> => {
 	const preAuthResponse = await preAuth();
 	const logUserResponse = await logUser(preAuthResponse, { email, password });
@@ -67,11 +80,16 @@ export const authenticate = async (
 
 	return exchangeUserTokenForXSTSIdentity(
 		exchangeRpsTicketForUserTokenResponse.Token,
-		options.XSTSRelyingParty,
-		false
+		{ XSTSRelyingParty: options.XSTSRelyingParty, raw: false }
 	) as Promise<AuthenticateResponse>;
 };
 
-export { exchangeRpsTicketForUserToken, exchangeUserTokenForXSTSIdentity };
+export {
+	preAuth,
+	logUser,
+	exchangeRpsTicketForUserToken,
+	exchangeUserTokenForXSTSIdentity,
+	exchangeTokensForXSTSIdentity
+};
 
 //#endregion
