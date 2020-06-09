@@ -2,6 +2,9 @@
 
 Simple Xbox Live authentication module.
 
+### Warning
+This module **MUST** be used server side only to prevent [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) issues and credentials leak (See issue: https://github.com/XboxReplay/xboxlive-auth/issues/8).
+
 ### Installation
 ```shell
 $ npm install @xboxreplay/xboxlive-auth
