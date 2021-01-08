@@ -1,7 +1,7 @@
 {
 	"name": "@xboxreplay/xboxlive-auth",
 	"description": "Simple Xbox Live authentication module.",
-	"version": "3.3.2",
+	"version": "3.3.1",
 	"keywords": [
 		"xboxreplay",
 		"xboxlive",
