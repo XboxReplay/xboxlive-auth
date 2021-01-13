@@ -1,1 +1,19 @@
-{}
+{
+	"name": "@xboxreplay/xboxlive-auth_electron-app",
+	"description": "Electron app example",
+	"private": true,
+	"version": "0.0.1",
+	"license": "MIT",
+	"main": "./lib/main.js",
+	"author": {
+		"name": "Alexis Bize",
+		"email": "alexis.bize@gmail.com"
+	},
+	"scripts": {
+		"start": "electron ."
+	},
+	"dependencies": {
+		"axios": "^0.21.1",
+		"electron": "^11.2.0"
+	}
+}
