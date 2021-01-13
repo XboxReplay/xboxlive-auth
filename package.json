@@ -27,7 +27,6 @@
 		"test": "ts-node ./__tests__/e2e.test.js"
 	},
 	"dependencies": {
-		"@xboxreplay/errors": "^0.1.0",
 		"axios": "^0.21.1"
 	},
 	"devDependencies": {

@@ -40,6 +40,9 @@ export type XBLExchangeTokensResponse = {
 	};
 };
 
+/**
+ * If specified, `titleToken` requires a `deviceToken` pair
+ */
 export type XBLTokens = {
 	userTokens: string[];
 	deviceToken?: string;

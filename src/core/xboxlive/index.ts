@@ -23,15 +23,14 @@ const XBLAdditionalHeaders = {
 /**
  * Exchange returned "RpsTicket"
  *
- * @param {string} rpsTicket
- * @param {object=} additionalHeaders - Additional headers
- * @returns {Promise<XBLExchangeRpsTicketResponse>} Exchange response
+ * @param {string} rpsTicket - Returned `access_token` from login.live.com authorization process
+ * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
  *
  * @example
- * //	exchangeRpsTicketForUserToken(
- * //		'EwAQxxxxxx'
- * //		{ Signature: 'AAAAQxxxx' }
- * //	);
+ *	exchangeRpsTicketForUserToken('EwAQxxxxxx');
+ *
+ * @throws {AxiosError}
+ * @returns {Promise<XBLExchangeRpsTicketResponse>} Exchange response
  */
 export const exchangeRpsTicketForUserToken = async (
 	rpsTicket: string,
@@ -63,18 +62,20 @@ export const exchangeRpsTicketForUserToken = async (
  *
  * @param {XBLTokens} tokens
  * @param {XBLExchangeTokensOptions} options - Exchange options
- * @param {object=} additionalHeaders - Additional headers
- * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
+ * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
  *
  * @example
- * //	exchangeTokensForXSTSToken(
- * //		{ userTokens: ['eyxxx'], deviceToken: 'eyxxx' },
- * //		{
- * //			XSTSRelyingParty: 'https://gameservices.xboxlive.com/',
- * //			OptionalDisplayClaims: ['mgt']
- * //		},
- * //		{ Signature: 'AAAAQxxxx' }
- * //	);
+ *	exchangeTokensForXSTSToken({ userTokens: ['eyxxx'] });
+ *
+ * @example
+ * exchangeTokensForXSTSToken(
+ *		{ userTokens: ['eyxxx'], deviceToken: 'eyxxx', titleToken: 'eyxxx' },
+ *		{ XSTSRelyingParty: 'https://gameservices.xboxlive.com/', OptionalDisplayClaims: ['mgt'] },
+ *		{ Signature: 'AAAAQxxxx' }
+ *	);
+ *
+ * @throws {AxiosError}
+ * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
  */
 export const exchangeTokensForXSTSToken = async (
 	tokens: XBLTokens,
@@ -103,5 +104,37 @@ export const exchangeTokensForXSTSToken = async (
 
 	return response;
 };
+
+/**
+ * Exchange token
+ *
+ * @param {string} userToken - Returned token from `exchangeRpsTicketForUserToken` method
+ * @param {XBLExchangeTokensOptions} options - Exchange options
+ * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
+ * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
+ *
+ * @example
+ *	exchangeTokenForXSTSToken('eyxxx');
+ *
+ * @example
+ *	exchangeTokenForXSTSToken(
+ *		'eyxxx',
+ *		{ XSTSRelyingParty: 'https://gameservices.xboxlive.com/', OptionalDisplayClaims: ['mgt'] },
+ *		{ Signature: 'AAAAQxxxx' }
+ *	);
+ *
+ * @throws {AxiosError}
+ * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
+ */
+export const exchangeTokenForXSTSToken = (
+	userToken: string,
+	options: XBLExchangeTokensOptions = {},
+	additionalHeaders: Record<string, string> = {}
+) =>
+	exchangeTokensForXSTSToken(
+		{ userTokens: [userToken] },
+		options,
+		additionalHeaders
+	);
 
 //#endregion

@@ -2,9 +2,6 @@ import config from '../config';
 
 //#region public methods
 
-export const removeUndefinedFromObject = (obj: Record<string, any>) =>
-	JSON.parse(JSON.stringify(obj));
-
 export const getBaseHeaders = (
 	additionalHeaders: Record<string, string> = {}
 ) => ({

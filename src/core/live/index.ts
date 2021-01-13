@@ -1,23 +1,47 @@
 import axios from 'axios';
 import { stringify } from 'querystring';
-import { getBaseHeaders, removeUndefinedFromObject } from '../../utils';
+import { getBaseHeaders } from '../../utils';
 import { LiveAuthenticateResponse } from '../..';
-import config, { defaultClientId, defaultScope } from './config';
+
+import config, {
+	defaultClientId,
+	defaultRedirectUri,
+	defaultResponseType,
+	defaultScope
+} from './config';
 
 //#region public methods
+
+/**
+ * Returns login.live.com authorize URL to be used inside an Electron app
+ *
+ * @returns {string} Authorize URL
+ */
+export const getAuthorizeUrl = (): string =>
+	`${config.urls.authorize}?${stringify({
+		client_id: defaultClientId,
+		redirectUri: defaultRedirectUri,
+		response_type: defaultResponseType,
+		scope: defaultScope,
+		display: 'touch'
+	})}`;
 
 /**
  * Refresh an expired token
  *
  * @param {string|null} clientId - Set this value to `null` if the default one was used
- * @param {string} refreshToken
+ * @param {string} refreshToken - Stored `refresh_token`
  * @param {scope=} scope - Default to `service::user.auth.xboxlive.com::MBI_SSL`
  * @param {string=} clientSecret - Not required if the default `client_id` has been used
  *
- * @returns {Promise<LiveAuthenticateResponse>} Refresh response
+ * @example
+ * 	refreshAccessToken(null, 'M.R3_B.xxxxxxxx');
  *
  * @example
- * // 	refreshAccessToken(null, 'MQxxxxxxx');
+ * 	refreshAccessToken('00000XXXXXX', 'M.R3_B.xxxxxxxx', 'XboxLive.signin', 'xxxxxx');
+ *
+ * @throws {AxiosError}
+ * @returns {Promise<LiveAuthenticateResponse>} Refresh response
  */
 export const refreshAccessToken = async (
 	clientId: string | null | undefined,
@@ -27,16 +51,13 @@ export const refreshAccessToken = async (
 ): Promise<LiveAuthenticateResponse> => {
 	if (typeof clientId !== 'string' || clientId.length === 0) {
 		clientId = defaultClientId;
-		scope = defaultScope;
-		clientSecret = void 0;
 	}
 
 	const payload: Record<string, any> = {
 		client_id: clientId,
-		scope,
+		scope: scope || defaultScope,
 		grant_type: 'refresh_token',
-		refresh_token: refreshToken,
-		client_secret: clientSecret
+		refresh_token: refreshToken
 	};
 
 	if (clientSecret !== void 0) {
@@ -50,7 +71,7 @@ export const refreshAccessToken = async (
 			Accept: 'application/json',
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}),
-		data: stringify(removeUndefinedFromObject(payload))
+		data: stringify(payload)
 	}).then(res => res.data);
 
 	return response;
