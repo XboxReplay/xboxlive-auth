@@ -21,7 +21,7 @@ xboxliveAuth
 
 **Sample response:**
 
-```json
+```javascript
 {
 	"live": {
 		"token_type": "bearer",
