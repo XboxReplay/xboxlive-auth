@@ -1,3 +1,5 @@
+export { EXPERIMENTAL_createDummyWin32DeviceToken } from './core/xboxlive';
+
 //#region typings
 
 export type LiveAuthenticateResponse = {
@@ -40,6 +42,18 @@ export type XBLExchangeTokensResponse = {
 	};
 };
 
+export type XBLDummyDeviceTokenResponse = {
+	IssueInstant: string;
+	NotAfter: string;
+	Token: string;
+	DisplayClaims: {
+		xdi: {
+			did: 'F50CDD8781FF4476';
+			dcs: string;
+		};
+	};
+};
+
 /**
  * If specified, `titleToken` requires a `deviceToken` pair
  */
@@ -48,5 +62,8 @@ export type XBLTokens = {
 	deviceToken?: string;
 	titleToken?: string;
 };
+
+//#endregion
+//#region public methods
 
 //#endregion

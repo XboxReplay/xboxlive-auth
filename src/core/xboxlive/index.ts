@@ -3,6 +3,7 @@ import config, { defaultXSTSRelyingParty } from './config';
 import { getBaseHeaders } from '../../utils';
 
 import {
+	XBLDummyDeviceTokenResponse,
 	XBLExchangeRpsTicketResponse,
 	XBLExchangeTokensOptions,
 	XBLExchangeTokensResponse,
@@ -136,5 +137,50 @@ export const exchangeTokenForXSTSToken = (
 		options,
 		additionalHeaders
 	);
+
+/**
+ * Create a dummy Win32 device token to be used with `exchangeTokensForXSTSToken` method
+ *
+ * @throws {AxiosError}
+ * @returns {Promise<XBLDummyDeviceTokenResponse>} Device authenticate response
+ */
+export const EXPERIMENTAL_createDummyWin32DeviceToken = async (): Promise<XBLDummyDeviceTokenResponse> => {
+	const trustedParty = 'https://xboxreplay.net/';
+	const serviceDeviceId = '21354D2F-352F-472F-5842-5265706C6179';
+	const serviceSignature =
+		'AAAAAQHW6oD31MwA6MAjn67vdCppWCbrMovubA85xejO06rtOAEdZ0tMTZFnu7xbI6lZDNvIWfuMaIPJSUcpvxjKqSFJl1oaWzQGBw==';
+
+	const serviceProofKey = {
+		crv: 'P-256',
+		alg: 'ES256',
+		use: 'sig',
+		kty: 'EC',
+		x: 'b8Zc6GPFeu41DqiWPJxRa_jqUTSiMA537emKVHt8UO8',
+		y: 'CXAuTEHet72GjgSDfDg6psBrwE1waxBsNEIGrRZV_90'
+	};
+
+	const response = await axios({
+		url: config.urls.deviceAuthenticate,
+		method: 'POST',
+		headers: getBaseHeaders({
+			...XBLAdditionalHeaders,
+			Signature: serviceSignature
+		}),
+		data: {
+			RelyingParty: 'http://auth.xboxlive.com',
+			TokenType: 'JWT',
+			Properties: {
+				AuthMethod: 'ProofOfPossession',
+				TrustedParty: trustedParty,
+				Id: `{${serviceDeviceId}}`,
+				DeviceType: 'Win32',
+				Version: '10.0.18363',
+				ProofKey: serviceProofKey
+			}
+		}
+	}).then(res => res.data);
+
+	return response;
+};
 
 //#endregion
