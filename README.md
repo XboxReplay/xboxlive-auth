@@ -11,21 +11,44 @@ $ npm install @xboxreplay/xboxlive-auth
 ### Usage example
 
 ```javascript
-import XboxLiveAuth from '@xboxreplay/xboxlive-auth';
+import xboxliveAuth from '@xboxreplay/xboxlive-auth';
 
-XboxLiveAuth.authenticate('xbl-account@your-domain.com', '*********')
+xboxliveAuth
+	.authenticate('xbl-account@your-domain.com', '*********')
 	.then(console.info)
 	.catch(console.error);
 ```
 
 **Sample response:**
 
-```
+```json
 {
-    "xuid": "25848785...", // May be undefined
-    "user_hash": "32188411368...",
-    "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "expires_on": "2021-04-13T05:43:32.6275675Z"
+	"live": {
+		"token_type": "bearer",
+		"expires_in": 86400,
+		"access_token": "EwAIA+pvBAAUKxxxxxx",
+		"refresh_token": "M.R3_BAY.xxxxxx",
+		"scope": "service::user.auth.xboxlive.com::MBI_SSL",
+		"user_id": "xxxxxx"
+	},
+	"xboxlive": {
+		"IssueInstant": "2021-01-14T18:55:20.0082007Z",
+		"NotAfter": "2021-01-15T10:55:20.0082007Z",
+		"Token": "eyJlbmMiOiJBMTIxxxxxx", // XSTSToken
+		"DisplayClaims": {
+			"xui": [
+				{
+					"gtg": "Major Nelson",
+					"xid": "273172xxxxxx",
+					"uhs": "304328xxxxxx", // userHash
+					"agg": "Adult",
+					"usr": "234",
+					"utr": "190",
+					"prv": "185 186 187 188 191 192"
+				}
+			]
+		}
+	}
 }
 ```
 
@@ -63,9 +86,8 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 
 ### Available examples
 
-##### Electron app
-
-Use `@xboxreplay/xboxlive-auth` module inside an Electron app.
+-   Electron app
+    -   Use `@xboxreplay/xboxlive-auth` module inside an Electron app.
 
 ### What's a "XSTSRelyingParty"?
 

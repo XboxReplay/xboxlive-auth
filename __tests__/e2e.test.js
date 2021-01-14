@@ -1,26 +1,5 @@
-const {
-	LiveAuthenticate,
-	exchangeRpsTicketForUserToken,
-	EXPERIMENTAL_createDummyWin32DeviceToken,
-	exchangeTokensForXSTSToken
-} = require('../src');
+const { authenticate } = require('../src');
 
-LiveAuthenticate({
-	email: '',
-	password: ''
-}).then(async res => {
-	const { Token: userToken } = await exchangeRpsTicketForUserToken(
-		res.access_token
-	);
-
-	const {
-		Token: deviceToken
-	} = await EXPERIMENTAL_createDummyWin32DeviceToken();
-
-	await exchangeTokensForXSTSToken({
-		userTokens: [userToken],
-		deviceToken
-	})
-		.then(console.log)
-		.catch(console.error);
+authenticate(process.env.XBL_EMAIL, process.env.XBL_PASSWORD, {
+	XSTSRelyingParty: 'http://accounts.xboxlive.com'
 });

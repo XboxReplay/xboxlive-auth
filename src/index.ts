@@ -1,6 +1,6 @@
-export { authenticate as LiveAuthenticate } from './core/live';
+import { authenticate as LiveAuthenticate } from './core/live';
 
-export {
+import {
 	EXPERIMENTAL_createDummyWin32DeviceToken,
 	exchangeRpsTicketForUserToken,
 	exchangeTokensForXSTSToken,
@@ -87,5 +87,33 @@ export type XBLTokens = {
 
 //#endregion
 //#region public methods
+
+export const authenticate = async (
+	email: string,
+	password: string,
+	options: XBLExchangeTokensOptions = {}
+) => {
+	const liveResponse = await LiveAuthenticate({ email, password });
+	const userTokenResponse = await exchangeRpsTicketForUserToken(
+		liveResponse.access_token
+	);
+
+	const XSTSResponse = await exchangeTokenForXSTSToken(
+		userTokenResponse.Token,
+		options
+	);
+
+	return {
+		live: liveResponse,
+		xboxlive: XSTSResponse
+	};
+};
+
+export {
+	EXPERIMENTAL_createDummyWin32DeviceToken,
+	exchangeRpsTicketForUserToken,
+	exchangeTokensForXSTSToken,
+	exchangeTokenForXSTSToken
+};
 
 //#endregion
