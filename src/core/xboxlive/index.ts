@@ -131,11 +131,6 @@ export const exchangeTokensForXSTSToken = async (
  *	exchangeTokenForXSTSToken('eyxxx');
  *
  * @example
- * exchangeTokensForXSTSToken(
- *		{ userTokens: ['eyxxx'] }
- *	);
- *
- * @example
  *	exchangeTokenForXSTSToken(
  *		'eyxxx',
  *		{ XSTSRelyingParty: 'https://gameservices.xboxlive.com/', OptionalDisplayClaims: ['mgt'] },
