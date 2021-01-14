@@ -25,6 +25,7 @@ const XBLAdditionalHeaders = {
  * Exchange returned "RpsTicket"
  *
  * @param {string} rpsTicket - Returned `access_token` from login.live.com authorization process
+ * @param {string=} preable - `t` - Use `d` for custom Azure applications
  * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
  *
  * @example
@@ -35,8 +36,15 @@ const XBLAdditionalHeaders = {
  */
 export const exchangeRpsTicketForUserToken = async (
 	rpsTicket: string,
+	preamble: 'd' | 't' = 't',
 	additionalHeaders: Record<string, string> = {}
 ): Promise<XBLExchangeRpsTicketResponse> => {
+	const match = rpsTicket.match(/^([t|d]=)/g);
+
+	if (match === null) {
+		rpsTicket = `${preamble}=${rpsTicket}`;
+	}
+
 	const response = await axios({
 		url: config.urls.userAuthenticate,
 		method: 'POST',
@@ -62,12 +70,17 @@ export const exchangeRpsTicketForUserToken = async (
  * Exchange tokens
  *
  * @param {XBLTokens} tokens
- * @param {XBLExchangeTokensOptions} options - Exchange options
+ * @param {XBLExchangeTokensOptions=} options - Exchange options
  * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
  *
  * @example
  *	exchangeTokensForXSTSToken({ userTokens: ['eyxxx'] });
  *
+ * @example
+ * exchangeTokensForXSTSToken(
+ *		{ userTokens: ['eyxxx'] }
+ *	);
+
  * @example
  * exchangeTokensForXSTSToken(
  *		{ userTokens: ['eyxxx'], deviceToken: 'eyxxx', titleToken: 'eyxxx' },
@@ -110,12 +123,17 @@ export const exchangeTokensForXSTSToken = async (
  * Exchange token
  *
  * @param {string} userToken - Returned token from `exchangeRpsTicketForUserToken` method
- * @param {XBLExchangeTokensOptions} options - Exchange options
+ * @param {XBLExchangeTokensOptions=} options - Exchange options
  * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
  * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
  *
  * @example
  *	exchangeTokenForXSTSToken('eyxxx');
+ *
+ * @example
+ * exchangeTokensForXSTSToken(
+ *		{ userTokens: ['eyxxx'] }
+ *	);
  *
  * @example
  *	exchangeTokenForXSTSToken(

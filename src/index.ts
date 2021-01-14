@@ -1,14 +1,36 @@
-export { EXPERIMENTAL_createDummyWin32DeviceToken } from './core/xboxlive';
+export { authenticate as LiveAuthenticate } from './core/live';
+
+export {
+	EXPERIMENTAL_createDummyWin32DeviceToken,
+	exchangeRpsTicketForUserToken,
+	exchangeTokensForXSTSToken,
+	exchangeTokenForXSTSToken
+} from './core/xboxlive';
 
 //#region typings
 
-export type LiveAuthenticateResponse = {
+export type LiveCredentials = {
+	email: string;
+	password: string;
+};
+
+export type LiveAuthResponse = {
 	token_type: 'bearer';
 	expires_in: number;
 	access_token: string;
 	refresh_token?: string;
 	scope: string;
 	user_id: string;
+};
+
+export type LivePreAuthMatchedParameters = {
+	PPFT: string;
+	urlPost: string;
+};
+
+export type LivePreAuthResponse = {
+	cookie: string;
+	matches: LivePreAuthMatchedParameters;
 };
 
 export type XBLExchangeRpsTicketResponse = {
