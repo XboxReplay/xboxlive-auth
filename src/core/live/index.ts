@@ -78,10 +78,6 @@ export const refreshAccessToken = async (
 	scope: string = defaultScope,
 	clientSecret: string | undefined = void 0
 ): Promise<LiveAuthResponse> => {
-	if (typeof clientId !== 'string' || clientId.length === 0) {
-		clientId = defaultClientId;
-	}
-
 	const payload: Record<string, any> = {
 		client_id: clientId,
 		scope: scope || defaultScope,
@@ -89,7 +85,7 @@ export const refreshAccessToken = async (
 		refresh_token: refreshToken
 	};
 
-	if (clientSecret !== null) {
+	if (clientSecret !== void 0) {
 		payload.client_secret = clientSecret;
 	}
 
