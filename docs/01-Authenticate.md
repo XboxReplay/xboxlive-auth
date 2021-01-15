@@ -15,12 +15,12 @@ authenticate('live@domain.com', 'password')
 -   email {string} - Account email
 -   password {string} - Account password
 -   options {object=} - Additional options
-    -   XSTSRelyingParty {string=} `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
-    -   optionalDisplayClaims {string[]=} `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
-    -   sandboxId {string=} `RETAIL` - Targeted sandbox
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
+    -   sandboxId {string=} - `RETAIL` - Targeted sandbox
     -   deviceToken {string=} - Optional device token
     -   titleToken {string=} - Optional title token
-    -   raw {boolean=} `false` - If set to `true` the returned response will include each exchange based on called domains
+    -   raw {boolean=} - `false` - If set to `true` the returned response will include each exchange based on called domains
 
 ##### Sample Response
 

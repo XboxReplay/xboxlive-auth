@@ -40,8 +40,8 @@ console.info(userTokenResponse);
 ##### Arguments
 
 -   rpsTicket {string}
--   preable {d|t=} `t`
--   additionalHeaders {object=} `{}` - Additional headers if required, can be used to override default ones
+-   preable {d|t=} - `t`
+-   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
 ### Method: exchangeTokenForXSTSToken
 
