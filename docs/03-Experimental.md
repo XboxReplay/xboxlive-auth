@@ -1,6 +1,6 @@
 # Experimental methods
 
-Listed experimental methods are, as specified, experimental. They may break, be removed or do not act as described.
+Experimental methods are, as specified, experimental. They may break, be removed or do not act as described.
 
 ### Method: EXPERIMENTAL_createDummyWin32DeviceToken
 
