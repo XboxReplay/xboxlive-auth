@@ -80,3 +80,7 @@ authenticate('name@domain.com', 'password')
     }
 }
 ```
+
+### Authenticate "Child" and "Teen" accounts
+
+Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/4.0.0/docs/06-Known_Issues.md#still-not-working).
