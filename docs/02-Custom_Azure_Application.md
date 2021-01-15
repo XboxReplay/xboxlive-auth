@@ -36,32 +36,30 @@ const exchangeCodeResponse = await live.exchangeCodeForAccessToken(code);
 const rpsTicket = exchangeCodeResponse.access_token;
 const refreshToken = exchangeCodeResponse.refresh_token; // May be undefined
 
-const expiresOn = new Date(
-	Date.now() + exchangeCodeResponse.expires_in * 1000
-).toISOString();
-
 const userTokenResponse = await xbl.exchangeRpsTicketForUserToken(
 	rpsTicket,
 	'd' // Required for custom Azure applications
 );
 
-await xbl
-	.exchangeTokenForXSTSToken(userTokenResponse.Token)
-	.then(console.info)
-	.catch(console.error);
+const XSTSTokenResponse = await xbl.exchangeTokenForXSTSToken(
+	userTokenResponse.Token
+);
 
 // Handle expiration
 
-const hasExpired = new Date() >= new Date(expiresOn);
+const hasExpired = new Date() >= new Date(XSTSTokenResponse.NotAfter);
 
 if (hasExpired === true && !!refreshToken) {
-	const freshTokens = await live.refreshAccessToken(
+	const refreshResponse = await live.refreshAccessToken(
 		refreshToken,
 		'YOUR_CLIENT_ID',
 		'XboxLive.signin XboxLive.offline_access',
 		'YOUR_CLIENT_SECRET'
 	);
 
-	console.info(freshTokens);
+	cosole.info(refreshResponse);
+	// exchangeRpsTicketForUserToken(...)
+	// exchangeTokenForXSTSToken(...)
+	// etc.
 }
 ```
