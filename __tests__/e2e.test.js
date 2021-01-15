@@ -1,5 +1,6 @@
-const { authenticate } = require('../src');
+const {
+	authenticate,
+	EXPERIMENTAL_createDummyWin32DeviceToken
+} = require('../src');
 
-authenticate(process.env.XBL_EMAIL, process.env.XBL_PASSWORD, {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com'
-});
+EXPERIMENTAL_createDummyWin32DeviceToken().then(console.log);
