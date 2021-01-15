@@ -7,9 +7,9 @@ Experimental methods are, as specified, experimental. They may break, be removed
 Create a dummy **Win32** `deviceToken` that can be used during the authentication process.
 
 ```javascript
-import { EXPERIMENTAL_createDummyWin32DeviceToken } from '@xboxreplay/xboxlive-auth';
+import { xbl } from '@xboxreplay/xboxlive-auth';
 
-EXPERIMENTAL_createDummyWin32DeviceToken()
+xbl.EXPERIMENTAL_createDummyWin32DeviceToken()
 	.then(console.log)
 	.catch(console.error);
 ```
