@@ -125,7 +125,7 @@ Create a dummy **Win32** `deviceToken` that can be used during the authenticatio
 
 ### Method: getAuthorizeUrl
 
-Returns login.live.com authorize URL.
+Returns `login.live.com` authorize URL.
 
 ```javascript
 import { live } from '@xboxreplay/xboxlive-auth';
