@@ -10,9 +10,7 @@ Authenticate the user.
 
 -   See documentation
 
-## Namespaces: xbl
-
-### Method:
+## Namespace: xbl
 
 ### Method: EXPERIMENTAL_createDummyWin32DeviceToken
 
