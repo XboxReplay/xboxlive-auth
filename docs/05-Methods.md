@@ -40,7 +40,7 @@ console.info(userTokenResponse);
 ##### Arguments
 
 -   rpsTicket {string}
--   preable {d|t=} - `t`
+-   preable {d|t=} - `t` - Use `d` for custom Azure applications
 -   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
 ### Method: exchangeTokenForXSTSToken
