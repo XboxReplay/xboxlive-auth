@@ -8,7 +8,7 @@ List of all available methods exposed by the library.
 
 Authenticate the user.
 
--   See dedicated documentation
+-   [See dedicated documentation](01-Authenticate.md#method-authenticate)
 
 ## Namespace: xbl
 
