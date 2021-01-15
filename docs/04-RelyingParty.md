@@ -26,10 +26,7 @@ import { authenticate } from '@xboxreplay/xboxlive-auth';
 const authWithOptionalDisplayClaims = await authenticate(
 	'live@domain.com',
 	'password',
-	{
-		XSTSRelyingParty: 'http://xboxlive.com',
-		optionalDisplayClaims: ['mgt', 'umg']
-	}
+	{ optionalDisplayClaims: ['mgt', 'umg'] }
 );
 
 console.info(authWithOptionalDisplayClaims);
