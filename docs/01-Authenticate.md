@@ -53,17 +53,6 @@ authenticate('live@domain.com', 'password')
             "xui": [{ "uhs": "3218841136841218711" }]
         }
     },
-    "device.auth.xboxlive.com": {
-        "IssueInstant": "2021-01-14T18:55:20.0082007Z",
-        "NotAfter": "2021-01-15T10:55:20.0082007Z",
-        "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-        "DisplayClaims": {
-            "xdi": {
-                "did": "F50CDD8781FF4476",
-                "dcs": "87411"
-            }
-        }
-    },
     "xsts.auth.xboxlive.com": {
         "IssueInstant": "2021-01-14T18:55:20.0082007Z",
         "NotAfter": "2021-01-15T10:55:20.0082007Z",

@@ -1,4 +1,8 @@
-import { authenticate as LiveAuthenticate } from './core/live';
+import {
+	getAuthorizeUrl,
+	authenticate as LiveAuthenticate,
+	refreshAccessToken
+} from './core/live';
 
 import {
 	EXPERIMENTAL_createDummyWin32DeviceToken,
@@ -57,8 +61,8 @@ export type XBLExchangeTokensResponse = {
 	DisplayClaims: {
 		xui: Array<
 			Record<string, string> & {
-				xid: string;
-				uhs?: string;
+				xid?: string;
+				uhs: string;
 			}
 		>;
 	};
@@ -85,31 +89,61 @@ export type XBLTokens = {
 	titleToken?: string;
 };
 
+export type AuthenticateOptions = XBLExchangeTokensOptions & {
+	deviceToken?: string;
+	titleToken?: string;
+	raw?: boolean;
+};
+
 //#endregion
 //#region public methods
 
 export const authenticate = async (
 	email: string,
 	password: string,
-	options: XBLExchangeTokensOptions = {}
+	options: AuthenticateOptions = {}
 ) => {
-	const liveResponse = await LiveAuthenticate({ email, password });
-	const userTokenResponse = await exchangeRpsTicketForUserToken(
-		liveResponse.access_token
+	const credentials = { email, password };
+	const liveAuthResponse = await LiveAuthenticate(credentials);
+	const { access_token: RpsTicket } = liveAuthResponse;
+
+	const userTokenResponse = await exchangeRpsTicketForUserToken(RpsTicket);
+	const XSTSResponse = await exchangeTokensForXSTSToken(
+		{
+			userTokens: [userTokenResponse.Token],
+			deviceToken: options.deviceToken,
+			titleToken: options.titleToken
+		},
+		{
+			XSTSRelyingParty: options.XSTSRelyingParty,
+			optionalDisplayClaims: options.optionalDisplayClaims,
+			sandboxId: options.sandboxId
+		}
 	);
 
-	const XSTSResponse = await exchangeTokenForXSTSToken(
-		userTokenResponse.Token,
-		options
-	);
+	if (options.raw !== true) {
+		return {
+			xuid: XSTSResponse.DisplayClaims.xui[0].xid || null,
+			user_hash: XSTSResponse.DisplayClaims.xui[0].uhs,
+			xsts_token: XSTSResponse.Token,
+			expires_on: XSTSResponse.NotAfter
+		};
+	}
 
 	return {
-		live: liveResponse,
-		xboxlive: XSTSResponse
+		'login.live.com': liveAuthResponse,
+		'user.auth.xboxlive.com': userTokenResponse,
+		'xsts.auth.xboxlive.com': XSTSResponse
 	};
 };
 
-export {
+export const live = {
+	getAuthorizeUrl,
+	authenticate: LiveAuthenticate,
+	refreshAccessToken
+};
+
+export const xbl = {
 	EXPERIMENTAL_createDummyWin32DeviceToken,
 	exchangeRpsTicketForUserToken,
 	exchangeTokensForXSTSToken,
