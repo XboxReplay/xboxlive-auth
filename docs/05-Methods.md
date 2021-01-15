@@ -8,7 +8,7 @@ List of all available methods exposed by the library.
 
 Authenticate the user.
 
--   See documentation
+-   See dedicated documentation
 
 ## Namespace: xbl
 
@@ -16,4 +16,4 @@ Authenticate the user.
 
 Create a dummy **Win32** `deviceToken` that can be used during the authentication process.
 
--   See documentation
+-   [See dedicated documentation](03-Experimental.md#method-experimental_createdummywin32devicetoken)
