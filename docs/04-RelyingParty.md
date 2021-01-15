@@ -18,7 +18,7 @@ console.info(authWithCustomRP);
 
 ### Optional Display Claims
 
-Some parties may support additional claims such as `mgt` (ModerGamertag), `umg` (UniqueModernGamertag) or `mgs` (ModerGamertagSuffix) which are not returned by default. If required, you can require them via the `optionalDisplayClaims` option.
+Some parties may support additional claims such as `mgt` (ModerGamertag), `umg` (UniqueModernGamertag) or `mgs` (ModerGamertagSuffix) which are not returned by default. If required, you can retrieve them via the `optionalDisplayClaims` option.
 
 ```javascript
 import { authenticate } from '@xboxreplay/xboxlive-auth';
