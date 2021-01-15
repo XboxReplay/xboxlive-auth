@@ -12,7 +12,7 @@ This library allows you to create your own **OAuth2.0** flow using a custom Azur
 
 ### Usage with "code" exchange
 
-First of all you must redirect your used to the `login.live.com` authentication page. This library exposes a method which will compute this URL for you.
+First of all you must redirect your user to the `login.live.com` authentication page. This library exposes a method which will compute this URL for you.
 
 ```javascript
 import { live } from '@xboxreplay/xboxlive-auth';
