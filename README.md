@@ -1,6 +1,6 @@
 # @xboxreplay/xboxlive-auth
 
-A light Xbox Live authentication module.
+A light but advanced Xbox Live authentication module with OAuth2.0 support.
 
 ### Installation
 
@@ -21,7 +21,7 @@ xboxliveAuth
 
 ### Documentation
 
-Please refer to the `docs` folder in the repository.
+Please refer to the [available documention](docs) in the [repository](https://github.com/XboxReplay/xboxlive-auth).
 
 ### Available examples
 
