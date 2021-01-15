@@ -17,12 +17,14 @@ First of all you must redirect your user to the `login.live.com` authentication 
 ```javascript
 import { live } from '@xboxreplay/xboxlive-auth';
 
-live.getAuthorizeUrl(
+const authorizeUrl = live.getAuthorizeUrl(
 	'YOUR_CLIENT_ID',
 	'XboxLive.signin XboxLive.offline_access',
 	'code',
 	'YOUR_REDIRECT_URI'
 );
+
+console.info(authorizeUrl);
 ```
 
 Once authenticated, the user will be redirect to the specified `redirectUri` which will include a `code` in its query parameters that you'll use to request an access token. Please refer to this documentation for further information: https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth-live-connect?view=bingads-13#request-accesstoken
