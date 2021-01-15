@@ -9,7 +9,7 @@ Please note that each service may have its own parties such as **Minecraft** `rp
 ```javascript
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
-const authWithCustomRP = await authenticate('live@domain.com', 'password', {
+const authWithCustomRP = await authenticate('name@domain.com', 'password', {
 	XSTSRelyingParty: 'http://xsts.gearsofwar.net/'
 });
 
@@ -24,7 +24,7 @@ Some parties may support additional claims such as `mgt` (ModerGamertag), `umg` 
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
 const authWithOptionalDisplayClaims = await authenticate(
-	'live@domain.com',
+	'name@domain.com',
 	'password',
 	{ optionalDisplayClaims: ['mgt', 'umg'] }
 );

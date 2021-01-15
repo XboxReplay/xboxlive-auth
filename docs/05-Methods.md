@@ -67,9 +67,16 @@ console.info(XSTSTokenResponse);
 
 ##### Arguments
 
-### Method: exchangeTokenForXSTSToken
+-   userToken {string}
+-   options {object=} - Exchange options
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
+    -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
+-   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
-Exchange returned token by the `exchangeRpsTicketForUserToken` method.
+### Method: exchangeTokensForXSTSToken
+
+Exchange returned token by the `exchangeRpsTicketForUserToken` method. This method also allows you to specify your own device token and title token.
 
 ```javascript
 import { xbl } from '@xboxreplay/xboxlive-auth';
@@ -83,16 +90,94 @@ const userTokenExchangeResponse = {
 	}
 };
 
+const deviceToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+const titleToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
 const userToken = userTokenExchangeResponse.Token;
-const XSTSTokenResponse = await xbl.exchangeTokenForXSTSToken(userToken);
+const XSTSTokenResponse = await xbl.exchangeTokensForXSTSToken({
+	userTokens: [userToken],
+	deviceToken,
+	titleToken
+});
 
 console.info(XSTSTokenResponse);
 ```
 
 ##### Arguments
 
+-   tokens {object}
+    -   userTokens {string[]}
+    -   deviceToken {string=}
+    -   titleToken {string=}
+-   options {object=} - Exchange options
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
+    -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
+-   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
+
 ### Method: EXPERIMENTAL_createDummyWin32DeviceToken
 
 Create a dummy **Win32** `deviceToken` that can be used during the authentication process.
 
 -   [See dedicated documentation](03-Experimental.md#method-experimental_createdummywin32devicetoken)
+
+## Namespace: live
+
+### Method: getAuthorizeUrl
+
+Returns login.live.com authorize URL.
+
+```javascript
+import { live } from '@xboxreplay/xboxlive-auth';
+
+const authorizeUrl = live.getAuthorizeUrl();
+
+console.info(authorizeUrl);
+```
+
+##### Arguments
+
+-   clientId {string=} - `000000004C12AE6F`
+-   scope {string=} - `service::user.auth.xboxlive.com::MBI_SSL`
+-   responseType {token|code=} - `token`
+-   redirectUri {string=} - `https://login.live.com/oauth20_desktop.srf`
+
+### Method: refreshAccessToken
+
+Refresh an expired token.
+
+```javascript
+import { live } from '@xboxreplay/xboxlive-auth';
+
+const authorizeUrl = live.getAuthorizeUrl();
+
+console.info(authorizeUrl);
+```
+
+##### Arguments
+
+-   refreshToken {string}
+-   clientId {string=} - `000000004C12AE6F`
+-   scope {string=} - `service::user.auth.xboxlive.com::MBI_SSL`
+-   clientSecret {string=} - `undefined`
+
+### Method: authenticate
+
+Authenticate with credentials.
+
+```javascript
+import { live } from '@xboxreplay/xboxlive-auth';
+
+const authResponse = await live.authenticate({
+	email: 'account@domain.com',
+	password: 'password'
+});
+
+console.info(authResponse);
+```
+
+##### Arguments
+
+-   credentials {object}
+    -   email {string}
+    -   password {string}

@@ -45,7 +45,7 @@ const getMatchForIndex = (entry: string, regex: RegExp, index: number = 0) => {
 export const getAuthorizeUrl = (
 	clientId: string = defaultClientId,
 	scope: string = defaultScope,
-	responseType: string = defaultResponseType,
+	responseType: 'token' | 'code' = defaultResponseType,
 	redirectUri: string = defaultRedirectUri
 ): string =>
 	`${config.urls.authorize}?${stringify({
@@ -61,7 +61,7 @@ export const getAuthorizeUrl = (
  * @param {string} refreshToken
  * @param {string=} clientId - `000000004C12AE6F`
  * @param {scope=} scope - `service::user.auth.xboxlive.com::MBI_SSL`
- * @param {string=} clientSecret
+ * @param {string=} clientSecret - `undefined`
  *
  * @example
  * 	refreshAccessToken('M.R3_B.xxxxxx');

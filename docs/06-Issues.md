@@ -14,7 +14,7 @@ import { xbl, authenticate } from '@xboxreplay/xboxlive-auth';
 const deviceTokenResponse = await xbl.EXPERIMENTAL_createDummyWin32DeviceToken();
 const { Token: deviceToken } = deviceTokenResponse;
 
-await authenticate('live@domain.com', 'password', { deviceToken })
+await authenticate('name@domain.com', 'password', { deviceToken })
 	.then(console.info)
 	.catch(console.error);
 
