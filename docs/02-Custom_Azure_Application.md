@@ -37,7 +37,7 @@ const rpsTicket = exchangeCodeResponse.access_token;
 const refreshToken = exchangeCodeResponse.refresh_token; // May be undefined
 
 const expiresOn = new Date(
-	Date.now() + exchangeCodeResponse.expires_in
+	Date.now() + exchangeCodeResponse.expires_in * 1000
 ).toISOString();
 
 const userTokenResponse = await xbl.exchangeRpsTicketForUserToken(
