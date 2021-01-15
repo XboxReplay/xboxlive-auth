@@ -39,6 +39,6 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 
 2FA is not supported by this module which may cause authentication issues. Please disable it for the used account or create a dummy one with Xbox LIVE capabalities. Of course, a Gold account is not required. Please note that Electron applications are not impacted by this issue.
 
-### Know issues
+### Known Issues
 
-Please refer to the [dedicated documention](docs/06-Issues.md).
+Please refer to the [dedicated documention](docs/06-Known_Issues.md).

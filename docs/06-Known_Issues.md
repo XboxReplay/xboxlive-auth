@@ -1,4 +1,4 @@
-# Issues
+# Known Issues
 
 ### I'm unable to connect even with valid credentials and no 2FA
 
