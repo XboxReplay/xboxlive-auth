@@ -149,9 +149,9 @@ Refresh an expired token.
 ```javascript
 import { live } from '@xboxreplay/xboxlive-auth';
 
-const authorizeUrl = live.getAuthorizeUrl();
+const freshTokens = await live.refreshAccessToken('M.R3_B.xxxxxx');
 
-console.info(authorizeUrl);
+console.info(freshTokens);
 ```
 
 ##### Arguments
