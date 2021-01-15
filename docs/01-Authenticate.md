@@ -1,5 +1,7 @@
 # Authenticate
 
+### Method: authenticate
+
 ```javascript
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
@@ -14,22 +16,24 @@ authenticate('live@domain.com', 'password')
 -   password {string} - Account password
 -   options {object=} - Additional options
     -   XSTSRelyingParty {string=} - `http://xboxlive.com/` - Targeted [RelyingParty](https://title.mgt.xboxlive.com/titles/default/endpoints?type=1)
-    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://title.mgt.xboxlive.com/titles/default/endpoints?type=1)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox
+    -   deviceToken {string=} - Optional device token
+    -   titleToken {string=} - Optional title token
     -   raw {boolean} - `false` - If set to `true` the returned response will include each exchange based on called domains
 
-##### Response
+##### Sample Response
 
 ```javascript
 {
-    "xuid": "2584878536129841", // May be null, based on the specified "RelyingParty"
+    "xuid": "2584878536129841", // May be null based on the specified "RelyingParty"
     "user_hash": "3218841136841218711",
     "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
     "expires_on": "2021-04-13T05:43:32.6275675Z"
 }
 ```
 
-##### Response (Raw)
+##### Sample Response (Raw)
 
 ```javascript
 {
