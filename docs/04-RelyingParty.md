@@ -15,3 +15,22 @@ const authWithCustomRP = await authenticate('live@domain.com', 'password', {
 
 console.info(authWithCustomRP);
 ```
+
+### Optional Display Claims
+
+Some parties may support additional claims such as `mgt` (ModerGamertag), `umg` (UniqueModernGamertag) or `mgs` (ModerGamertagSuffix) which are not returned by default. If required, you can require them via the `optionalDisplayClaims` option.
+
+```javascript
+import { authenticate } from '@xboxreplay/xboxlive-auth';
+
+const authWithOptionalDisplayClaims = await authenticate(
+	'live@domain.com',
+	'password',
+	{
+		XSTSRelyingParty: 'http://xboxlive.com',
+		optionalDisplayClaims: ['mgt', 'umg']
+	}
+);
+
+console.info(authWithOptionalDisplayClaims);
+```

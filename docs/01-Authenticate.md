@@ -15,8 +15,8 @@ authenticate('live@domain.com', 'password')
 -   email {string} - Account email
 -   password {string} - Account password
 -   options {object=} - Additional options
-    -   XSTSRelyingParty {string=} - `http://xboxlive.com/` - Targeted [RelyingParty](https://title.mgt.xboxlive.com/titles/default/endpoints?type=1)
-    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://title.mgt.xboxlive.com/titles/default/endpoints?type=1)
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox
     -   deviceToken {string=} - Optional device token
     -   titleToken {string=} - Optional title token
