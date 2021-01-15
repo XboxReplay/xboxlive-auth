@@ -23,11 +23,6 @@ xboxliveAuth
 
 Please refer to the [available documention](docs) in the [repository](https://github.com/XboxReplay/xboxlive-auth).
 
-### Available examples
-
--   Electron app
-    -   Use `@xboxreplay/xboxlive-auth` module inside an Electron app.
-
 ### How to interact with the Xbox Live API?
 
 The best way to interact with the API is to use our [XboxLive-API](https://github.com/XboxReplay/xboxlive-api) module. That said, a cURL example is available below.
@@ -42,4 +37,4 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 
 ### What about 2FA (Two-factor authentication)?
 
-2FA is not supported by this module which may cause authentication issues. Please disable it for the used account or create a dummy one with Xbox LIVE capabalities. Of course, a Gold account is not required. Please note that Electron apps are not impacted by this issue.
+2FA is not supported by this module which may cause authentication issues. Please disable it for the used account or create a dummy one with Xbox LIVE capabalities. Of course, a Gold account is not required. Please note that Electron applications are not impacted by this issue.
