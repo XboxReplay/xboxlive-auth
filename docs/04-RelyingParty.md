@@ -9,9 +9,9 @@ Please note that each service may have its own parties such as **Minecraft** `rp
 ```javascript
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
-authenticate('live@domain.com', 'password', {
+const authWithCustomRP = await authenticate('live@domain.com', 'password', {
 	XSTSRelyingParty: 'http://xsts.gearsofwar.net/'
-})
-	.then(console.info)
-	.catch(console.error);
+});
+
+console.info(authWithCustomRP);
 ```
