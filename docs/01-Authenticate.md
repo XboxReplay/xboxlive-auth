@@ -12,9 +12,9 @@ authenticate('name@domain.com', 'password')
 
 ##### Arguments
 
--   email {string} - Account email
--   password {string} - Account password
--   options {object=} - Additional options
+-   email {string}
+-   password {string}
+-   options {object=}
     -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
     -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID

@@ -68,7 +68,7 @@ console.info(XSTSTokenResponse);
 ##### Arguments
 
 -   userToken {string}
--   options {object=} - Exchange options
+-   options {object=}
     -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
     -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
@@ -109,7 +109,7 @@ console.info(XSTSTokenResponse);
     -   userTokens {string[]}
     -   deviceToken {string=}
     -   titleToken {string=}
--   options {object=} - Exchange options
+-   options {object=}
     -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](04-RelyingParty.md#relyingparty)
     -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
