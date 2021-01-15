@@ -29,6 +29,15 @@ authenticate('live@domain.com', 'password')
     "xuid": "2584878536129841", // May be null based on the specified "RelyingParty"
     "user_hash": "3218841136841218711",
     "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "claims": {
+        "gtg": "Zeny IC",
+        "xid": "2584878536129841",
+        "uhs": "3218841136841218711"
+        "agg": "Adult",
+        "usr" "234",
+        "utr": "190",
+        "prv": "185 186 187 188 191 192 ..."
+    },
     "expires_on": "2021-04-13T05:43:32.6275675Z"
 }
 ```
@@ -59,7 +68,7 @@ authenticate('live@domain.com', 'password')
         "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
         "DisplayClaims": {
             "xui": [{
-                "gtg": "Major Nelson",
+                "gtg": "Zeny IC",
                 "xid": "2584878536129841",
                 "uhs": "3218841136841218711"
                 "agg": "Adult",

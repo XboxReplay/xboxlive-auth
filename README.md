@@ -27,7 +27,7 @@ Please refer to the [available documention](docs) in the [repository](https://gi
 
 The best way to interact with the API is to use our [XboxLive-API](https://github.com/XboxReplay/xboxlive-api) module. That said, a cURL example is available below.
 
-**Sample call:**
+##### Example
 
 ```shell
 $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?settings=Gamerscore' \
