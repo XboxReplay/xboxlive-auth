@@ -1,7 +1,13 @@
+
+.env*
 .gitignore
 .editorconfig
 .prettierrc
+.npmignore
+.npmrc
+CHANGELOG.md
 tsconfig.json
 node_modules/
+examples/
 __tests__/
 src/
