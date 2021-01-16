@@ -5,7 +5,7 @@ A light but advanced Xbox Live authentication module with [OAuth2.0](docs/02-Cus
 ## Installation
 
 ```shell
-$ npm install @xboxreplay/xboxlive-auth
+$ npm install @xboxreplay/xboxlive-auth@4.0.0-beta.0
 ```
 
 ## Usage Example
