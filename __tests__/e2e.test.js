@@ -1,12 +1,13 @@
 const { authenticate, xbl, live } = require('../src');
 
 (async () => {
-	const { Token } = await xbl.EXPERIMENTAL_createDummyWin32DeviceToken();
+	const dummyDeviceToken = await xbl.EXPERIMENTAL_createDummyWin32DeviceToken();
+	console.log(dummyDeviceToken);
 	authenticate(
 		process.env.XBL_TEST_EMAIL || '',
 		process.env.XBL_TEST_PASSWORD || '',
 		{
-			deviceToken: Token,
+			deviceToken: dummyDeviceToken.Token,
 			optionalDisplayClaims: ['mgt'],
 			raw: false
 		}

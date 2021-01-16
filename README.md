@@ -14,14 +14,40 @@ $ npm install @xboxreplay/xboxlive-auth
 import xboxliveAuth from '@xboxreplay/xboxlive-auth';
 
 xboxliveAuth
-	.authenticate('xbl-account@your-domain.com', '*********')
+	.authenticate('name@domain.com', '*********')
 	.then(console.info)
 	.catch(console.error);
 ```
 
+##### Sample Response
+
+```javascript
+{
+    "xuid": "2584878536129841", // May be null based on the specified "RelyingParty"
+    "user_hash": "3218841136841218711",
+    "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "display_claims": {
+        "gtg": "Zeny IC",
+        "xid": "2584878536129841",
+        "uhs": "3218841136841218711"
+        "agg": "Adult",
+        "usr" "234",
+        "utr": "190",
+        "prv": "185 186 187 188 191 192 ..."
+    },
+    "expires_on": "2021-04-13T05:43:32.6275675Z"
+}
+```
+
 ### Documentation
 
-Please refer to the [available documention](docs) in the repository.
+-   [Basic authentication](docs/01-Authenticate.md)
+-   [Use a custom Azure Application (OAuth2.0)](docs/02-Custom_Azure_Application.md)
+-   [Experimental methods, such as "deviceToken" generation](docs/03-Experimental.md)
+-   [What's a RelyingParty and how to use it](docs/04-RelyingParty.md)
+-   [Available methods in this library](docs/05-Methods.md)
+-   [Known issues and possible solutions](docs/06-Known_Issues.md)
+-   [How to deal with unauthorized "AgeGroup" authentication](docs/07-Detect_Unauthorized_AgeGroup.md)
 
 ### Available Examples
 
