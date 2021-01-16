@@ -83,4 +83,4 @@ authenticate('name@domain.com', 'password')
 
 ## Detect and authenticate "Child" and "Teen" accounts
 
-Please refer to the [dedicated documentation](docs/07-Detect_Unauthorized_AgeGroup.md).
+Please refer to the [dedicated documentation](07-Detect_Unauthorized_AgeGroup.md).
