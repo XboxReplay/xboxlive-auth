@@ -4,7 +4,7 @@
 
 This example shows you one of many ways to integrate the `@xboxreplay/xboxlive-auth` library inside an Electron application.
 
-### Run
+## Run
 
 ```shell
 $ npm install
