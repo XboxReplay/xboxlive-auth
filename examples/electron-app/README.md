@@ -8,5 +8,6 @@ This example shows you one of many ways to integrate the `@xboxreplay/xboxlive-a
 
 ```shell
 $ npm install
+$ npm run build
 $ npm start
 ```
