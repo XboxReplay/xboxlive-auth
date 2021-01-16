@@ -1,6 +1,6 @@
 # @xboxreplay/xboxlive-auth
 
-A light but advanced Xbox Live authentication module with OAuth2.0 support.
+A light but advanced Xbox Live authentication module with OAuth2.0 and Electron support.
 
 ### Installation
 
