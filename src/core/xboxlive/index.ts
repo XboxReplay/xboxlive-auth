@@ -1,6 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import config, { defaultXSTSRelyingParty } from './config';
 import { getBaseHeaders } from '../../utils';
+import XRError from '../../classes/XRError';
+import commonConfig from '../../config';
 
 import {
 	XBLDummyDeviceTokenResponse,
@@ -31,7 +33,7 @@ const XBLAdditionalHeaders = {
  * @example
  *	exchangeRpsTicketForUserToken('EwAQxxxxxx');
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<XBLExchangeRpsTicketResponse>} Exchange response
  */
 export const exchangeRpsTicketForUserToken = async (
@@ -61,7 +63,13 @@ export const exchangeRpsTicketForUserToken = async (
 				RpsTicket: rpsTicket
 			}
 		}
-	}).then(res => res.data);
+	})
+		.then(res => res.data)
+		.catch(_ => {
+			throw XRError.badRequest(
+				'Could not exchange specified "RpsTicket"'
+			);
+		});
 
 	return response;
 };
@@ -88,7 +96,7 @@ export const exchangeRpsTicketForUserToken = async (
  *		{ Signature: 'AAAAQxxxx' }
  *	);
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
  */
 export const exchangeTokensForXSTSToken = async (
@@ -114,7 +122,14 @@ export const exchangeTokensForXSTSToken = async (
 				SandboxId: options.sandboxId || 'RETAIL'
 			}
 		}
-	}).then(res => res.data);
+	})
+		.then(res => res.data)
+		.catch((err: AxiosError) => {
+			throw new XRError(
+				'Could not exchange specified tokens, please double check used parameters or make sure to use the "EXPERIMENTAL_createDummyWin32DeviceToken" method to handle "Child" and "Teen" accounts',
+				{ statusCode: err.response?.status }
+			);
+		});
 
 	return response;
 };
@@ -137,7 +152,7 @@ export const exchangeTokensForXSTSToken = async (
  *		{ Signature: 'AAAAQxxxx' }
  *	);
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
  */
 export const exchangeTokenForXSTSToken = (
@@ -154,7 +169,7 @@ export const exchangeTokenForXSTSToken = (
 /**
  * Create a dummy Win32 device token to be used with `exchangeTokensForXSTSToken` method
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<XBLDummyDeviceTokenResponse>} Device authenticate response
  */
 export const EXPERIMENTAL_createDummyWin32DeviceToken = async (): Promise<XBLDummyDeviceTokenResponse> => {
@@ -191,7 +206,13 @@ export const EXPERIMENTAL_createDummyWin32DeviceToken = async (): Promise<XBLDum
 				ProofKey: serviceProofKey
 			}
 		}
-	}).then(res => res.data);
+	})
+		.then(res => res.data)
+		.catch(_ => {
+			throw XRError.badRequest(
+				`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`
+			);
+		});
 
 	return response;
 };

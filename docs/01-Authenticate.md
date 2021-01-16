@@ -29,7 +29,7 @@ authenticate('name@domain.com', 'password')
     "xuid": "2584878536129841", // May be null based on the specified "RelyingParty"
     "user_hash": "3218841136841218711",
     "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "claims": {
+    "display_claims": {
         "gtg": "Zeny IC",
         "xid": "2584878536129841",
         "uhs": "3218841136841218711"
@@ -81,6 +81,6 @@ authenticate('name@domain.com', 'password')
 }
 ```
 
-## Authenticate "Child" and "Teen" accounts
+## Detect and authenticate "Child" and "Teen" accounts
 
-Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/4.0.0/docs/06-Known_Issues.md#still-not-working).
+Please refer to the [dedicated documentation](docs/07-Detect_Unauthorized_AgeGroup.md).

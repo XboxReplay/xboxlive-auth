@@ -126,7 +126,7 @@ export const authenticate = async (
 			xuid: XSTSResponse.DisplayClaims.xui[0].xid || null,
 			user_hash: XSTSResponse.DisplayClaims.xui[0].uhs,
 			xsts_token: XSTSResponse.Token,
-			claims: XSTSResponse.DisplayClaims.xui[0],
+			display_claims: XSTSResponse.DisplayClaims.xui[0],
 			expires_on: XSTSResponse.NotAfter
 		};
 	}

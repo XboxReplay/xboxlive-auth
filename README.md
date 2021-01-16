@@ -1,6 +1,6 @@
 # @xboxreplay/xboxlive-auth
 
-A light but advanced Xbox Live authentication module with OAuth2.0 and Electron support.
+A light but advanced Xbox Live authentication module with [OAuth2.0](docs/02-Custom_Azure_Application.md) and [Electron](examples/electron-app) support.
 
 ### Installation
 
@@ -21,7 +21,7 @@ xboxliveAuth
 
 ### Documentation
 
-Please refer to the [available documention](docs) in the [repository](https://github.com/XboxReplay/xboxlive-auth).
+Please refer to the [available documention](docs) in the repository.
 
 ### Available Examples
 
@@ -29,7 +29,7 @@ Please refer to the [available documention](docs) in the [repository](https://gi
 
 ### How to interact with the Xbox Live API?
 
-The best way to interact with the API is to use our [XboxLive-API](https://github.com/XboxReplay/xboxlive-api) module. That said, a cURL example is available below.
+The best way to interact with the API is to use our [@xboxreplay/xboxlive-auth](https://github.com/XboxReplay/xboxlive-api) module. That said, a cURL example is available below.
 
 ##### Example
 

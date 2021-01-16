@@ -1,6 +1,8 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { stringify } from 'querystring';
 import { getBaseHeaders } from '../../utils';
+import XRError from '../../classes/XRError';
+import commonConfig from '../../config';
 
 import {
 	LiveAuthResponse,
@@ -69,7 +71,7 @@ export const getAuthorizeUrl = (
  * @example
  * 	refreshAccessToken('M.R3_B.xxxxxx', 'xxxxxx', 'XboxLive.signin', 'xxxxxx');
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<LiveAuthenticateResponse>} Refresh response
  */
 export const refreshAccessToken = async (
@@ -97,7 +99,13 @@ export const refreshAccessToken = async (
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}),
 		data: stringify(payload)
-	}).then(res => res.data);
+	})
+		.then(res => res.data)
+		.catch((err: AxiosError) => {
+			throw new XRError(err.message, {
+				statusCode: err.response?.status
+			});
+		});
 
 	return response;
 };
@@ -105,7 +113,7 @@ export const refreshAccessToken = async (
 /**
  * Retrieve required cookies and parameters before continue
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<LivePreAuthResponse>} Required cookies and parameters
  */
 export const preAuth = async (): Promise<LivePreAuthResponse> => {
@@ -113,21 +121,33 @@ export const preAuth = async (): Promise<LivePreAuthResponse> => {
 		url: getAuthorizeUrl(),
 		method: 'GET',
 		headers: getBaseHeaders()
-	}).then(res => {
-		const body = (res.data || '') as string;
-		const cookie: string = (res.headers['set-cookie'] || [])
-			.map((c: string) => c.split(';')[0])
-			.join('; ');
+	})
+		.then(res => {
+			const body = (res.data || '') as string;
+			const cookie: string = (res.headers['set-cookie'] || [])
+				.map((c: string) => c.split(';')[0])
+				.join('; ');
 
-		const matches: Partial<LivePreAuthMatchedParameters> = {
-			PPFT: getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
-			urlPost: getMatchForIndex(body, /urlPost:'(.+?(?=\'))/, 1)
-		};
+			const matches: Partial<LivePreAuthMatchedParameters> = {
+				PPFT: getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
+				urlPost: getMatchForIndex(body, /urlPost:'(.+?(?=\'))/, 1)
+			};
 
-		if (matches.PPFT !== void 0 && matches.urlPost !== void 0) {
-			return { cookie, matches: matches as LivePreAuthMatchedParameters };
-		} else throw new Error('Something went wrong...');
-	});
+			if (matches.PPFT !== void 0 && matches.urlPost !== void 0) {
+				return {
+					cookie,
+					matches: matches as LivePreAuthMatchedParameters
+				};
+			}
+
+			throw XRError.internal(
+				`Could not match required "preAuth" parameters, please fill an issue on ${commonConfig.github.createIssue}`
+			);
+		})
+		.catch(err => {
+			if (err.__XboxReplay__ === true) throw err;
+			throw XRError.internal(err.message);
+		});
 
 	return response;
 };
@@ -137,7 +157,7 @@ export const preAuth = async (): Promise<LivePreAuthResponse> => {
  *
  * @param {object} credentials
  *
- * @throws {AxiosError}
+ * @throws {XRError}
  * @returns {Promise<LiveAuthResponse>} Authenticate response
  */
 export const authenticate = async (
@@ -159,23 +179,30 @@ export const authenticate = async (
 		}),
 		maxRedirects: 0,
 		validateStatus: status => status === 302 || status === 200
-	}).then(res => {
-		if (res.status === 200) {
-			throw new Error('Invalid credentials or 2FA enabled');
-		}
+	})
+		.then(res => {
+			if (res.status === 200) {
+				throw XRError.unauthorized(
+					`Invalid credentials or 2FA enabled`
+				);
+			}
 
-		const { location = '' } = res.headers || {};
-		const hash = location.split('#')[1];
-		const output: Record<string, any> = {};
+			const { location = '' } = res.headers || {};
+			const hash = location.split('#')[1];
+			const output: Record<string, any> = {};
 
-		for (const part of new URLSearchParams(hash)) {
-			if (part[0] === 'expires_in') {
-				output[part[0]] = Number(part[1]);
-			} else output[part[0]] = part[1];
-		}
+			for (const part of new URLSearchParams(hash)) {
+				if (part[0] === 'expires_in') {
+					output[part[0]] = Number(part[1]);
+				} else output[part[0]] = part[1];
+			}
 
-		return output as LiveAuthResponse;
-	});
+			return output as LiveAuthResponse;
+		})
+		.catch(err => {
+			if (err.__XboxReplay__ === true) throw err;
+			throw XRError.internal(err.message);
+		});
 
 	return response;
 };
