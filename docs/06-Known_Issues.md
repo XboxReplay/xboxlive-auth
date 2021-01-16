@@ -2,7 +2,7 @@
 
 ### I'm unable to connect even with valid credentials and no 2FA
 
-Take a look at https://account.live.com/activity or try to sign in to https://account.xbox.com/Profile from your browser. Recent activities (from unknown location as a production server) may be blocked.
+Take a look at https://account.live.com/activity or try to sign in to https://account.xbox.com/Profile from your browser. Recent activities (from unknown location such a production server) may be blocked.
 
 ### Still not working?
 
