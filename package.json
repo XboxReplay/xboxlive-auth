@@ -21,7 +21,7 @@
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
-		"build": "npm run clean && ./node_modules/.bin/tsc && rm -rf ./dist/__tests__",
+		"build": "npm run clean && ./node_modules/.bin/tsc",
 		"clean": "rm -rf ./dist",
 		"prepublishOnly": "npm run test && npm run build",
 		"test": "ts-node ./__tests__/e2e.test.js"

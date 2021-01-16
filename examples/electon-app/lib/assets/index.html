@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 	<head>
 		<meta charset="UTF-8" />
-		<title>@xboxreplay/xboxlive-auth</title>
+		<title>Electron Example - @xboxreplay/xboxlive-auth</title>
 		<meta
 			http-equiv="Content-Security-Policy"
 			content="script-src 'self' 'unsafe-inline';"
@@ -11,12 +11,23 @@
 	</head>
 	<body>
 		<div id="container">
-			<div>
-				<button type="button" id="signin">
-					Sign in with Xbox LIVE
-				</button>
+			<div class="head">
+				<h1>Electron Example</h1>
 			</div>
-			<pre id="response"></pre>
+			<div>
+				<button type="button" id="signin">...</button>
+				<div id="response"></div>
+			</div>
+			<div class="powered">
+				Powered by
+				<a
+					href="https://github.com/XboxReplay/xboxlive-auth"
+					title="@xboxreplay/xboxlive-auth"
+					rel="noopener"
+					target="_blank"
+					>@xboxreplay/xboxlive-auth</a
+				>
+			</div>
 		</div>
 	</body>
 	<script src="./client.js"></script>

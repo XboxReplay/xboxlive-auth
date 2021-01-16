@@ -1,47 +1,41 @@
-/**
- * PLEASE NOTE THAT THIS CODE IS NOT PRODUCTION READY
- */
-
 (() => {
-	document.getElementById('signin').addEventListener('click', () => {
-		openAuthorizeUrl();
+	const responseContainer = document.getElementById('response');
+	const signInButton = document.getElementById('signin');
+	const signInText = 'Sign in with Xbox Live';
+	const signInLoadingText = 'Signin in, please wait';
+
+	signInButton.innerText = signInText;
+	signInButton.addEventListener('click', () => {
+		window.XRBridge.send({ action: 'getAuthorizeUrl' });
 	});
 
-	const openAuthorizeUrl = () => {
-		const remote = require('electron').remote;
-		const BrowserWindow = remote.BrowserWindow;
-		const win = new BrowserWindow({
-			height: 600,
-			width: 800
-		});
+	window.XRBridge.receive('response', data => {
+		const { action, details } = data;
 
-		// XboxLiveAuth.getAuthorizeUrl();
+		if (action === 'getAuthorizeUrl') {
+			signInButton.setAttribute('disabled', 'disabled');
+			signInButton.innerText = signInLoadingText;
+			window.XRBridge.send({
+				action: 'exchangeToken',
+				details: { rpsTicket: details.access_token }
+			});
 
-		win.loadURL(
-			'https://login.live.com/oauth20_authorize.srf?client_id=0000000048093EE3&redirect_uri=https://login.live.com/oauth20_desktop.srf&response_type=token&display=touch&scope=service::user.auth.xboxlive.com::MBI_SSL'
-		);
+			return;
+		}
 
-		win.webContents.on('did-navigate', function (_, url) {
-			const h = new URL(url).hash || null;
+		if (action === 'exchangeToken') {
+			signInButton.removeAttribute('disabled');
+			signInButton.innerText = signInText;
 
-			if (h === null) {
-				return;
-			}
-
-			const parts = new URLSearchParams(h.slice(1));
-			const obj = {};
-
-			for (const p of parts) {
-				obj[p[0]] = p[1];
-			}
-
-			document.getElementById('response').innerText = JSON.stringify(
-				obj,
-				null,
-				4
-			);
-
-			win.close();
-		});
-	};
+			if (details.success === true) {
+				signInButton.style.display = 'none';
+				responseContainer.innerHTML = `
+					<p>
+						Welcome, <strong>${details.response.DisplayClaims.xui[0].gtg}<strong>!
+					</p>
+				`;
+			} else
+				responseContainer.innerHTML = `<p>Something went wrong...</p>`;
+		}
+	});
 })();

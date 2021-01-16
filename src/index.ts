@@ -151,4 +151,6 @@ export const xbl = {
 	exchangeTokenForXSTSToken
 };
 
+export default { xbl, live, authenticate };
+
 //#endregion

@@ -8,7 +8,6 @@
 		"alwaysStrict": true,
 		"removeComments": true,
 		"noImplicitAny": true,
-		"resolveJsonModule": true,
 		"noUnusedLocals": true,
 		"noImplicitReturns": true,
 		"noUnusedParameters": true,

@@ -23,6 +23,10 @@ xboxliveAuth
 
 Please refer to the [available documention](docs) in the [repository](https://github.com/XboxReplay/xboxlive-auth).
 
+### Available Examples
+
+-   [Electron App](examples/electron-app)
+
 ### How to interact with the Xbox Live API?
 
 The best way to interact with the API is to use our [XboxLive-API](https://github.com/XboxReplay/xboxlive-api) module. That said, a cURL example is available below.
@@ -42,3 +46,7 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 ### Known Issues
 
 Please refer to the [dedicated documention](docs/06-Known_Issues.md).
+
+### Licence
+
+MIT

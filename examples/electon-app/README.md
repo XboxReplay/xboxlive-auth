@@ -1,9 +1,12 @@
-# @xboxreplay/xboxlive-auth - Electron app
+# Electron App
 
-Please note that this example is not production ready and acts more as a POC.
+![@xboxreplay/xboxlive-auth](assets/preview.png 'Electron Example')
 
-### Start
+This example shows you one of many ways to integrate the `@xboxreplay/xboxlive-auth` library inside an Electron application.
+
+### Run
 
 ```shell
-$ npm install && npm start
+$ npm install
+$ npm start
 ```
