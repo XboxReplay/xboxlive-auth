@@ -1,6 +1,6 @@
 # Detect Unauthorized "AgeGroup"
 
-As specified in [known issues](06-Known_Issues.md), "Child" and "Teen" accounts can not authenticate without a valid "deviceToken". As the exposed method is [experimental](03-Experimental.md#method-experimental_createdummywin32devicetoken), you may check their `agg` (AgeGroup) before calling the default relying party (http://xboxlive.com/) using the `accounts` one (http://accounts.xboxlive.com).
+As specified in [known issues](06-Known_Issues.md), "Child" and "Teen" accounts can not authenticate without a valid "deviceToken". As the exposed method is [experimental](03-Experimental.md#method-experimental_createdummywin32devicetoken), you may check their `agg` (AgeGroup) before calling the default relying party (`http://xboxlive.com/`) using the `accounts` one (`http://accounts.xboxlive.com`).
 
 ### Example
 
