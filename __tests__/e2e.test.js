@@ -2,14 +2,26 @@ require('dotenv').config({
 	path: require('path').join(__dirname, '..', '.env.test')
 });
 
-const { authenticate, xbl, live } = require('../src');
+const {
+	xbl,
+	authenticate,
+	authenticateWithUserCredentials,
+	authenticateWithUserRefreshToken
+} = require('../src');
 
 const credentials = {
 	email: process.env.XBL_TEST_EMAIL,
 	password: process.env.XBL_TEST_PASSWORD
 };
 
-if (credentials.email === void 0 || credentials.password === void 0) {
+const liveRefreshToken = process.env.LIVE_REFRESH_TOKEN;
+
+const hasMissingEnv =
+	credentials.email === void 0 ||
+	credentials.password === void 0 ||
+	liveRefreshToken === void 0;
+
+if (hasMissingEnv === true) {
 	throw new Error('Could not load credentials from .env.test file');
 }
 
@@ -19,7 +31,13 @@ const TEST_SUCCESS_createDummyDeviceToken = () =>
 	xbl.EXPERIMENTAL_createDummyWin32DeviceToken();
 
 const TEST_SUCCESS_authenticateBasic = () =>
-	authenticate(credentials.email, credentials.password);
+	Promise.all([
+		authenticate(credentials.email, credentials.password),
+		authenticateWithUserCredentials(credentials.email, credentials.password)
+	]);
+
+const TEST_SUCCESS_authenticateBasicWithRefreshToken = () =>
+	authenticateWithUserRefreshToken(liveRefreshToken);
 
 const TEST_SUCCESS_authenticateWithDummyDeviceToken = async () =>
 	authenticate(credentials.email, credentials.password, {
@@ -65,6 +83,7 @@ const runSuccessTests = () =>
 	Promise.all([
 		TEST_SUCCESS_createDummyDeviceToken(),
 		TEST_SUCCESS_authenticateBasic(),
+		TEST_SUCCESS_authenticateBasicWithRefreshToken(),
 		TEST_SUCCESS_authenticateWithDummyDeviceToken(),
 		TEST_SUCCESS_authenticateWithOptionalClaims(),
 		TEST_SUCCESS_authenticateWithCustomXSTSRelyingParty()

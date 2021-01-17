@@ -1,6 +1,6 @@
 # @xboxreplay/xboxlive-auth
 
-A light but advanced Xbox Live authentication module with [OAuth2.0](docs/02-Custom_Azure_Application.md) and [Electron](examples/electron-app) support.
+A light but advanced Xbox Live authentication module with [OAuth2.0](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/02-Custom_Azure_Application.md) and [Electron](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/examples/electron-app) support.
 
 ## Installation
 
@@ -41,17 +41,17 @@ xboxliveAuth
 
 ## Documentation
 
--   [Basic authentication](docs/01-Authenticate.md)
--   [Use a custom Azure Application (OAuth2.0)](docs/02-Custom_Azure_Application.md)
--   [Experimental methods, such as "deviceToken" generation](docs/03-Experimental.md)
--   [What's a RelyingParty and how to use it](docs/04-RelyingParty.md)
--   [Available methods in this library](docs/05-Methods.md)
--   [Known issues and possible workarounds](docs/06-Known_Issues.md)
--   [How to deal with unauthorized "AgeGroup" authentication](docs/07-Detect_Unauthorized_AgeGroup.md)
+-   [Basic authentication](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/01-Authenticate.md)
+-   [Use a custom Azure Application (OAuth2.0)](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/02-Custom_Azure_Application.md)
+-   [Experimental methods, such as "deviceToken" generation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/03-Experimental.md)
+-   [What's a RelyingParty and how to use it](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md)
+-   [Available methods in this library](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/05-Methods.md)
+-   [Known issues and possible workarounds](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/06-Known_Issues.md)
+-   [How to deal with unauthorized "AgeGroup" authentication](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/07-Detect_Unauthorized_AgeGroup.md)
 
 ## Available Examples
 
--   [Electron App](examples/electron-app)
+-   [Electron App](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/examples/electron-app)
 
 ## How to interact with the Xbox Live API?
 
@@ -67,11 +67,11 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 
 ## What about 2FA (Two-factor authentication)?
 
-2FA is not supported by this module which may cause authentication issues. Please disable it for the used account or create a dummy one with Xbox LIVE capabalities. Of course, a Gold account is not required. Please note that Electron applications are not impacted by this issue.
+Exposed `authenticate` and `authenticateWithUserCredentials` methods can not deal with 2FA but a workaround is available with the `authenticateWithUserRefreshToken` one. Please take a look at ["Authenticate" documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/01-Authenticate.md).
 
 ## Known Issues
 
-Please refer to the [dedicated documention](docs/06-Known_Issues.md).
+Please refer to the [dedicated documention](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/06-Known_Issues.md).
 
 ## Licence
 

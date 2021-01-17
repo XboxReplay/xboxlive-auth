@@ -95,19 +95,53 @@ export type AuthenticateOptions = XBLExchangeTokensOptions & {
 	raw?: boolean;
 };
 
+export type AuthenticateRefreshOptions = {
+	clientId?: string;
+	clientSecret?: string;
+	scope?: string;
+	preamble?: 't' | 'd';
+};
+
+export type CredentialsAuthenticateInitialResponse = {
+	xuid: string | null;
+	user_hash: string;
+	xsts_token: string;
+	display_claims: Record<string, string>;
+	expires_on: string;
+};
+
+export type CredentialsAuthenticateRawResponse = {
+	'login.live.com': LiveAuthResponse;
+	'user.auth.xboxlive.com': XBLExchangeRpsTicketResponse;
+	'xsts.auth.xboxlive.com': XBLExchangeTokensResponse;
+};
+
+export type CredentialsAuthenticateResponse =
+	| CredentialsAuthenticateInitialResponse
+	| CredentialsAuthenticateRawResponse;
+
 //#endregion
-//#region public methods
+//#region private methods
 
-export const authenticate = async (
-	email: string,
-	password: string,
+/**
+ * Called after the used authenticate method
+ *
+ * @param {LiveAuthResponse} liveAuthResponse
+ * @param {string} preamble - `t`
+ * @param {AuthenticateOptions=} options `{}`
+ *
+ * @returns {Promise<CredentialsAuthenticateResponse>} Authenticate response
+ */
+const postLiveAuthenticate = async (
+	liveAuthResponse: LiveAuthResponse,
+	preamble: 'd' | 't' = 't',
 	options: AuthenticateOptions = {}
-) => {
-	const credentials = { email, password };
-	const liveAuthResponse = await LiveAuthenticate(credentials);
-	const { access_token: RpsTicket } = liveAuthResponse;
+): Promise<CredentialsAuthenticateResponse> => {
+	const userTokenResponse = await exchangeRpsTicketForUserToken(
+		liveAuthResponse.access_token,
+		preamble
+	);
 
-	const userTokenResponse = await exchangeRpsTicketForUserToken(RpsTicket);
 	const XSTSResponse = await exchangeTokensForXSTSToken(
 		{
 			userTokens: [userTokenResponse.Token],
@@ -138,6 +172,78 @@ export const authenticate = async (
 	};
 };
 
+//#endregion
+//#region public methods
+
+/**
+ * Authenticate with credentials
+ *
+ * @param {string} email
+ * @param {string} password
+ * @param {AuthenticateOptions=} options
+ *
+ * @returns {Promise<CredentialsAuthenticateResponse>} Authenticate response
+ */
+export const authenticateWithUserCredentials = async (
+	email: string,
+	password: string,
+	options: AuthenticateOptions = {}
+): Promise<CredentialsAuthenticateResponse> => {
+	const credentials: LiveCredentials = { email, password };
+	const liveAuthResponse = await LiveAuthenticate(credentials);
+	return postLiveAuthenticate(liveAuthResponse, 't', options);
+};
+
+/**
+ * Authenticate with refresh token
+ *
+ * Caution, this method is a closure which means that the specified "refreshToken" will be overridden by the returned one.
+ *
+ * @param {string} refreshToken
+ * @param {AuthenticateRefreshOptions|null=} refreshTokenOptions - `null`
+ * @param {AuthenticateOptions=} options - `{}`
+ *
+ * @returns {Promise<CredentialsAuthenticateResponse>} Authenticate response
+ */
+export const authenticateWithUserRefreshToken = (() => {
+	let __rt: string;
+
+	return async (
+		refreshToken: string,
+		refreshOptions: AuthenticateRefreshOptions | null = null,
+		options: AuthenticateOptions = {}
+	) => {
+		const liveAuthResponse = await live.refreshAccessToken(
+			__rt || refreshToken,
+			refreshOptions?.clientId,
+			refreshOptions?.scope,
+			refreshOptions?.clientSecret
+		);
+
+		__rt = liveAuthResponse.refresh_token || refreshToken;
+
+		return postLiveAuthenticate(
+			liveAuthResponse,
+			refreshOptions?.preamble,
+			options
+		);
+	};
+})();
+
+/**
+ * Main authentication method
+ *
+ * @param {string} email
+ * @param {string} password
+ * @param {AuthenticateOptions=} options
+ *
+ * @returns {Promise<CredentialsAuthenticateResponse>} Authenticate response
+ */
+export const authenticate = authenticateWithUserCredentials;
+
+//#endregion
+//#region public namespaces
+
 export const live = {
 	getAuthorizeUrl,
 	authenticate: LiveAuthenticate,
@@ -150,7 +256,5 @@ export const xbl = {
 	exchangeTokensForXSTSToken,
 	exchangeTokenForXSTSToken
 };
-
-export default { xbl, live, authenticate };
 
 //#endregion

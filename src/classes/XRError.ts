@@ -3,7 +3,7 @@
 type XRErrorDetails = {
 	statusCode: number;
 	reason: keyof typeof XRErrorReasons;
-	additional: null | Record<string, string>;
+	additional: any;
 };
 
 enum XRErrorReasons {

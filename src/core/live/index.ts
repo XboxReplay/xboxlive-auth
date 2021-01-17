@@ -103,7 +103,8 @@ export const refreshAccessToken = async (
 		.then(res => res.data)
 		.catch((err: AxiosError) => {
 			throw new XRError(err.message, {
-				statusCode: err.response?.status
+				statusCode: err.response?.status,
+				additional: err.response?.data || null
 			});
 		});
 
