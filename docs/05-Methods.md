@@ -53,6 +53,19 @@ console.info(userTokenResponse);
 -   preable {d|t=} - `t` - Use `d` for custom Azure applications
 -   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
+##### Sample Response
+
+```javascript
+{
+	"IssueInstant": "2021-01-14T18:55:20.0082007Z",
+	"NotAfter": "2021-01-15T10:55:20.0082007Z",
+	"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+	"DisplayClaims": {
+		"xui": [{ "uhs": "3218841136841218711" }]
+	}
+}
+```
+
 ### Method: exchangeTokenForXSTSToken
 
 Exchange returned token by the `exchangeRpsTicketForUserToken` method.
@@ -83,6 +96,27 @@ console.info(XSTSTokenResponse);
     -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
 -   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
+
+##### Sample Response
+
+```javascript
+{
+	"IssueInstant": "2021-01-14T18:55:20.0082007Z",
+	"NotAfter": "2021-01-15T10:55:20.0082007Z",
+	"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+	"DisplayClaims": {
+		"xui": [{
+			"gtg": "Zeny IC",
+			"xid": "2584878536129841",
+			"uhs": "3218841136841218711"
+			"agg": "Adult",
+			"usr" "234",
+			"utr": "190",
+			"prv": "185 186 187 188 191 192 ..."
+		}]
+	}
+}
+```
 
 ### Method: exchangeTokensForXSTSToken
 
@@ -125,6 +159,27 @@ console.info(XSTSTokenResponse);
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
 -   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
+##### Sample Response
+
+```javascript
+{
+	"IssueInstant": "2021-01-14T18:55:20.0082007Z",
+	"NotAfter": "2021-01-15T10:55:20.0082007Z",
+	"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+	"DisplayClaims": {
+		"xui": [{
+			"gtg": "Zeny IC",
+			"xid": "2584878536129841",
+			"uhs": "3218841136841218711"
+			"agg": "Adult",
+			"usr" "234",
+			"utr": "190",
+			"prv": "185 186 187 188 191 192 ..."
+		}]
+	}
+}
+```
+
 ### Method: EXPERIMENTAL_createDummyWin32DeviceToken
 
 Create a dummy **Win32** `deviceToken` that can be used during the authentication process.
@@ -152,6 +207,12 @@ console.info(authorizeUrl);
 -   responseType {token|code=} - `token`
 -   redirectUri {string=} - `https://login.live.com/oauth20_desktop.srf`
 
+##### Sample Response
+
+```
+https://login.live.com/oauth20_authorize.srf?client_id=0000000048093EE3&redirect_uri=https://login.live.com/oauth20_desktop.srf&response_type=token&display=touch&scope=service::user.auth.xboxlive.com::MBI_SSL
+```
+
 ### Method: refreshAccessToken
 
 Refresh an expired token.
@@ -170,6 +231,19 @@ console.info(freshTokens);
 -   clientId {string=} - `000000004C12AE6F`
 -   scope {string=} - `service::user.auth.xboxlive.com::MBI_SSL`
 -   clientSecret {string=} - `undefined`
+
+##### Sample Response
+
+```javascript
+{
+	"token_type": "bearer",
+	"expires_in": 86400,
+	"access_token": "EwAIA+pvBAAUK...", // RpsTicket
+	"refresh_token": "M.R3_BAY...",
+	"scope": "service::user.auth.xboxlive.com::MBI_SSL",
+	"user_id": "123abc..."
+}
+```
 
 ### Method: authenticate
 
@@ -191,3 +265,16 @@ console.info(authResponse);
 -   credentials {object}
     -   email {string}
     -   password {string}
+
+##### Sample Response
+
+```javascript
+{
+	"token_type": "bearer",
+	"expires_in": 86400,
+	"access_token": "EwAIA+pvBAAUK...", // RpsTicket
+	"refresh_token": "M.R3_BAY...",
+	"scope": "service::user.auth.xboxlive.com::MBI_SSL",
+	"user_id": "123abc..."
+}
+```

@@ -5,16 +5,15 @@ A light but advanced Xbox Live authentication module with [OAuth2.0](https://git
 ## Installation
 
 ```shell
-$ npm install @xboxreplay/xboxlive-auth@4.0.0-beta.0
+$ npm install @xboxreplay/xboxlive-auth@4.0.0-beta.1
 ```
 
 ## Usage Example
 
 ```javascript
-import xboxliveAuth from '@xboxreplay/xboxlive-auth';
+import { authenticate } from '@xboxreplay/xboxlive-auth';
 
-xboxliveAuth
-	.authenticate('name@domain.com', '*********')
+authenticate('name@domain.com', '*********')
 	.then(console.info)
 	.catch(console.error);
 ```
