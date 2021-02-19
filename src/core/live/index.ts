@@ -9,7 +9,7 @@ import {
 	LiveCredentials,
 	LivePreAuthMatchedParameters,
 	LivePreAuthResponse,
-	PreAuthOptions
+	LivePreAuthOptions
 } from '../..';
 
 import config, {
@@ -53,7 +53,7 @@ export const getAuthorizeUrl = (
 ): string =>
 	`${config.urls.authorize}?${stringify({
 		client_id: clientId,
-		redirectUri: redirectUri,
+		redirect_uri: redirectUri,
 		response_type: responseType,
 		scope: scope
 	})}`;
@@ -119,7 +119,7 @@ export const refreshAccessToken = async (
  * @returns {Promise<LivePreAuthResponse>} Required cookies and parameters
  */
 export const preAuth = async (
-	options?: PreAuthOptions
+	options?: LivePreAuthOptions
 ): Promise<LivePreAuthResponse> => {
 	const response = await axios({
 		url: getAuthorizeUrl(

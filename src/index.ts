@@ -38,7 +38,7 @@ export type LivePreAuthResponse = {
 	matches: LivePreAuthMatchedParameters;
 };
 
-export type PreAuthOptions = {
+export type LivePreAuthOptions = {
 	clientId?: string;
 	scope?: string;
 	responseType?: 'token' | 'code';
