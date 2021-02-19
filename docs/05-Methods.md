@@ -33,14 +33,15 @@ console.log(preAuthResponse);
 
 ##### Arguments
 
--   clientId {string=} - `000000004C12AE6F`
--   scope {string=} - `service::user.auth.xboxlive.com::MBI_SSL`
--   responseType {token|code=} - `token`
--   redirectUri {string=} - `https://login.live.com/oauth20_desktop.srf`
+-   options {object=}
+    -   clientId {string=} - `000000004C12AE6F`
+    -   scope {string=} - `service::user.auth.xboxlive.com::MBI_SSL`
+    -   responseType {token|code=} - `token`
+    -   redirectUri {string=} - `https://login.live.com/oauth20_desktop.srf`
 
 ##### Sample Response
 
-````javascript
+```javascript
 {
 	"cookie": "MSA=...; X=...; ...",
 	"matches": {
@@ -48,6 +49,7 @@ console.log(preAuthResponse);
 		"urlPost": "https://login.live.com/..."
 	}
 }
+```
 
 ## Namespace: xbl
 
@@ -74,7 +76,7 @@ const userTokenResponse = await xbl.exchangeRpsTicketForUserToken(
 );
 
 console.info(userTokenResponse);
-````
+```
 
 ##### Arguments
 
