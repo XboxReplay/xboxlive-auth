@@ -20,6 +20,35 @@ Authenticate the user with its `refresh_token`.
 
 -   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/01-Authenticate.md#method-authenticatewithuserrefreshtoken)
 
+### Method: preAuth
+
+Pre-authentication request used to retrieve mandatory authentication parameters.
+
+```javascript
+import { live } from '@xboxreplay/xboxlive-auth';
+
+const preAuthResponse = await live.preAuth();
+console.log(preAuthResponse);
+```
+
+##### Arguments
+
+-   clientId {string=} - `000000004C12AE6F`
+-   scope {string=} - `service::user.auth.xboxlive.com::MBI_SSL`
+-   responseType {token|code=} - `token`
+-   redirectUri {string=} - `https://login.live.com/oauth20_desktop.srf`
+
+##### Sample Response
+
+````javascript
+{
+	"cookie": "MSA=...; X=...; ...",
+	"matches": {
+		"PPFT": "abcde...",
+		"urlPost": "https://login.live.com/..."
+	}
+}
+
 ## Namespace: xbl
 
 ### Method: exchangeRpsTicketForUserToken
@@ -45,7 +74,7 @@ const userTokenResponse = await xbl.exchangeRpsTicketForUserToken(
 );
 
 console.info(userTokenResponse);
-```
+````
 
 ##### Arguments
 

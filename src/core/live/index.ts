@@ -8,7 +8,8 @@ import {
 	LiveAuthResponse,
 	LiveCredentials,
 	LivePreAuthMatchedParameters,
-	LivePreAuthResponse
+	LivePreAuthResponse,
+	PreAuthOptions
 } from '../..';
 
 import config, {
@@ -117,9 +118,16 @@ export const refreshAccessToken = async (
  * @throws {XRError}
  * @returns {Promise<LivePreAuthResponse>} Required cookies and parameters
  */
-export const preAuth = async (): Promise<LivePreAuthResponse> => {
+export const preAuth = async (
+	options?: PreAuthOptions
+): Promise<LivePreAuthResponse> => {
 	const response = await axios({
-		url: getAuthorizeUrl(),
+		url: getAuthorizeUrl(
+			options?.clientId,
+			options?.scope,
+			options?.responseType,
+			options?.redirectUri
+		),
 		method: 'GET',
 		headers: getBaseHeaders()
 	})

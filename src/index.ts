@@ -1,4 +1,5 @@
 import {
+	preAuth,
 	getAuthorizeUrl,
 	authenticate as LiveAuthenticate,
 	refreshAccessToken
@@ -35,6 +36,13 @@ export type LivePreAuthMatchedParameters = {
 export type LivePreAuthResponse = {
 	cookie: string;
 	matches: LivePreAuthMatchedParameters;
+};
+
+export type PreAuthOptions = {
+	clientId?: string;
+	scope?: string;
+	responseType?: 'token' | 'code';
+	redirectUri?: string;
 };
 
 export type XBLExchangeRpsTicketResponse = {
@@ -245,6 +253,7 @@ export const authenticate = authenticateWithUserCredentials;
 //#region public namespaces
 
 export const live = {
+	preAuth,
 	getAuthorizeUrl,
 	authenticate: LiveAuthenticate,
 	refreshAccessToken
