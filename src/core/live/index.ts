@@ -59,6 +59,57 @@ export const getAuthorizeUrl = (
 	})}`;
 
 /**
+ * Exchange returned code for a valid access token
+ *
+ * @param {string} code
+ * @param {string} clientId
+ * @param {string} scope
+ * @param {string} redirectUri
+ * @param {string=} clientSecret
+ *
+ * @throws {XRError}
+ * @returns {Promise<LiveAuthResponse>}
+ */
+export const exchangeCodeForAccessToken = async (
+	code: string,
+	clientId: string,
+	scope: string,
+	redirectUri: string,
+	clientSecret?: string
+): Promise<LiveAuthResponse> => {
+	const payload: Record<string, any> = {
+		code,
+		client_id: clientId,
+		grant_type: 'authorization_code',
+		redirect_uri: redirectUri,
+		scope
+	};
+
+	if (clientSecret !== void 0) {
+		payload.client_secret = clientSecret;
+	}
+
+	const response = await axios({
+		url: config.urls.token,
+		method: 'POST',
+		headers: getBaseHeaders({
+			Accept: 'application/json',
+			'Content-Type': 'application/x-www-form-urlencoded'
+		}),
+		data: stringify(payload)
+	})
+		.then(res => res.data)
+		.catch((err: AxiosError) => {
+			throw new XRError(err.message, {
+				statusCode: err.response?.status,
+				additional: err.response?.data || null
+			});
+		});
+
+	return response;
+};
+
+/**
  * Refresh an expired token
  *
  * @param {string} refreshToken
@@ -73,7 +124,7 @@ export const getAuthorizeUrl = (
  * 	refreshAccessToken('M.R3_B.xxxxxx', 'xxxxxx', 'XboxLive.signin', 'xxxxxx');
  *
  * @throws {XRError}
- * @returns {Promise<LiveAuthenticateResponse>} Refresh response
+ * @returns {Promise<LiveAuthResponse>} Refresh response
  */
 export const refreshAccessToken = async (
 	refreshToken: string,

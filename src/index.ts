@@ -2,7 +2,8 @@ import {
 	preAuth,
 	getAuthorizeUrl,
 	authenticate as LiveAuthenticate,
-	refreshAccessToken
+	refreshAccessToken,
+	exchangeCodeForAccessToken
 } from './core/live';
 
 import {
@@ -256,7 +257,8 @@ export const live = {
 	preAuth,
 	getAuthorizeUrl,
 	authenticate: LiveAuthenticate,
-	refreshAccessToken
+	refreshAccessToken,
+	exchangeCodeForAccessToken
 };
 
 export const xbl = {

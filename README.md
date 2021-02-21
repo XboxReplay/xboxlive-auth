@@ -5,7 +5,7 @@ A light but advanced Xbox Live authentication module with [OAuth2.0](https://git
 ## Installation
 
 ```shell
-$ npm install @xboxreplay/xboxlive-auth@4.0.0-beta.3
+$ npm install @xboxreplay/xboxlive-auth@4.0.0-beta.4
 ```
 
 ## Usage Example
@@ -28,9 +28,9 @@ authenticate('name@domain.com', '*********')
     "display_claims": {
         "gtg": "Zeny IC",
         "xid": "2584878536129841",
-        "uhs": "3218841136841218711"
+        "uhs": "3218841136841218711",
         "agg": "Adult",
-        "usr" "234",
+        "usr": "234",
         "utr": "190",
         "prv": "185 186 187 188 191 192 ..."
     },
