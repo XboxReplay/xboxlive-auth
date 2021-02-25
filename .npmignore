@@ -9,5 +9,6 @@ CHANGELOG.md
 tsconfig.json
 node_modules/
 examples/
+docs/
 __tests__/
 src/

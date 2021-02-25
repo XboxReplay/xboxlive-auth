@@ -27,8 +27,8 @@ const XBLAdditionalHeaders = {
  * Exchange returned "RpsTicket"
  *
  * @param {string} rpsTicket - Returned `access_token` from login.live.com authorization process
- * @param {string=} preable - `t` - Use `d` for custom Azure applications
- * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
+ * @param {string} [preable="t"] - `t` - Use `d` for custom Azure applications
+ * @param {Record<string, string>} [additionalHeaders={}] - Additional headers if required, can be used to override default ones
  *
  * @example
  *	exchangeRpsTicketForUserToken('EwAQxxxxxx');
@@ -78,8 +78,8 @@ export const exchangeRpsTicketForUserToken = async (
  * Exchange tokens
  *
  * @param {XBLTokens} tokens
- * @param {XBLExchangeTokensOptions=} options - Exchange options
- * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
+ * @param {XBLExchangeTokensOptions} [options={}] - Exchange options
+ * @param {Record<string, string>} [additionalHeaders={}] - Additional headers if required, can be used to override default ones
  *
  * @example
  *	exchangeTokensForXSTSToken({ userTokens: ['eyxxx'] });
@@ -138,8 +138,8 @@ export const exchangeTokensForXSTSToken = async (
  * Exchange token
  *
  * @param {string} userToken - Returned token from `exchangeRpsTicketForUserToken` method
- * @param {XBLExchangeTokensOptions=} options - Exchange options
- * @param {object=} additionalHeaders - Additional headers if required, can be used to override default ones
+ * @param {XBLExchangeTokensOptions} [options={}] - Exchange options
+ * @param {Record<string, string>} [additionalHeaders={}] - Additional headers if required, can be used to override default ones
  * @returns {Promise<XBLExchangeTokensResponse>} Exchange response
  *
  * @example

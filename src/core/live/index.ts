@@ -32,10 +32,10 @@ const getMatchForIndex = (entry: string, regex: RegExp, index: number = 0) => {
 /**
  * Returns login.live.com authorize URL
  *
- * @param {string=} clientId - `000000004C12AE6F`
- * @param {scope=} scope - `service::user.auth.xboxlive.com::MBI_SSL`
- * @param {responseType=} responseType - `token`
- * @param {redirectUri=} redirectUri - `https://login.live.com/oauth20_desktop.srf`
+ * @param {string} [clientId="000000004C12AE6F"] `000000004C12AE6F`
+ * @param {scope} [scope="service::user.auth.xboxlive.com::MBI_SSL"] `service::user.auth.xboxlive.com::MBI_SSL`
+ * @param {responseType} [responseType="token"] `token`
+ * @param {redirectUri=} [redirectUri="https://login.live.com/oauth20_desktop.srf"] `https://login.live.com/oauth20_desktop.srf`
  *
  * @example
  * 	getAuthorizeUrl();
@@ -113,8 +113,8 @@ export const exchangeCodeForAccessToken = async (
  * Refresh an expired token
  *
  * @param {string} refreshToken
- * @param {string=} clientId - `000000004C12AE6F`
- * @param {scope=} scope - `service::user.auth.xboxlive.com::MBI_SSL`
+ * @param {string} [clientId="000000004C12AE6F"] - `000000004C12AE6F`
+ * @param {scope} [scope="service::user.auth.xboxlive.com::MBI_SSL"] - `service::user.auth.xboxlive.com::MBI_SSL`
  * @param {string=} clientSecret - `undefined`
  *
  * @example
@@ -130,7 +130,7 @@ export const refreshAccessToken = async (
 	refreshToken: string,
 	clientId: string = defaultClientId,
 	scope: string = defaultScope,
-	clientSecret: string | undefined = void 0
+	clientSecret?: string
 ): Promise<LiveAuthResponse> => {
 	const payload: Record<string, any> = {
 		client_id: clientId,
@@ -166,6 +166,8 @@ export const refreshAccessToken = async (
 /**
  * Retrieve required cookies and parameters before continue
  *
+ * @param {LivePreAuthOptions=} options
+ *
  * @throws {XRError}
  * @returns {Promise<LivePreAuthResponse>} Required cookies and parameters
  */
@@ -180,7 +182,9 @@ export const preAuth = async (
 			options?.redirectUri
 		),
 		method: 'GET',
-		headers: getBaseHeaders()
+		headers: getBaseHeaders({
+			'Accept-Encoding': 'identity'
+		})
 	})
 		.then(res => {
 			const body = (res.data || '') as string;
@@ -215,7 +219,7 @@ export const preAuth = async (
 /**
  * Authenticate with credentials
  *
- * @param {object} credentials
+ * @param {LiveCredentials} credentials
  *
  * @throws {XRError}
  * @returns {Promise<LiveAuthResponse>} Authenticate response
