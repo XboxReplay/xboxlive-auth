@@ -32,7 +32,7 @@ const createAuthorizeWindow = () => {
 	authenticateWindow.webContents.on('will-redirect', (_, url) => {
 		const urlInstance = new URL(url);
 
-		if (urlInstance.protocol === 'ms-xal-000000004c12ae6f:') {
+		if (urlInstance.pathname === '/oauth20_desktop.srf') {
 			const hash = urlInstance.hash.slice(1);
 			const response = {};
 
