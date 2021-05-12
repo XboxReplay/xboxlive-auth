@@ -22,7 +22,7 @@
 	"types": "./dist/index.d.ts",
 	"scripts": {
 		"build": "npm run clean && ./node_modules/.bin/tsc",
-		"clean": "rimraf ./dist",
+		"clean": "./node_modules/.bin/rimraf ./dist",
 		"prepublishOnly": "npm run test && npm run build",
 		"touch-test-env": "touch .env.test",
 		"test": "npm run touch-test-env && ts-node ./__tests__/e2e.test.js"
