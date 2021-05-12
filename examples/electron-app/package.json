@@ -9,6 +9,7 @@
 		"email": "alexis.bize@gmail.com"
 	},
 	"scripts": {
+		"preinstall": "npm install --prefix ../../ && npm run build",
 		"build": "npm run build --prefix ../../",
 		"start": "electron ."
 	},
