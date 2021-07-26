@@ -72,7 +72,7 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 
 ## What about 2FA (Two-factor authentication)?
 
-Exposed `authenticate` and `authenticateWithUserCredentials` methods can not deal with 2FA but a workaround may be possible using the `authenticateWithUserRefreshToken` one. Please take a look at ["Authenticate" documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md). Additional improvements regarding this issue are not planned.
+Exposed `authenticate` and `authenticateWithUserCredentials` methods can not deal with 2FA but a workaround may be possible using the `authenticateWithUserRefreshToken` one. Please take a look at [authenticate ](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md) documentation. Additional improvements regarding this issue are not planned.
 
 ## Known Issues
 
