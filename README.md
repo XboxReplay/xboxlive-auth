@@ -3,10 +3,10 @@
 A light but advanced Xbox Live authentication module with [OAuth2.0](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/02-Custom_Azure_Application.md) and [Electron](https://github.com/XboxReplay/xboxlive-auth/blob/master/examples/electron-app) support.
 
 ## Warning
-Due to security reasons ([CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for instance), This library has been designed to run on a node.js environement.
+Due to security reasons ([CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS) for instance), this library has been designed to only run on a **node.js** environment.
 
 ## Breaking Changes
-A lot of breaking changes have been made since the latest public release (`3.3.3`). Please make sure to take a look at the [authenticate](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md) documentation for further information.
+A lot of breaking changes have been made since the latest **3.3.3** release. Please make sure to take a look and follow each step from the [authenticate](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md) documentation.
 
 ## Installation
 
@@ -72,7 +72,7 @@ $ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?s
 
 ## What about 2FA (Two-factor authentication)?
 
-Exposed `authenticate` and `authenticateWithUserCredentials` methods can not deal with 2FA but a workaround may be possible with the `authenticateWithUserRefreshToken` one. Please take a look at ["Authenticate" documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md). Additional improvements regarding this issue are not planned.
+Exposed `authenticate` and `authenticateWithUserCredentials` methods can not deal with 2FA but a workaround may be possible using the `authenticateWithUserRefreshToken` one. Please take a look at ["Authenticate" documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md). Additional improvements regarding this issue are not planned.
 
 ## Known Issues
 
