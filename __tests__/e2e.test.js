@@ -17,9 +17,7 @@ const credentials = {
 const liveRefreshToken = process.env.LIVE_REFRESH_TOKEN;
 
 const hasMissingEnv =
-	credentials.email === void 0 ||
-	credentials.password === void 0 ||
-	liveRefreshToken === void 0;
+	credentials.email === void 0 || credentials.password === void 0;
 
 if (hasMissingEnv === true) {
 	throw new Error('Could not load credentials from .env.test file');
@@ -37,7 +35,9 @@ const TEST_SUCCESS_authenticateBasic = () =>
 	]);
 
 const TEST_SUCCESS_authenticateBasicWithRefreshToken = () =>
-	authenticateWithUserRefreshToken(liveRefreshToken);
+	liveRefreshToken !== void 0
+		? authenticateWithUserRefreshToken(liveRefreshToken)
+		: Promise.resolve(void 0);
 
 const TEST_SUCCESS_authenticateWithDummyDeviceToken = async () =>
 	authenticate(credentials.email, credentials.password, {
