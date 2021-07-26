@@ -14,7 +14,7 @@ import {
 
 //#region definitions
 
-const XBLContractVersion = 0;
+const XBLContractVersion = 2;
 const XBLAdditionalHeaders = {
 	Accept: 'application/json',
 	'X-Xbl-Contract-Version': String(XBLContractVersion)
@@ -172,49 +172,50 @@ export const exchangeTokenForXSTSToken = (
  * @throws {XRError}
  * @returns {Promise<XBLDummyDeviceTokenResponse>} Device authenticate response
  */
-export const EXPERIMENTAL_createDummyWin32DeviceToken = async (): Promise<XBLDummyDeviceTokenResponse> => {
-	const trustedParty = 'https://xboxreplay.net/';
-	const serviceDeviceId = '21354D2F-352F-472F-5842-5265706C6179';
-	const serviceSignature =
-		'AAAAAQHW6oD31MwA6MAjn67vdCppWCbrMovubA85xejO06rtOAEdZ0tMTZFnu7xbI6lZDNvIWfuMaIPJSUcpvxjKqSFJl1oaWzQGBw==';
+export const EXPERIMENTAL_createDummyWin32DeviceToken =
+	async (): Promise<XBLDummyDeviceTokenResponse> => {
+		const trustedParty = 'https://xboxreplay.net/';
+		const serviceDeviceId = '21354D2F-352F-472F-5842-5265706C6179';
+		const serviceSignature =
+			'AAAAAQHW6oD31MwA6MAjn67vdCppWCbrMovubA85xejO06rtOAEdZ0tMTZFnu7xbI6lZDNvIWfuMaIPJSUcpvxjKqSFJl1oaWzQGBw==';
 
-	const serviceProofKey = {
-		crv: 'P-256',
-		alg: 'ES256',
-		use: 'sig',
-		kty: 'EC',
-		x: 'b8Zc6GPFeu41DqiWPJxRa_jqUTSiMA537emKVHt8UO8',
-		y: 'CXAuTEHet72GjgSDfDg6psBrwE1waxBsNEIGrRZV_90'
-	};
+		const serviceProofKey = {
+			crv: 'P-256',
+			alg: 'ES256',
+			use: 'sig',
+			kty: 'EC',
+			x: 'b8Zc6GPFeu41DqiWPJxRa_jqUTSiMA537emKVHt8UO8',
+			y: 'CXAuTEHet72GjgSDfDg6psBrwE1waxBsNEIGrRZV_90'
+		};
 
-	const response = await axios({
-		url: config.urls.deviceAuthenticate,
-		method: 'POST',
-		headers: getBaseHeaders({
-			...XBLAdditionalHeaders,
-			Signature: serviceSignature
-		}),
-		data: {
-			RelyingParty: 'http://auth.xboxlive.com',
-			TokenType: 'JWT',
-			Properties: {
-				AuthMethod: 'ProofOfPossession',
-				TrustedParty: trustedParty,
-				Id: `{${serviceDeviceId}}`,
-				DeviceType: 'Win32',
-				Version: '10.0.18363',
-				ProofKey: serviceProofKey
+		const response = await axios({
+			url: config.urls.deviceAuthenticate,
+			method: 'POST',
+			headers: getBaseHeaders({
+				...XBLAdditionalHeaders,
+				Signature: serviceSignature
+			}),
+			data: {
+				RelyingParty: 'http://auth.xboxlive.com',
+				TokenType: 'JWT',
+				Properties: {
+					AuthMethod: 'ProofOfPossession',
+					TrustedParty: trustedParty,
+					Id: `{${serviceDeviceId}}`,
+					DeviceType: 'Win32',
+					Version: '10.0.18363',
+					ProofKey: serviceProofKey
+				}
 			}
-		}
-	})
-		.then(res => res.data)
-		.catch(_ => {
-			throw XRError.badRequest(
-				`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`
-			);
-		});
+		})
+			.then(res => res.data)
+			.catch(_ => {
+				throw XRError.badRequest(
+					`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`
+				);
+			});
 
-	return response;
-};
+		return response;
+	};
 
 //#endregion

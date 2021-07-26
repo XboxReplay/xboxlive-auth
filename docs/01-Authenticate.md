@@ -17,8 +17,8 @@ authenticate('name@domain.com', 'password')
 -   email {string}
 -   password {string}
 -   options {object=}
-    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#relyingparty)
-    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#optional-display-claims)
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
     -   deviceToken {string=} - Optional device token
     -   titleToken {string=} - Optional title token
@@ -31,7 +31,7 @@ authenticate('name@domain.com', 'password')
     "xuid": "2584878536129841", // May be null based on the specified "RelyingParty"
     "user_hash": "3218841136841218711",
     "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-    "display_claims": {
+    "display_claims": { // May vary based on the specified "RelyingParty"
         "gtg": "Zeny IC",
         "xid": "2584878536129841",
         "uhs": "3218841136841218711"
@@ -112,8 +112,8 @@ xbl.authenticateWithUserRefreshToken('M.R3_B...')
     -   preablme {d|t=} - `t` - Use `d` for custom Azure applications
     -   clientSecret {string=} - `undefined`
 -   options {object=} - `{}`
-    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#relyingparty)
-    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#optional-display-claims)
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
     -   deviceToken {string=} - Optional device token
     -   titleToken {string=} - Optional title token
@@ -121,4 +121,4 @@ xbl.authenticateWithUserRefreshToken('M.R3_B...')
 
 ## Detect and authenticate "Child" and "Teen" accounts
 
-Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/07-Detect_Unauthorized_AgeGroup.md).
+Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/07-Detect_Unauthorized_AgeGroup.md).

@@ -148,6 +148,7 @@ export const refreshAccessToken = async (
 		method: 'POST',
 		headers: getBaseHeaders({
 			Accept: 'application/json',
+			'Accept-Encoding': 'identity',
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}),
 		data: stringify(payload)
@@ -232,6 +233,7 @@ export const authenticate = async (
 		url: preAuthResponse.matches.urlPost,
 		method: 'POST',
 		headers: getBaseHeaders({
+			'Accept-Encoding': 'identity',
 			'Content-Type': 'application/x-www-form-urlencoded',
 			Cookie: preAuthResponse.cookie
 		}),

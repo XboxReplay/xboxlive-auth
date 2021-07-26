@@ -1,6 +1,6 @@
 # Methods
 
-List of all available methods exposed by the library.
+List of all methods exposed by the library.
 
 ## Common
 
@@ -8,7 +8,7 @@ List of all available methods exposed by the library.
 
 Authenticate the user.
 
--   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/01-Authenticate.md#method-authenticate)
+-   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md#method-authenticate)
 
 ### Method: authenticateWithUserCredentials
 
@@ -18,7 +18,7 @@ Clone of the initial `authenticate` method.
 
 Authenticate the user with its `refresh_token`.
 
--   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/01-Authenticate.md#method-authenticatewithuserrefreshtoken)
+-   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/01-Authenticate.md#method-authenticatewithuserrefreshtoken)
 
 ### Method: preAuth
 
@@ -123,8 +123,8 @@ console.info(XSTSTokenResponse);
 
 -   userToken {string}
 -   options {object=}
-    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#relyingparty)
-    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#optional-display-claims)
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
 -   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
@@ -151,7 +151,7 @@ console.info(XSTSTokenResponse);
 
 ### Method: exchangeTokensForXSTSToken
 
-Exchange returned token by the `exchangeRpsTicketForUserToken` method. This method also allows you to specify your own device token and title token.
+Exchange returned token by the `exchangeRpsTicketForUserToken` method. This method also allows you to specify your own device token and title token. Please note that based on your scenario, the `userTokens` parameter may not be required.
 
 ```javascript
 import { xbl } from '@xboxreplay/xboxlive-auth';
@@ -173,7 +173,7 @@ const XSTSTokenResponse = await xbl.exchangeTokensForXSTSToken({
 	userTokens: [userToken],
 	deviceToken,
 	titleToken
-});
+}, { sandboxId: 'RETAIL' });
 
 console.info(XSTSTokenResponse);
 ```
@@ -185,8 +185,8 @@ console.info(XSTSTokenResponse);
     -   deviceToken {string=}
     -   titleToken {string=}
 -   options {object=}
-    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#relyingparty)
-    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/04-RelyingParty.md#optional-display-claims)
+    -   XSTSRelyingParty {string=} - `http://xboxlive.com` - Targeted [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#relyingparty)
+    -   optionalDisplayClaims {string[]=} - `[]` - Optional display claims to be returned based on the used [RelyingParty](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/04-RelyingParty.md#optional-display-claims)
     -   sandboxId {string=} - `RETAIL` - Targeted sandbox ID
 -   additionalHeaders {object=} - `{}` - Additional headers if required, can be used to override default ones
 
@@ -215,7 +215,7 @@ console.info(XSTSTokenResponse);
 
 Create a dummy **Win32** `deviceToken` that can be used during the authentication process.
 
--   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/03-Experimental.md#method-experimental_createdummywin32devicetoken)
+-   [See dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/03-Experimental.md#method-experimental_createdummywin32devicetoken)
 
 ## Namespace: live
 

@@ -6,7 +6,7 @@ Take a look at https://account.live.com/activity or try to sign in to https://ac
 
 ### Still not working?
 
-"Child" and "Teen" accounts (AgeGroup / "agg") may not be able to authenticate. This restriction **could** be bypassed by using the `EXPERIMENTAL_createDummyWin32DeviceToken` method by adding returned device token to the used authentication method. Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/4.0.0/docs/03-Experimental.md#method-experimental_createdummywin32devicetoken) before using it.
+"Child" and "Teen" accounts (AgeGroup / "agg") may not be able to authenticate. This restriction **could** be bypassed by using the `EXPERIMENTAL_createDummyWin32DeviceToken` method by adding returned device token to the used authentication method. Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/blob/master/docs/03-Experimental.md#method-experimental_createdummywin32devicetoken) before using it.
 
 ```javascript
 import { xbl, authenticate } from '@xboxreplay/xboxlive-auth';

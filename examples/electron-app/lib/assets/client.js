@@ -31,7 +31,9 @@
 				signInButton.style.display = 'none';
 				responseContainer.innerHTML = `
 					<p>
-						Welcome, <strong>${details.response.DisplayClaims.xui[0].gtg}<strong>!
+						Welcome, <strong>${details.response.DisplayClaims.xui[0].gtg}</strong>!
+						<br />
+						Your XUID is <strong>${details.response.DisplayClaims.xui[0].xid}<strong>.
 					</p>
 				`;
 			} else
