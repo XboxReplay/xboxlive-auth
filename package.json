@@ -21,19 +21,17 @@
 	"main": "./dist/index.js",
 	"types": "./dist/index.d.ts",
 	"scripts": {
-		"build": "npm run clean && ./node_modules/.bin/tsc",
-		"clean": "./node_modules/.bin/rimraf ./dist",
+		"build": "npm run clean && npx tsc",
+		"clean": "npx rimraf ./dist",
 		"prepublishOnly": "npm run test && npm run build",
-		"touch-test-env": "touch .env.test",
+		"touch-test-env": "npx touch .env.test",
 		"test": "npm run touch-test-env && ts-node ./__tests__/e2e.test.js"
-	},
-	"dependencies": {
-		"axios": "1.7.9"
 	},
 	"devDependencies": {
 		"@types/node": "22.10.1",
 		"dotenv": "16.4.7",
 		"rimraf": "6.0.1",
+		"touch": "3.1.1",
 		"ts-node": "10.9.2",
 		"typescript": "5.7.2"
 	}

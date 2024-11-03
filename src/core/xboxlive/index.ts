@@ -1,4 +1,3 @@
-import axios, { AxiosError } from 'axios';
 import config, { defaultXSTSRelyingParty } from './config';
 import { getBaseHeaders } from '../../utils';
 import XRError from '../../classes/XRError';
@@ -47,29 +46,31 @@ export const exchangeRpsTicketForUserToken = async (
 		rpsTicket = `${preamble}=${rpsTicket}`;
 	}
 
-	const response = await axios({
-		url: config.urls.userAuthenticate,
+	const response = await fetch(config.urls.userAuthenticate, {
 		method: 'POST',
 		headers: getBaseHeaders({
 			...XBLAdditionalHeaders,
 			...additionalHeaders,
 		}),
-		data: {
+		body: JSON.stringify({
 			RelyingParty: 'http://auth.xboxlive.com',
 			TokenType: 'JWT',
 			Properties: {
 				AuthMethod: 'RPS',
 				SiteName: 'user.auth.xboxlive.com',
-				RpsTicket: rpsTicket,
-			},
-		},
-	})
-		.then(res => res.data)
-		.catch(_ => {
-			throw XRError.badRequest('Could not exchange specified "RpsTicket"');
-		});
+				RpsTicket: rpsTicket
+			}
+		}),
+	});
 
-	return response;
+	if (!response.ok) {
+		throw XRError.badRequest(
+			'Could not exchange specified "RpsTicket"',
+			response
+		);
+	}
+
+	return await response.json();
 };
 
 /**
@@ -102,14 +103,13 @@ export const exchangeTokensForXSTSToken = async (
 	options: XBLExchangeTokensOptions = {},
 	additionalHeaders: Record<string, string> = {}
 ): Promise<XBLExchangeTokensResponse> => {
-	const response = await axios({
-		url: config.urls.XSTSAuthorize,
+	const response = await fetch(config.urls.XSTSAuthorize, {
 		method: 'POST',
 		headers: getBaseHeaders({
 			...XBLAdditionalHeaders,
 			...additionalHeaders,
 		}),
-		data: {
+		body: JSON.stringify({
 			RelyingParty: options.XSTSRelyingParty || defaultXSTSRelyingParty,
 			TokenType: 'JWT',
 			Properties: {
@@ -117,19 +117,19 @@ export const exchangeTokensForXSTSToken = async (
 				DeviceToken: tokens.deviceToken,
 				TitleToken: tokens.titleToken,
 				OptionalDisplayClaims: options.optionalDisplayClaims,
-				SandboxId: options.sandboxId || 'RETAIL',
-			},
-		},
-	})
-		.then(res => res.data)
-		.catch((err: AxiosError) => {
-			throw new XRError(
-				'Could not exchange specified tokens, please double check used parameters or make sure to use the "EXPERIMENTAL_createDummyWin32DeviceToken" method to handle "Child" and "Teen" accounts',
-				{ statusCode: err.response?.status }
-			);
-		});
+				SandboxId: options.sandboxId || 'RETAIL'
+			}
+		}),
+	});
 
-	return response;
+	if (!response.ok) {
+		throw new XRError(
+			'Could not exchange specified tokens, please double check used parameters or make sure to use the "EXPERIMENTAL_createDummyWin32DeviceToken" method to handle "Child" and "Teen" accounts',
+			{ statusCode: response.status }
+		);
+	}
+
+	return await response.json();
 };
 
 /**
@@ -180,34 +180,34 @@ export const EXPERIMENTAL_createDummyWin32DeviceToken = async (): Promise<XBLDum
 		y: 'PuRfclnYeqBroHVhX_QLPmOMGB6zUjK4bIScxpKIVh4',
 	};
 
-	const response = await axios({
-		url: config.urls.deviceAuthenticate,
+	const response = await fetch(config.urls.deviceAuthenticate, {
 		method: 'POST',
 		headers: getBaseHeaders({
 			...XBLAdditionalHeaders,
-			Signature: serviceSignature,
+			Signature: serviceSignature
 		}),
-		data: {
+		body: JSON.stringify({
 			RelyingParty: 'http://auth.xboxlive.com',
 			TokenType: 'JWT',
 			Properties: {
 				AuthMethod: 'ProofOfPossession',
-				Id: serviceDeviceId,
-				DeviceType: 'Win32',
-				Version: '10.0.19042',
-				ProofKey: serviceProofKey,
 				TrustedParty: serviceTrustedParty,
-			},
-		},
-	})
-		.then(res => res.data)
-		.catch(_ => {
-			throw XRError.badRequest(
-				`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`
-			);
-		});
+				Id: `{${serviceDeviceId}}`,
+				DeviceType: 'Win32',
+				Version: '10.0.18363',
+				ProofKey: serviceProofKey
+			}
+		}),
+	});
 
-	return response;
+	if (!response.ok) {
+		throw XRError.badRequest(
+			`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`,
+			response
+		);
+	}
+
+	return await response.json();
 };
 
 //#endregion

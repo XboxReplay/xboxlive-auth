@@ -1,4 +1,3 @@
-import axios, { AxiosError } from 'axios';
 import { stringify } from 'querystring';
 import { getBaseHeaders } from '../../utils';
 import XRError from '../../classes/XRError';
@@ -89,24 +88,30 @@ export const exchangeCodeForAccessToken = async (
 		payload.client_secret = clientSecret;
 	}
 
-	const response = await axios({
-		url: config.urls.token,
-		method: 'POST',
-		headers: getBaseHeaders({
-			Accept: 'application/json',
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}),
-		data: stringify(payload)
-	})
-		.then(res => res.data)
-		.catch((err: AxiosError) => {
-			throw new XRError(err.message, {
-				statusCode: err.response?.status,
-				additional: err.response?.data || null
-			});
+	try {
+		const response = await fetch(config.urls.token, {
+			method: 'POST',
+			headers: getBaseHeaders({
+				Accept: 'application/json',
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}),
+			body: stringify(payload),
 		});
 
-	return response;
+		if (!response.ok) {
+			throw new XRError(response.statusText, {
+				statusCode: response.status,
+				additional: (await response.text()) || null
+			});
+		}
+
+		return await response.json();
+	} catch (err: Error | any) {
+		throw new XRError(err.message, {
+			statusCode: err.response?.status,
+			additional: err.response?.data || null
+		});
+	}
 };
 
 /**
@@ -143,25 +148,31 @@ export const refreshAccessToken = async (
 		payload.client_secret = clientSecret;
 	}
 
-	const response = await axios({
-		url: config.urls.token,
-		method: 'POST',
-		headers: getBaseHeaders({
-			Accept: 'application/json',
-			'Accept-Encoding': 'identity',
-			'Content-Type': 'application/x-www-form-urlencoded'
-		}),
-		data: stringify(payload)
-	})
-		.then(res => res.data)
-		.catch((err: AxiosError) => {
-			throw new XRError(err.message, {
-				statusCode: err.response?.status,
-				additional: err.response?.data || null
-			});
+	try {
+		const response = await fetch(config.urls.token, {
+			method: 'POST',
+			headers: getBaseHeaders({
+				Accept: 'application/json',
+				'Accept-Encoding': 'identity',
+				'Content-Type': 'application/x-www-form-urlencoded'
+			}),
+			body: stringify(payload),
 		});
 
-	return response;
+		if (!response.ok) {
+			throw new XRError(response.statusText, {
+				statusCode: response.status,
+				additional: (await response.text()) || null
+			});
+		}
+
+		return await response.json();
+	} catch (err: Error | any) {
+		throw new XRError(err.message, {
+			statusCode: err.response?.status,
+			additional: err.response?.data || null
+		});
+	}
 };
 
 /**
@@ -175,46 +186,50 @@ export const refreshAccessToken = async (
 export const preAuth = async (
 	options?: LivePreAuthOptions
 ): Promise<LivePreAuthResponse> => {
-	const response = await axios({
-		url: getAuthorizeUrl(
+	try {
+		const response = await fetch(getAuthorizeUrl(
 			options?.clientId,
 			options?.scope,
 			options?.responseType,
 			options?.redirectUri
-		),
-		method: 'GET',
-		headers: getBaseHeaders({
-			'Accept-Encoding': 'identity'
-		})
-	})
-		.then(res => {
-			const body = (res.data || '') as string;
-			const cookie: string = (res.headers['set-cookie'] || [])
-				.map((c: string) => c.split(';')[0])
-				.join('; ');
-
-			const matches: Partial<LivePreAuthMatchedParameters> = {
-				PPFT: getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
-				urlPost: getMatchForIndex(body, /urlPost:'(.+?(?=\'))/, 1)
-			};
-
-			if (matches.PPFT !== void 0 && matches.urlPost !== void 0) {
-				return {
-					cookie,
-					matches: matches as LivePreAuthMatchedParameters
-				};
-			}
-
-			throw XRError.internal(
-				`Could not match required "preAuth" parameters, please fill an issue on ${commonConfig.github.createIssue}`
-			);
-		})
-		.catch(err => {
-			if (err.__XboxReplay__ === true) throw err;
-			throw XRError.internal(err.message);
+		), {
+			method: 'GET',
+			headers: getBaseHeaders({
+				'Accept-Encoding': 'identity'
+			})
 		});
 
-	return response;
+		if (!response.ok) {
+			throw new XRError(response.statusText, {
+				statusCode: response.status,
+				additional: (await response.text()) || null
+			});
+		}
+
+		const body = (await response.text() || '') as string;
+		const cookie: string = (response.headers.getSetCookie() || [])
+			.map((c: string) => c.split(';')[0])
+			.join('; ');
+
+		const matches: Partial<LivePreAuthMatchedParameters> = {
+			PPFT: getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
+			urlPost: getMatchForIndex(body, /urlPost:'(.+?(?=\'))/, 1)
+		};
+
+		if (matches.PPFT !== void 0 && matches.urlPost !== void 0) {
+			return {
+				cookie,
+				matches: matches as LivePreAuthMatchedParameters
+			};
+		}
+
+		throw XRError.internal(
+			`Could not match required "preAuth" parameters, please fill an issue on ${commonConfig.github.createIssue}`
+		);
+	} catch (err: Error | any) {
+		if (err.__XboxReplay__ === true) throw err;
+			throw XRError.internal(err.message);
+	}
 };
 
 /**
@@ -229,48 +244,53 @@ export const authenticate = async (
 	credentials: LiveCredentials
 ): Promise<LiveAuthResponse> => {
 	const preAuthResponse = await preAuth();
-	const response = await axios({
-		url: preAuthResponse.matches.urlPost,
-		method: 'POST',
-		headers: getBaseHeaders({
-			'Accept-Encoding': 'identity',
-			'Content-Type': 'application/x-www-form-urlencoded',
-			Cookie: preAuthResponse.cookie
-		}),
-		data: stringify({
-			login: credentials.email,
-			loginfmt: credentials.email,
-			passwd: credentials.password,
-			PPFT: preAuthResponse.matches.PPFT
-		}),
-		maxRedirects: 0,
-		validateStatus: status => status === 302 || status === 200
-	})
-		.then(res => {
-			if (res.status === 200) {
-				throw XRError.unauthorized(
-					`Invalid credentials or 2FA enabled`
-				);
-			}
 
-			const { location = '' } = res.headers || {};
-			const hash = location.split('#')[1];
-			const output: Record<string, any> = {};
+	const payload = {
+		login: credentials.email,
+		loginfmt: credentials.email,
+		passwd: credentials.password,
+		PPFT: preAuthResponse.matches.PPFT
+	};
 
-			for (const part of new URLSearchParams(hash)) {
-				if (part[0] === 'expires_in') {
-					output[part[0]] = Number(part[1]);
-				} else output[part[0]] = part[1];
-			}
-
-			return output as LiveAuthResponse;
-		})
-		.catch(err => {
-			if (err.__XboxReplay__ === true) throw err;
-			throw XRError.internal(err.message);
+	try {
+		const response = await fetch(preAuthResponse.matches.urlPost, {
+			method: 'POST',
+			headers: getBaseHeaders({
+				'Accept-Encoding': 'identity',
+				'Content-Type': 'application/x-www-form-urlencoded',
+				Cookie: preAuthResponse.cookie
+			}),
+			redirect: 'manual',
+			body: stringify(payload),
 		});
 
-	return response;
+		if (response.status === 200) {
+			throw XRError.unauthorized(
+				`Invalid credentials or 2FA enabled`
+			);
+		}
+
+		if (response.status !== 302) {
+			throw XRError.internal(
+				`Unexpected status code: ${response.status}`
+			);
+		}
+
+		const location = response.headers.get('location') || '';
+		const hash = location.split('#')[1];
+		const output: Record<string, any> = {};
+
+		for (const part of new URLSearchParams(hash)) {
+			if (part[0] === 'expires_in') {
+				output[part[0]] = Number(part[1]);
+			} else output[part[0]] = part[1];
+		}
+
+		return output as LiveAuthResponse;
+	} catch (err: Error | any) {
+			if (err.__XboxReplay__ === true) throw err;
+			throw XRError.internal(err.message);
+	}
 };
 
 //#endregion
