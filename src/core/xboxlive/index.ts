@@ -9,7 +9,7 @@ import {
 	XBLExchangeRpsTicketResponse,
 	XBLExchangeTokensOptions,
 	XBLExchangeTokensResponse,
-	XBLTokens
+	XBLTokens,
 } from '../..';
 
 //#region definitions
@@ -17,7 +17,7 @@ import {
 const XBLContractVersion = 2;
 const XBLAdditionalHeaders = {
 	Accept: 'application/json',
-	'X-Xbl-Contract-Version': String(XBLContractVersion)
+	'X-Xbl-Contract-Version': String(XBLContractVersion),
 };
 
 //#endregion
@@ -52,7 +52,7 @@ export const exchangeRpsTicketForUserToken = async (
 		method: 'POST',
 		headers: getBaseHeaders({
 			...XBLAdditionalHeaders,
-			...additionalHeaders
+			...additionalHeaders,
 		}),
 		data: {
 			RelyingParty: 'http://auth.xboxlive.com',
@@ -60,15 +60,13 @@ export const exchangeRpsTicketForUserToken = async (
 			Properties: {
 				AuthMethod: 'RPS',
 				SiteName: 'user.auth.xboxlive.com',
-				RpsTicket: rpsTicket
-			}
-		}
+				RpsTicket: rpsTicket,
+			},
+		},
 	})
 		.then(res => res.data)
 		.catch(_ => {
-			throw XRError.badRequest(
-				'Could not exchange specified "RpsTicket"'
-			);
+			throw XRError.badRequest('Could not exchange specified "RpsTicket"');
 		});
 
 	return response;
@@ -109,7 +107,7 @@ export const exchangeTokensForXSTSToken = async (
 		method: 'POST',
 		headers: getBaseHeaders({
 			...XBLAdditionalHeaders,
-			...additionalHeaders
+			...additionalHeaders,
 		}),
 		data: {
 			RelyingParty: options.XSTSRelyingParty || defaultXSTSRelyingParty,
@@ -119,9 +117,9 @@ export const exchangeTokensForXSTSToken = async (
 				DeviceToken: tokens.deviceToken,
 				TitleToken: tokens.titleToken,
 				OptionalDisplayClaims: options.optionalDisplayClaims,
-				SandboxId: options.sandboxId || 'RETAIL'
-			}
-		}
+				SandboxId: options.sandboxId || 'RETAIL',
+			},
+		},
 	})
 		.then(res => res.data)
 		.catch((err: AxiosError) => {
@@ -159,12 +157,7 @@ export const exchangeTokenForXSTSToken = (
 	userToken: string,
 	options: XBLExchangeTokensOptions = {},
 	additionalHeaders: Record<string, string> = {}
-) =>
-	exchangeTokensForXSTSToken(
-		{ userTokens: [userToken] },
-		options,
-		additionalHeaders
-	);
+) => exchangeTokensForXSTSToken({ userTokens: [userToken] }, options, additionalHeaders);
 
 /**
  * Create a dummy Win32 device token to be used with `exchangeTokensForXSTSToken` method
@@ -172,50 +165,49 @@ export const exchangeTokenForXSTSToken = (
  * @throws {XRError}
  * @returns {Promise<XBLDummyDeviceTokenResponse>} Device authenticate response
  */
-export const EXPERIMENTAL_createDummyWin32DeviceToken =
-	async (): Promise<XBLDummyDeviceTokenResponse> => {
-		const trustedParty = 'https://xboxreplay.net/';
-		const serviceDeviceId = '21354D2F-352F-472F-5842-5265706C6179';
-		const serviceSignature =
-			'AAAAAQHW6oD31MwA6MAjn67vdCppWCbrMovubA85xejO06rtOAEdZ0tMTZFnu7xbI6lZDNvIWfuMaIPJSUcpvxjKqSFJl1oaWzQGBw==';
+export const EXPERIMENTAL_createDummyWin32DeviceToken = async (): Promise<XBLDummyDeviceTokenResponse> => {
+	const serviceTrustedParty = 'https://xboxreplay.net/';
+	const serviceDeviceId = '{51354D2F-352F-472F-5842-5233706C6179}';
+	const serviceSignature =
+		'AAAAAQHbSkl5oWVQaUcyd9w0phS546Pj7OMt0pXjJsBq2kzwS5iLVxIpkqqt5fqtYh3T9Z42LoHarn58wD6JP27zC8uVOSkQYIoXiA==';
 
-		const serviceProofKey = {
-			crv: 'P-256',
-			alg: 'ES256',
-			use: 'sig',
-			kty: 'EC',
-			x: 'b8Zc6GPFeu41DqiWPJxRa_jqUTSiMA537emKVHt8UO8',
-			y: 'CXAuTEHet72GjgSDfDg6psBrwE1waxBsNEIGrRZV_90'
-		};
-
-		const response = await axios({
-			url: config.urls.deviceAuthenticate,
-			method: 'POST',
-			headers: getBaseHeaders({
-				...XBLAdditionalHeaders,
-				Signature: serviceSignature
-			}),
-			data: {
-				RelyingParty: 'http://auth.xboxlive.com',
-				TokenType: 'JWT',
-				Properties: {
-					AuthMethod: 'ProofOfPossession',
-					TrustedParty: trustedParty,
-					Id: `{${serviceDeviceId}}`,
-					DeviceType: 'Win32',
-					Version: '10.0.18363',
-					ProofKey: serviceProofKey
-				}
-			}
-		})
-			.then(res => res.data)
-			.catch(_ => {
-				throw XRError.badRequest(
-					`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`
-				);
-			});
-
-		return response;
+	const serviceProofKey = {
+		crv: 'P-256',
+		alg: 'ES256',
+		use: 'sig',
+		kty: 'EC',
+		x: 'v0pdipnZ5pVB5F8FhJy8B2StVRjB6tiQc1YsOFuABNY',
+		y: 'PuRfclnYeqBroHVhX_QLPmOMGB6zUjK4bIScxpKIVh4',
 	};
+
+	const response = await axios({
+		url: config.urls.deviceAuthenticate,
+		method: 'POST',
+		headers: getBaseHeaders({
+			...XBLAdditionalHeaders,
+			Signature: serviceSignature,
+		}),
+		data: {
+			RelyingParty: 'http://auth.xboxlive.com',
+			TokenType: 'JWT',
+			Properties: {
+				AuthMethod: 'ProofOfPossession',
+				Id: serviceDeviceId,
+				DeviceType: 'Win32',
+				Version: '10.0.19042',
+				ProofKey: serviceProofKey,
+				TrustedParty: serviceTrustedParty,
+			},
+		},
+	})
+		.then(res => res.data)
+		.catch(_ => {
+			throw XRError.badRequest(
+				`Could not create a valid device token, please fill an issue on ${commonConfig.github.createIssue}`
+			);
+		});
+
+	return response;
+};
 
 //#endregion
