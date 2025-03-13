@@ -28,7 +28,7 @@
 		"test": "npm run touch-test-env && ts-node ./__tests__/e2e.test.js"
 	},
 	"dependencies": {
-		"axios": "1.7.9"
+		"axios": "1.8.3"
 	},
 	"devDependencies": {
 		"@types/node": "22.10.1",
