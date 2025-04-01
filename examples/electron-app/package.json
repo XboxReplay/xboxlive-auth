@@ -15,6 +15,6 @@
 	},
 	"dependencies": {
 		"@xboxreplay/xboxlive-auth": "file:../../",
-		"electron": "^11.2.0"
+		"electron": "^22.3.25"
 	}
 }
