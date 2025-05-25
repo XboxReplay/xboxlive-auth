@@ -1,0 +1,53 @@
+{
+	"name": "@xboxreplay/xboxlive-auth",
+	"description": "A compact, feature-rich Xbox Network (Xbox Live) OAuth 2.0 authentication module, featuring optional Electron integration.",
+	"version": "5.0.0",
+	"keywords": [
+		"xboxnetwork",
+		"xboxreplay",
+		"xboxlive",
+		"xbox",
+		"live",
+		"auth"
+	],
+	"license": "Apache-2.0",
+	"author": {
+		"name": "Alexis Bize",
+		"email": "alexis.bize@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/XboxReplay/xboxlive-auth"
+	},
+	"bugs": {
+		"url": "https://github.com/XboxReplay/xboxlive-auth/issues"
+	},
+	"homepage": "https://github.com/XboxReplay/xboxlive-auth#readme",
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"files": [
+		"dist",
+		"LICENSE",
+		"README.md"
+	],
+	"sideEffects": false,
+	"scripts": {
+		"build": "npm run clean && tsc",
+		"build:watch": "tsc --watch",
+		"clean": "rimraf ./dist",
+		"prepublishOnly": "npm run test && npm run build",
+		"test": "touch .env.test && ts-node ./__tests__/e2e.test.js",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@types/node": "22.15.18",
+		"dotenv": "16.5.0",
+		"rimraf": "6.0.1",
+		"typescript": "5.8.3"
+	},
+	"engines": {
+		"node": ">=16.0.0"
+	}
+}
