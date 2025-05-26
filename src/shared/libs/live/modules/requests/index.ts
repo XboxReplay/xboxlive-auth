@@ -26,8 +26,6 @@ import type {
 	LivePreAuthResponse,
 } from './requests.types';
 
-//#region public methods
-
 /**
  * Returns login.live.com authorize URL
  * @param {string} [clientId] - Client ID
@@ -36,16 +34,12 @@ import type {
  * @param {string} [redirectUri] - Redirect URI
  *
  * @example
- * ```typescript
  * // Using defaults
  * getAuthorizeUrl();
- * ```
  *
  * @example
- * ```typescript
  * // Custom parameters
  * getAuthorizeUrl('xxxxxx', 'XboxLive.signin', 'code', 'https://xxxxxx');
- * ```
  *
  * @returns {string} Authorize URL with query parameters
  */
@@ -71,6 +65,10 @@ export const getAuthorizeUrl = (
  * @param {string} [clientSecret] - Client secret
  * @throws {XRFetchClientException} If the request fails
  * @returns {Promise<LiveAuthResponse>} OAuth token response
+ *
+ * @example
+ * // Exchange code for access token
+ * const token = await exchangeCodeForAccessToken('code', 'clientId', 'scope', 'redirectUri');
  */
 export const exchangeCodeForAccessToken = async (
 	code: string,
@@ -102,21 +100,16 @@ export const exchangeCodeForAccessToken = async (
  * @param {string} [clientId] - Client ID
  * @param {string} [scope] - OAuth scope
  * @param {string} [clientSecret] - Client secret
- *
- * @example
- * ```typescript
- * // Using defaults
- * refreshAccessToken('M.R3_B.xxxxxx');
- * ```
- *
- * @example
- * ```typescript
- * // Custom parameters
- * refreshAccessToken('M.R3_B.xxxxxx', 'xxxxxx', 'XboxLive.signin', 'xxxxxx');
- * ```
- *
  * @throws {XRFetchClientException} If the request fails
  * @returns {Promise<LiveAuthResponse>} Refresh token response
+ *
+ * @example
+ * // Using defaults
+ * await refreshAccessToken('M.R3_B.xxxxxx');
+ *
+ * @example
+ * // Custom parameters
+ * await refreshAccessToken('M.R3_B.xxxxxx', 'xxxxxx', 'XboxLive.signin', 'xxxxxx');
  */
 export const refreshAccessToken = async (
 	refreshToken: string,
@@ -178,11 +171,14 @@ export const preAuth = async (options?: LivePreAuthOptions): Promise<LivePreAuth
 };
 
 /**
- * Authenticate with Microsoft Live using credentials
+ * Authenticates with Microsoft Account using credentials
  * @param {LiveCredentials} credentials - Email and password credentials
  * @throws {XRFetchClientException} If the request fails
  * @throws {XRLiveLibraryException} If the authentication has failed
  * @returns {Promise<LiveAuthResponse>} Authentication response with tokens
+ *
+ * @example
+ * const tokens = await authenticate({ email: 'user@example.com', password: 'password' });
  */
 export const authenticate = async (credentials: LiveCredentials): Promise<LiveAuthResponse> => {
 	const preAuthResponse = await preAuth();
@@ -234,19 +230,14 @@ export const authenticate = async (credentials: LiveCredentials): Promise<LiveAu
 	return output;
 };
 
-//#endregion
-//#region private methods
-
 /**
- * Extracts a specific match from a string using regex
- * @param {string} entry - The string to search in
- * @param {RegExp} regex - The regular expression pattern to match
- * @param {number} [index=0] - The capture group index to return
- * @returns {string|undefined} The matched string or undefined if no match
+ * Extracts a regex match group from a string by index
+ * @param {string} entry - The string to search
+ * @param {RegExp} regex - The regex to use
+ * @param {number} [index=0] - The match group index
+ * @returns {string|undefined} The matched string or undefined if not found
  */
 const getMatchForIndex = (entry: string, regex: RegExp, index: number = 0): string | undefined => {
 	const match = entry.match(regex);
 	return match?.[index] || void 0;
 };
-
-//#endregion

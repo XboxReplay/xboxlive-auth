@@ -1,7 +1,7 @@
 {
 	"name": "@xboxreplay/xboxlive-auth",
-	"description": "A compact, feature-rich Xbox Network (Xbox Live) OAuth 2.0 authentication module, featuring optional Electron integration.",
-	"version": "5.0.0",
+	"description": "A lightweight, zero-dependency Xbox Network (Xbox Live) authentication library for Node.js with OAuth 2.0 support.",
+	"version": "5.0.0-beta.1",
 	"keywords": [
 		"xboxnetwork",
 		"xboxreplay",
@@ -38,16 +38,48 @@
 		"build:watch": "tsc --watch",
 		"clean": "rimraf ./dist",
 		"prepublishOnly": "npm run test && npm run build",
-		"test": "touch .env.test && ts-node ./__tests__/e2e.test.js",
+		"test:integration": "jest --runInBand tests/integration",
+		"test:e2e": "touch .env.test && dotenv -e .env.test -- jest --runInBand tests/e2e",
+		"test": "npm run test:integration && npm run test:e2e",
 		"typecheck": "tsc --noEmit"
 	},
 	"devDependencies": {
+		"@types/jest": "29.5.14",
 		"@types/node": "22.15.18",
-		"dotenv": "16.5.0",
+		"dotenv-cli": "8.0.0",
+		"jest": "29.7.0",
+		"ts-jest": "29.2.5",
 		"rimraf": "6.0.1",
-		"typescript": "5.8.3"
+		"typescript": "5.8.3",
+		"vitest": "3.1.4"
 	},
 	"engines": {
 		"node": ">=16.0.0"
+	},
+	"jest": {
+		"preset": "ts-jest/presets/default-esm",
+		"testEnvironment": "node",
+		"moduleFileExtensions": [
+			"ts",
+			"js"
+		],
+		"testMatch": [
+			"**/?(*.)+(spec|test).ts"
+		],
+		"transform": {
+			"^.+\\.ts$": [
+				"ts-jest",
+				{
+					"useESM": true,
+					"isolatedModules": true
+				}
+			]
+		},
+		"moduleNameMapper": {
+			"^src/(.*)$": "<rootDir>/src/$1"
+		},
+		"extensionsToTreatAsEsm": [
+			".ts"
+		]
 	}
 }

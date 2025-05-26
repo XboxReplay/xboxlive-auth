@@ -30,6 +30,9 @@ class XSAPIFetchClient extends XRFetch {
 	 * @param {Omit<XSAPIFetchRequestConfig, 'method' | 'body'>} [config={}] - Request config excluding method and body
 	 * @returns {Promise<FetchResponse<T>>} A promise that resolves to the response data
 	 * @throws {FetchClientException} If the request fails
+	 *
+	 * @example
+	 * const response = await XSAPIFetchClient.get('https://xbl.xboxlive.com/resource');
 	 */
 	public static override async get<T = any>(
 		url: string,
@@ -46,6 +49,9 @@ class XSAPIFetchClient extends XRFetch {
 	 * @param {Omit<XSAPIFetchRequestConfig, 'method' | 'body'>} [config={}] - Request config excluding method and body
 	 * @returns {Promise<FetchResponse<T>>} A promise that resolves to the response data
 	 * @throws {FetchClientException} If the request fails
+	 *
+	 * @example
+	 * const response = await XSAPIFetchClient.post('https://service.xboxlive.com/resource', { foo: 'bar' });
 	 */
 	public static override async post<T = any>(
 		url: string,
@@ -63,6 +69,9 @@ class XSAPIFetchClient extends XRFetch {
 	 * @param {Omit<XSAPIFetchRequestConfig, 'method' | 'body'>} [config={}] - Request config excluding method and body
 	 * @returns {Promise<FetchResponse<T>>} A promise that resolves to the response data
 	 * @throws {FetchClientException} If the request fails
+	 *
+	 * @example
+	 * const response = await XSAPIFetchClient.put('https://service.xboxlive.com/resource', { foo: 'bar' });
 	 */
 	public static override async put<T = any>(
 		url: string,
@@ -79,6 +88,9 @@ class XSAPIFetchClient extends XRFetch {
 	 * @param {Omit<XSAPIFetchRequestConfig, 'method'>} [config={}] - Request config excluding method
 	 * @returns {Promise<FetchResponse<T>>} A promise that resolves to the response data
 	 * @throws {FetchClientException} If the request fails
+	 *
+	 * @example
+	 * const response = await XSAPIFetchClient.delete('https://service.xboxlive.com/resource');
 	 */
 	public static override async delete<T = any>(
 		url: string,
@@ -109,10 +121,10 @@ class XSAPIFetchClient extends XRFetch {
 		const headers = super.createHeaders(config);
 
 		headers.set('Accept', 'application/json');
-		headers.set('X-XBL-Contract-Version', config.options?.contractVersion || '0');
+		headers.set('X-XBL-Contract-Version', String(config.options?.contractVersion || '0'));
 
 		if (config.options?.XSTSToken !== void 0) {
-			headers.set('Authorization', `XBL3.0 x=${config.options?.XSTSToken}`);
+			headers.set('Authorization', `XBL3.0 x=${config.options?.userHash || '*'};${config.options?.XSTSToken}`);
 		}
 
 		if (config.options?.signature !== void 0) {

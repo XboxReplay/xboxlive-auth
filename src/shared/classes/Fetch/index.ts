@@ -36,7 +36,7 @@ abstract class XRFetch {
 	/**
 	 * Default user agent used during requests
 	 */
-	public static USER_AGENT =
+	protected static USER_AGENT =
 		'XboxLive-Auth/5.0 (Node; +https://github.com/XboxReplay/xboxlive-auth) XboxReplay/AuthClient';
 
 	/**
@@ -59,7 +59,7 @@ abstract class XRFetch {
 	 * @template T - The expected response data type
 	 * @param {string} url - The URL to make the request to
 	 * @param {any} [body] - The request body (will be automatically stringified if an object)
-	 * @param {Omit<FetchRequestConfig, 'method' | 'body'>} [config={}] - Request config excluding method and body
+	 * @param {Omit<FetchRequestConfig, 'method' | 'body'>} [init={}] - Request config excluding method and body
 	 * @returns {Promise<FetchResponse<T>>} A promise that resolves to the response data
 	 * @throws {FetchClientException} If the request fails
 	 */
@@ -92,7 +92,7 @@ abstract class XRFetch {
 	 * Makes a DELETE request to an endpoint
 	 * @template T - The expected response data type
 	 * @param {string} url - The URL to make the request to
-	 * @param {Omit<FetchRequestConfig, 'method'>} [config={}] - Request config excluding method
+	 * @param {Omit<FetchRequestConfig, 'method'>} [init={}] - Request config excluding method
 	 * @returns {Promise<FetchResponse<T>>} A promise that resolves to the response data
 	 * @throws {FetchClientException} If the request fails
 	 */
@@ -107,7 +107,7 @@ abstract class XRFetch {
 	 * Runs a fetch request
 	 * @template T - The expected response data type
 	 * @param {string} url - The URL to request
-	 * @param {FetchRequestConfig} [options={}] - Fetch options
+	 * @param {FetchRequestConfig} [config={}] - Fetch options
 	 * @returns {Promise<FetchResponse<T>>} Promise resolving to the response data
 	 * @throws {FetchClientException} If the request fails
 	 */

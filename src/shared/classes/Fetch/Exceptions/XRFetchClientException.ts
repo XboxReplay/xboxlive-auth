@@ -15,12 +15,8 @@
  */
 
 import XRException from '../../XRException';
-import { isObject } from '../../../modules/utils';
 import type { StringOrError, ErrorData, BaseErrorAttributes } from '../../XRException/XRException.types';
 
-/**
- * Error attributes specific to fetch errors
- */
 type ErrorAttributes = BaseErrorAttributes<{
 	url?: string;
 	statusCode?: number;
@@ -32,7 +28,7 @@ type ErrorAttributes = BaseErrorAttributes<{
  */
 class XRFetchClientException extends XRException<ErrorAttributes> {
 	/**
-	 * Creates a new fetch exception
+	 * Creates a new fetch exception.
 	 * @param stringOrError - Error message or an Error object to wrap
 	 * @param data - Additional error data
 	 */

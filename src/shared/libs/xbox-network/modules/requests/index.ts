@@ -25,6 +25,16 @@ import type {
 	XNETExchangeRpsTicketResponse,
 } from './requests.types';
 
+/**
+ * Exchanges an RPS ticket for a user token
+ * @param {string} rpsTicket - The RPS ticket to exchange
+ * @param {Preamble} [preamble='t'] - The preamble for the ticket
+ * @param {Record<string, string>} [additionalHeaders={}] - Additional headers for the request
+ * @returns {Promise<XNETExchangeRpsTicketResponse>} The user token response
+ *
+ * @example
+ * const userToken = await exchangeRpsTicketForUserToken('rps-ticket');
+ */
 export const exchangeRpsTicketForUserToken = async (
 	rpsTicket: string,
 	preamble: Preamble = 't',
@@ -50,12 +60,22 @@ export const exchangeRpsTicketForUserToken = async (
 	).then(res => res.data);
 };
 
+/**
+ * Exchanges multiple tokens for an XSTS token
+ * @param {XNETTokens} tokens - The tokens to exchange
+ * @param {XNETExchangeTokensOptions} [options={}] - Options for the exchange
+ * @param {Record<string, string>} [additionalHeaders={}] - Additional headers for the request
+ * @returns {Promise<XBLExchangeTokensResponse>} The XSTS token response
+ *
+ * @example
+ * const xstsToken = await exchangeTokensForXSTSToken({ userTokens: ['token'] });
+ */
 export const exchangeTokensForXSTSToken = async (
 	tokens: XNETTokens,
 	options: XNETExchangeTokensOptions = {},
 	additionalHeaders: Record<string, string> = {}
 ): Promise<XBLExchangeTokensResponse> => {
-	return XSAPIFetchClient.post<XNETExchangeRpsTicketResponse>(
+	return XSAPIFetchClient.post<XBLExchangeTokensResponse>(
 		config.urls.XSTSAuthorize,
 		{
 			RelyingParty: options.XSTSRelyingParty || config.relyingParties.XBOX_LIVE,
@@ -72,8 +92,19 @@ export const exchangeTokensForXSTSToken = async (
 	).then(res => res.data);
 };
 
+/**
+ * Exchanges a single user token for an XSTS token
+ * @param {string} userToken - The user token to exchange
+ * @param {XNETExchangeTokensOptions} [options={}] - Options for the exchange
+ * @param {Record<string, string>} [additionalHeaders={}] - Additional headers for the request
+ * @returns {Promise<XBLExchangeTokensResponse>} The XSTS token response
+ *
+ * @example
+ * const xstsToken = await exchangeTokenForXSTSToken('user-token');
+ */
 export const exchangeTokenForXSTSToken = (
 	userToken: string,
 	options: XNETExchangeTokensOptions = {},
 	additionalHeaders: Record<string, string> = {}
-) => exchangeTokensForXSTSToken({ userTokens: [userToken] }, options, additionalHeaders);
+): Promise<XBLExchangeTokensResponse> =>
+	exchangeTokensForXSTSToken({ userTokens: [userToken] }, options, additionalHeaders);

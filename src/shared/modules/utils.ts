@@ -15,9 +15,9 @@
  */
 
 /**
- * Helper function to check if a value is a plain object
- * @param item - Any value to check
- * @returns True if the item is a plain object (not null, not an array, and with Object.prototype)
+ * Helper function to check if a value is a plain object.
+ * @param item - Any value to check.
+ * @returns True if the item is a plain object (not null, not an array, and with Object.prototype).
  */
 export const isObject = (item: any): item is Record<string, any> =>
 	!!item &&

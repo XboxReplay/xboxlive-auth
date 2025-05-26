@@ -17,5 +17,11 @@
 import type { FetchRequestConfig } from '../Fetch.types';
 
 export type XSAPIFetchRequestConfig = FetchRequestConfig & {
-	options?: Partial<{ XSTSToken?: string; contractVersion?: string; signature?: string; mscv?: string }>;
+	options?: {
+		XSTSToken?: string;
+		userHash?: string;
+		contractVersion?: string | number;
+		signature?: string;
+		mscv?: string;
+	};
 };

@@ -18,6 +18,10 @@ import XSAPIFetchClient from '../../../../../classes/Fetch/Clients/XSAPIFetchCli
 import { config } from '../../../config';
 import type { XNETDummyDeviceTokenResponse } from '../requests.types';
 
+/**
+ * Creates a dummy Win32 device token for Xbox Network authentication (experimental)
+ * @returns {Promise<XNETDummyDeviceTokenResponse>} The dummy device token response
+ */
 export const createDummyWin32DeviceToken = async (): Promise<XNETDummyDeviceTokenResponse> => {
 	const serviceTrustedParty = 'https://xboxreplay.net/';
 	const serviceDeviceId = '{51354D2F-352F-472F-5842-5233706C6179}';

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import type { ValueOf } from '../../../../../types/generic.types';
 import type { config } from '../../config';
+
+type ValueOf<T> = T[keyof T];
 
 export type Preamble = 'd' | 't';
 
@@ -34,13 +35,11 @@ export type XNETExchangeRpsTicketResponse = {
 	IssueInstant: string;
 	NotAfter: string;
 	Token: string;
-	DisplayClaims: {
-		xui: Array<{ uhs: string }>;
-	};
+	DisplayClaims: { xui: Array<{ uhs: string }> };
 };
 
 export type XBLExchangeTokensResponse = Omit<XNETExchangeRpsTicketResponse, 'DisplayClaims'> & {
-	DisplayClaims: { xui: Array<{ xid?: string; uhs: string } & {}> };
+	DisplayClaims: { xui: Array<{ xid?: string; uhs: string } & (string & {})> };
 };
 
 export type XNETDummyDeviceTokenResponse = {

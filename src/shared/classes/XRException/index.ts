@@ -18,19 +18,19 @@ import { isObject } from '../../modules/utils';
 import type { BaseErrorAttributes, ErrorAttributes, ErrorData, StringOrError } from './XRException.types';
 
 /**
- * Custom exception class for the library with support for structured error data and attributes
- * @template TAttributes Type for custom error attributes
+ * Custom exception class for the library with support for structured error data and attributes.
+ * @template TAttributes Type for custom error attributes.
  */
 class XRBaseException<TAttributes extends BaseErrorAttributes = BaseErrorAttributes> extends Error {
 	/**
-	 * Structured error data containing optional attributes
+	 * Structured error data containing optional attributes.
 	 */
 	public readonly data: ErrorData<TAttributes>;
 
 	/**
-	 * Creates a new XRBaseException
-	 * @param stringOrError - Error message or an Error object to wrap
-	 * @param data - Optional additional error data
+	 * Creates a new XRBaseException.
+	 * @param stringOrError - Error message or an Error object to wrap.
+	 * @param data - Optional additional error data.
 	 */
 	public constructor(stringOrError: StringOrError, data: ErrorData<TAttributes> = {}) {
 		super(typeof stringOrError === 'string' ? stringOrError : stringOrError.message);
@@ -72,17 +72,17 @@ class XRBaseException<TAttributes extends BaseErrorAttributes = BaseErrorAttribu
 	}
 
 	/**
-	 * Gets the error attributes
-	 * @returns Current error attributes
+	 * Gets the error attributes.
+	 * @returns Current error attributes.
 	 */
 	public getAttributes(): ErrorAttributes<TAttributes> {
 		return (this.data.attributes || {}) as ErrorAttributes<TAttributes>;
 	}
 
 	/**
-	 * Extends the current attributes with new ones
-	 * @param attributes - Partial attributes to add
-	 * @returns This instance for chaining
+	 * Extends the current attributes with new ones.
+	 * @param attributes - Partial attributes to add.
+	 * @returns This instance for chaining.
 	 */
 	public extendAttributes(attributes: Partial<TAttributes>): this {
 		this.data.attributes = {
@@ -93,25 +93,27 @@ class XRBaseException<TAttributes extends BaseErrorAttributes = BaseErrorAttribu
 	}
 
 	/**
-	 * Creates a JSON representation of the error
-	 * @returns Object with message and data properties
+	 * Creates a JSON representation of the error.
+	 * @returns Object with message and data properties.
 	 */
 	public toJSON(): { message: string; data: ErrorData<TAttributes>; name: string } {
 		return { name: this.name, message: this.message, data: this.data };
 	}
 
 	/**
-	 * Creates a copy of the exception with a new message
-	 * @param message - New error message
+	 * Creates a copy of the exception with a new message.
+	 * @param message - New error message.
 	 */
 	public withMessage(message: string): XRBaseException<TAttributes> {
 		return new XRBaseException<TAttributes>(message, this.data);
 	}
 
 	/**
-	 * Factory method to create an exception from any error
-	 * @param err - Error to convert to an XRBaseException
-	 * @param defaultMessage - Optional message to use if the error doesn't have one
+	 * Factory method to create an exception from any error.
+	 * @param err - Error to convert to an XRBaseException.
+	 * @param defaultMessage - Optional message to use if the error doesn't have one.
+	 * @example
+	 * const ex = XRBaseException.from(new Error('fail'));
 	 */
 	public static from<T extends BaseErrorAttributes>(
 		err: unknown,

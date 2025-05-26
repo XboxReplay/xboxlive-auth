@@ -14,9 +14,29 @@
  * limitations under the License.
  */
 
-import type { XNETExchangeTokensOptions } from '../shared/libs/xbox-network/modules/requests/requests.types';
+import type { LiveAuthResponse } from '../shared/libs/live/modules/requests/requests.types';
+
+import type {
+	XBLExchangeTokensResponse,
+	XNETExchangeTokensOptions,
+	XNETExchangeRpsTicketResponse,
+} from '../shared/libs/xbox-network/modules/requests/requests.types';
 
 export type Email = `${string}@${string}.${string}`;
-export type AuthenticateOptions = XNETExchangeTokensOptions & {
+export type AuthenticateOptions = Omit<XNETExchangeTokensOptions, 'deviceToken' | 'titleToken'> & {
 	raw?: boolean;
+};
+
+export type AuthenticateResponse = {
+	xuid: string | null;
+	user_hash: string;
+	xsts_token: string;
+	display_claims: XBLExchangeTokensResponse['DisplayClaims'];
+	expires_on: string;
+};
+
+export type AuthenticateRawResponse = {
+	'login.live.com': LiveAuthResponse;
+	'user.auth.xboxlive.com': XNETExchangeRpsTicketResponse;
+	'xsts.auth.xboxlive.com': XBLExchangeTokensResponse;
 };

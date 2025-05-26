@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import FetchClient from './shared/classes/Fetch/Clients';
-import XSAPIFetchClient from './shared/classes/Fetch/Clients/XSAPIFetchClient';
+import XSAPIClient from './shared/classes/Fetch/Clients/XSAPIFetchClient';
 import { createDummyWin32DeviceToken } from './shared/libs/xbox-network/modules/requests/experimental';
 import type { XNETTokens } from './shared/libs/xbox-network/modules/requests/requests.types';
-import type { AuthenticateOptions, Email } from './types/lib.types';
+import type { AuthenticateOptions, AuthenticateRawResponse, AuthenticateResponse, Email } from './types/lib.types';
 
 import {
 	exchangeRpsTicketForUserToken,
@@ -34,18 +33,27 @@ import {
 	authenticate as authenticateWithCredentials,
 } from './shared/libs/live/modules/requests';
 
-const authenticate = async (email: Email, password: string, options: AuthenticateOptions = {}) => {
+type AuthenticateFn = {
+	(email: Email, password: string, options: AuthenticateOptions & { raw: true }): Promise<AuthenticateRawResponse>;
+	(email: Email, password: string, options?: AuthenticateOptions & { raw?: false }): Promise<AuthenticateResponse>;
+};
+
+/**
+ * Authenticates a user with Microsoft Account credentials and returns user and token information
+ * @param {Email} email - The user's email address
+ * @param {string} password - The user's password
+ * @param {AuthenticateOptions} [options] - Optional authentication options
+ * @returns {Promise<AuthenticateRawResponse | AuthenticateResponse>} The authentication result, either raw responses or a simplified object
+ */
+// @ts-expect-error overload
+const authenticate: AuthenticateFn = async (
+	email: Email,
+	password: string,
+	options: AuthenticateOptions = {}
+): Promise<AuthenticateRawResponse | AuthenticateResponse> => {
 	const authResponse = await authenticateWithCredentials({ email, password });
 	const userTokenResponse = await exchangeRpsTicketForUserToken(authResponse.access_token, 't');
 	const reqTokens: XNETTokens = { userTokens: [userTokenResponse.Token] };
-
-	if (options.deviceToken !== void 0) {
-		reqTokens.deviceToken = options.deviceToken;
-		if (options.titleToken !== void 0) {
-			// @ts-expect-error assign title token
-			reqTokens.titleToken = options.titleToken;
-		}
-	}
 
 	const XSTSResponse = await exchangeTokensForXSTSToken(reqTokens, {
 		XSTSRelyingParty: options.XSTSRelyingParty,
@@ -58,7 +66,7 @@ const authenticate = async (email: Email, password: string, options: Authenticat
 			'login.live.com': authResponse,
 			'user.auth.xboxlive.com': userTokenResponse,
 			'xsts.auth.xboxlive.com': XSTSResponse,
-		};
+		} satisfies AuthenticateRawResponse;
 	}
 
 	return {
@@ -67,31 +75,25 @@ const authenticate = async (email: Email, password: string, options: Authenticat
 		xsts_token: XSTSResponse.Token,
 		display_claims: XSTSResponse.DisplayClaims,
 		expires_on: XSTSResponse.NotAfter,
-	};
+	} satisfies AuthenticateResponse;
 };
 
-const namespaces = {
-	live: {
-		preAuth,
-		getAuthorizeUrl,
-		refreshAccessToken,
-		authenticateWithCredentials,
-		exchangeCodeForAccessToken,
-	},
-	xnet: {
-		exchangeTokenForXSTSToken,
-		exchangeTokensForXSTSToken,
-		exchangeCodeForAccessToken,
-		exchangeRpsTicketForUserToken,
-		experimental: {
-			createDummyWin32DeviceToken,
-		},
-	},
-	httpClient: {
-		Base: FetchClient,
-		XSAPI: XSAPIFetchClient,
+const live = {
+	preAuth,
+	getAuthorizeUrl,
+	refreshAccessToken,
+	authenticateWithCredentials,
+	exchangeCodeForAccessToken,
+};
+
+const xnet = {
+	exchangeTokenForXSTSToken,
+	exchangeTokensForXSTSToken,
+	exchangeCodeForAccessToken,
+	exchangeRpsTicketForUserToken,
+	experimental: {
+		createDummyWin32DeviceToken,
 	},
 };
 
-export { authenticate };
-export default namespaces;
+export { authenticate, live, xnet, XSAPIClient };
