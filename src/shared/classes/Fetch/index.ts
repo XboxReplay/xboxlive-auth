@@ -171,11 +171,11 @@ abstract class XRFetch {
 		const headers = new Headers(config.headers);
 
 		if (config.options?.includeDefaultHeaders !== false) {
-			headers.set('Accept', '*/*');
-			headers.set('Accept-Language', 'en-US,en;q=0.9');
-			headers.set('Cache-Control', 'no-cache');
-			headers.set('Accept-Encoding', 'gzip, deflate, br');
-			headers.set('User-Agent', this.USER_AGENT);
+			headers.set('Accept', headers.get('Accept') || '*/*');
+			headers.set('Accept-Language', headers.get('Accept-Language') || 'en-US,en;q=0.9');
+			headers.set('Cache-Control', headers.get('Cache-Control') || 'no-cache');
+			headers.set('Accept-Encoding', headers.get('Accept-Encoding') || 'gzip, deflate, br');
+			headers.set('User-Agent', headers.get('User-Agent') || this.USER_AGENT);
 		}
 
 		if (isObject(config.body) === true) {
