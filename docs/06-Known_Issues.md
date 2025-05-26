@@ -332,7 +332,7 @@ If you encounter issues not covered in this document:
 ## Related Documentation
 
 -   [Experimental Methods](03-Experimental.md) - Device token workarounds
--   [RelyingParty Configuration](04-Relying_Party.md) - Service-specific authentication
+-   [RelyingParty Configuration](04-RelyingParty.md) - Service-specific authentication
 -   [Detect Unauthorized AgeGroup](07-Detect_Unauthorized_AgeGroup.md) - Age verification methods
 -   [Custom Azure Application](02-Custom_Azure_Application.md) - OAuth 2.0 setup
 -   [Errors](09-Errors.md) - Error Handling

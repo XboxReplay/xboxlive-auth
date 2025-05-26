@@ -253,6 +253,6 @@ When handling age group information:
 
 -   [Known Issues](06-Known_Issues.md) - Age-related authentication issues
 -   [Experimental Methods](03-Experimental.md) - Device token usage
--   [RelyingParty Configuration](04-Relying_Party.md) - Using accounts RelyingParty
+-   [RelyingParty Configuration](04-RelyingParty.md) - Using accounts RelyingParty
 -   [Available Methods](05-Methods.md) - Complete method reference
 -   [Errors](09-Errors.md) - Error Handling

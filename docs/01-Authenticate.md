@@ -176,6 +176,6 @@ For more advanced authentication scenarios, consider using the individual module
 ## Next Steps
 
 -   [Custom Azure Application Setup](02-Custom_Azure_Application.md)
--   [Understanding RelyingParty](04-Relying_Party.md)
+-   [Understanding RelyingParty](04-RelyingParty.md)
 -   [Available Methods Reference](05-Methods.md)
 -   [Errors](09-Errors.md)

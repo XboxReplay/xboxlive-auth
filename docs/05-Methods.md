@@ -318,6 +318,6 @@ try {
 
 -   [Basic Authentication](01-Authenticate.md)
 -   [Custom Azure Application](02-Custom_Azure_Application.md)
--   [RelyingParty Configuration](04-Relying_Party.md)
+-   [RelyingParty Configuration](04-RelyingParty.md)
 -   [Known Issues](06-Known_Issues.md)
 -   [Errors](09-Errors.md)

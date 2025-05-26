@@ -114,7 +114,7 @@ The library is fully typed with TypeScript. Key types include:
 -   [Basic authentication](/docs/01-Authenticate.md)
 -   [Use a custom Azure Application (OAuth2.0)](/docs/02-Custom_Azure_Application.md)
 -   [Experimental methods, such as "deviceToken" generation](/docs/03-Experimental.md)
--   [What's a RelyingParty and how to use it](/docs/04-Relying_Party.md)
+-   [What's a RelyingParty and how to use it](/docs/04-RelyingParty.md)
 -   [Available methods in this library](/docs/05-Methods.md)
 -   [Known issues and possible workarounds](/docs/06-Known_Issues.md)
 -   [How to deal with unauthorized "AgeGroup" authentication](/docs/07-Detect_Unauthorized_AgeGroup.md)
