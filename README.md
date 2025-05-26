@@ -2,7 +2,7 @@
 
 A lightweight, zero-dependency Xbox Network (Xbox Live) authentication library for Node.js with OAuth 2.0 support.
 
-⚠️ **Breaking Changes Notice**: Significant breaking changes have been introduced since v4. Please review the [Migration Guide](docs/90_Migration_From_v4.md) for detailed upgrade instructions and code examples.
+⚠️ **Breaking Changes Notice**: Significant breaking changes have been introduced since v4. Please review the [Migration Guide](docs/90-Migration_From_v4.md) for detailed upgrade instructions and code examples.
 
 > [!IMPORTANT]
 > The main `authenticate()` function remains backward compatible for basic usage, but method imports and advanced features have changed significantly.
