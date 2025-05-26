@@ -178,4 +178,4 @@ For more advanced authentication scenarios, consider using the individual module
 -   [Custom Azure Application Setup](02-Custom_Azure_Application.md)
 -   [Understanding RelyingParty](04-Relying_Party.md)
 -   [Available Methods Reference](05-Methods.md)
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md)

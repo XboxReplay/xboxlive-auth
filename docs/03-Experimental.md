@@ -176,7 +176,7 @@ If this experimental method is removed in future versions, alternative approache
 -   [Known Issues](06-Known_Issues.md) - Age group authentication issues
 -   [Detect Unauthorized AgeGroup](07-Detect_Unauthorized_AgeGroup.md) - Checking account restrictions
 -   [Available Methods](05-Methods.md) - Complete method reference
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md) - Error Handling
 
 ## Feedback
 

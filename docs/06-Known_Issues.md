@@ -335,4 +335,4 @@ If you encounter issues not covered in this document:
 -   [RelyingParty Configuration](04-Relying_Party.md) - Service-specific authentication
 -   [Detect Unauthorized AgeGroup](07-Detect_Unauthorized_AgeGroup.md) - Age verification methods
 -   [Custom Azure Application](02-Custom_Azure_Application.md) - OAuth 2.0 setup
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md) - Error Handling

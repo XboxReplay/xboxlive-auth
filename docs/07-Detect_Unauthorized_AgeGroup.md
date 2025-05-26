@@ -255,4 +255,4 @@ When handling age group information:
 -   [Experimental Methods](03-Experimental.md) - Device token usage
 -   [RelyingParty Configuration](04-Relying_Party.md) - Using accounts RelyingParty
 -   [Available Methods](05-Methods.md) - Complete method reference
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md) - Error Handling

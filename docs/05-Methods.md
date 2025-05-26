@@ -320,4 +320,4 @@ try {
 -   [Custom Azure Application](02-Custom_Azure_Application.md)
 -   [RelyingParty Configuration](04-Relying_Party.md)
 -   [Known Issues](06-Known_Issues.md)
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md)

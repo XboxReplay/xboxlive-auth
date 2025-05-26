@@ -236,4 +236,4 @@ try {
 -   [Experimental Methods](03-Experimental.md) - Device token usage
 -   [Known Issues](06-Known_Issues.md) - Age group restrictions
 -   [Detect Unauthorized AgeGroup](07-Detect_Unauthorized_AgeGroup.md) - Age verification patterns
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md) - Error Handling

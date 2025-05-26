@@ -416,6 +416,6 @@ async function debugTokenExchange(code: string) {
 -   [Known Issues](06-Known_Issues.md) - 2FA limitations with direct authentication
 -   [Available Methods](05-Methods.md) - Complete method reference
 -   [RelyingParty Configuration](04-RelyingParty.md) - Service-specific authentication
--   [Errors](08-Errors.md)
+-   [Errors](09-Errors.md) - Error Handling
 
 For more information about Microsoft OAuth 2.0, refer to the [official Microsoft documentation](https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth-live-connect).
