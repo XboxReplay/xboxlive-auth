@@ -283,7 +283,7 @@ type AuthenticateResponse = {
   xuid: string | null;
   user_hash: string;
   xsts_token: string;
-  display_claims: XBLExchangeTokensResponse['DisplayClaims'];
+  display_claims: XNETExchangeTokensResponse['DisplayClaims'];
   expires_on: string;
 };
 ```
@@ -294,7 +294,7 @@ type AuthenticateResponse = {
 type AuthenticateRawResponse = {
   'login.live.com': LiveAuthResponse;
   'user.auth.xboxlive.com': XNETExchangeRpsTicketResponse;
-  'xsts.auth.xboxlive.com': XBLExchangeTokensResponse;
+  'xsts.auth.xboxlive.com': XNETExchangeTokensResponse;
 };
 ```
 

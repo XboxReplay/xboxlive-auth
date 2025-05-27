@@ -21,7 +21,7 @@ import type {
 	Preamble,
 	XNETTokens,
 	XNETExchangeTokensOptions,
-	XBLExchangeTokensResponse,
+	XNETExchangeTokensResponse,
 	XNETExchangeRpsTicketResponse,
 } from './requests.types';
 
@@ -65,7 +65,7 @@ export const exchangeRpsTicketForUserToken = async (
  * @param {XNETTokens} tokens - The tokens to exchange
  * @param {XNETExchangeTokensOptions} [options={}] - Options for the exchange
  * @param {Record<string, string>} [additionalHeaders={}] - Additional headers for the request
- * @returns {Promise<XBLExchangeTokensResponse>} The XSTS token response
+ * @returns {Promise<XNETExchangeTokensResponse>} The XSTS token response
  *
  * @example
  * const xstsToken = await exchangeTokensForXSTSToken({ userTokens: ['token'] });
@@ -74,8 +74,8 @@ export const exchangeTokensForXSTSToken = async (
 	tokens: XNETTokens,
 	options: XNETExchangeTokensOptions = {},
 	additionalHeaders: Record<string, string> = {}
-): Promise<XBLExchangeTokensResponse> => {
-	return XSAPIFetchClient.post<XBLExchangeTokensResponse>(
+): Promise<XNETExchangeTokensResponse> => {
+	return XSAPIFetchClient.post<XNETExchangeTokensResponse>(
 		config.urls.XSTSAuthorize,
 		{
 			RelyingParty: options.XSTSRelyingParty || config.relyingParties.XBOX_LIVE,
@@ -97,7 +97,7 @@ export const exchangeTokensForXSTSToken = async (
  * @param {string} userToken - The user token to exchange
  * @param {XNETExchangeTokensOptions} [options={}] - Options for the exchange
  * @param {Record<string, string>} [additionalHeaders={}] - Additional headers for the request
- * @returns {Promise<XBLExchangeTokensResponse>} The XSTS token response
+ * @returns {Promise<XNETExchangeTokensResponse>} The XSTS token response
  *
  * @example
  * const xstsToken = await exchangeTokenForXSTSToken('user-token');
@@ -106,5 +106,5 @@ export const exchangeTokenForXSTSToken = (
 	userToken: string,
 	options: XNETExchangeTokensOptions = {},
 	additionalHeaders: Record<string, string> = {}
-): Promise<XBLExchangeTokensResponse> =>
+): Promise<XNETExchangeTokensResponse> =>
 	exchangeTokensForXSTSToken({ userTokens: [userToken] }, options, additionalHeaders);

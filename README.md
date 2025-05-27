@@ -63,7 +63,7 @@ console.log(rawResponse);
 // {
 //   'login.live.com': LiveAuthResponse,
 //   'user.auth.xboxlive.com': XNETExchangeRpsTicketResponse,
-//   'xsts.auth.xboxlive.com': XBLExchangeTokensResponse
+//   'xsts.auth.xboxlive.com': XNETExchangeTokensResponse
 // }
 ```
 

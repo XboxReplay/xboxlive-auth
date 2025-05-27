@@ -17,7 +17,7 @@
 import type { LiveAuthResponse } from '../shared/libs/live/modules/requests/requests.types';
 
 import type {
-	XBLExchangeTokensResponse,
+	XNETExchangeTokensResponse,
 	XNETExchangeTokensOptions,
 	XNETExchangeRpsTicketResponse,
 } from '../shared/libs/xbox-network/modules/requests/requests.types';
@@ -31,12 +31,12 @@ export type AuthenticateResponse = {
 	xuid: string | null;
 	user_hash: string;
 	xsts_token: string;
-	display_claims: XBLExchangeTokensResponse['DisplayClaims'];
+	display_claims: XNETExchangeTokensResponse['DisplayClaims'];
 	expires_on: string;
 };
 
 export type AuthenticateRawResponse = {
 	'login.live.com': LiveAuthResponse;
 	'user.auth.xboxlive.com': XNETExchangeRpsTicketResponse;
-	'xsts.auth.xboxlive.com': XBLExchangeTokensResponse;
+	'xsts.auth.xboxlive.com': XNETExchangeTokensResponse;
 };
