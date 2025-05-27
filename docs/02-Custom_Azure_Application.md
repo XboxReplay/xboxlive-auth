@@ -378,38 +378,6 @@ function isTokenValid(token: any): boolean {
 **Issue**: Refresh token doesn't work
 **Solution**: Ensure you requested the `offline_access` scope during initial authentication.
 
-### Debug Mode
-
-Enable detailed logging for troubleshooting:
-
-```typescript
-// Enable debug mode (implement based on your logging system)
-const DEBUG = process.env.NODE_ENV === 'development';
-
-async function debugTokenExchange(code: string) {
-	if (DEBUG) {
-		console.log('Exchanging code:', code.substring(0, 10) + '...');
-	}
-
-	try {
-		const tokens = await live.exchangeCodeForAccessToken(code);
-
-		if (DEBUG) {
-			console.log('Token exchange successful');
-			console.log('Access token length:', tokens.access_token.length);
-			console.log('Has refresh token:', !!tokens.refresh_token);
-		}
-
-		return tokens;
-	} catch (error) {
-		if (DEBUG) {
-			console.error('Token exchange failed:', error);
-		}
-		throw error;
-	}
-}
-```
-
 ## Related Documentation
 
 -   [Basic Authentication](01-Authenticate.md) - Standard authentication methods

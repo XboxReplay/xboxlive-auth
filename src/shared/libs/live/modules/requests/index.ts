@@ -200,7 +200,7 @@ export const authenticate = async (credentials: LiveCredentials): Promise<LiveAu
 		}
 	);
 
-	if (resp.status !== 302) {
+	if (resp.statusCode !== 302) {
 		throw new XRLiveLibraryException(`The authentication has failed`, {
 			attributes: { code: 'INVALID_CREDENTIALS_OR_2FA_ENABLED' },
 		});

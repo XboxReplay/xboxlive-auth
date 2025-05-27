@@ -31,6 +31,35 @@ const authWithCustomRP = await authenticate('user@example.com', 'password', {
 console.log(authWithCustomRP);
 ```
 
+### Known Public Relying Parties
+
+| Relying Party URL                       | Purpose                                 |
+| --------------------------------------- | --------------------------------------- |
+| `http://accounts.xboxlive.com`          | Account management and profile services |
+| `http://attestation.xboxlive.com`       | Device and client attestation           |
+| `http://banning.xboxlive.com`           | Ban and enforcement services            |
+| `http://device.mgt.xboxlive.com`        | Device management                       |
+| `http://events.xboxlive.com`            | Event tracking and analytics            |
+| `http://experimentation.xboxlive.com/`  | A/B testing and feature flags           |
+| `https://gameservices.xboxlive.com/`    | Core gaming services                    |
+| `http://instance.mgt.xboxlive.com`      | Game instance management                |
+| `http://licensing.xboxlive.com`         | Content licensing and DRM               |
+| `http://mp.microsoft.com/`              | Microsoft multiplayer services          |
+| `http://playfab.xboxlive.com/`          | PlayFab integration services            |
+| `http://sisu.xboxlive.com/`             | Sign-in and user services               |
+| `rp://streaming.xboxlive.com/`          | Game streaming services                 |
+| `http://unlock.device.mgt.xboxlive.com` | Device unlock management                |
+| `http://update.xboxlive.com`            | System and game updates                 |
+| `http://uxservices.xboxlive.com`        | User experience services                |
+| `http://xboxlive.com`                   | General Xbox Live services              |
+| `http://xdes.xboxlive.com/`             | Xbox data and encryption services       |
+| `http://xflight.xboxlive.com/`          | Feature rollout and flighting           |
+| `http://xkms.xboxlive.com`              | Key management services                 |
+| `http://xlink.xboxlive.com`             | Cross-platform linking                  |
+
+> [!NOTE]
+> Different relying parties provide access to different Xbox Live services and may return varying claim sets in the authentication response.
+
 ## Optional Display Claims
 
 Different RelyingParty configurations may support additional claims that aren't returned by default. You can request specific claims using the `optionalDisplayClaims` option:

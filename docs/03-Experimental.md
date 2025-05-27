@@ -139,10 +139,6 @@ Certain relying parties may mandate device tokens for authentication.
 -   Have limited support or documentation
 -   Behave differently across different environments
 
-### Rate Limiting
-
-Device token generation may be subject to rate limiting. Implement proper retry logic and caching when possible.
-
 ### Security Implications
 
 Device tokens contain device-specific information. While these are "dummy" tokens, be mindful of how you store and transmit them.

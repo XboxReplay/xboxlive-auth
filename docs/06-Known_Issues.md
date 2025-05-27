@@ -129,37 +129,21 @@ await xnet.exchangeTokensForXSTSToken(
 );
 ```
 
-## Rate Limiting
+## Connection Issues with Valid Credentials and Disabled 2FA
 
 ### Issue
 
-Xbox Network services implement rate limiting that can affect authentication requests.
+Authentication fails despite providing correct credentials and having two-factor authentication disabled, typically due to Microsoft's automated security restrictions.
 
 ### Impact
 
--   Excessive authentication attempts may be temporarily blocked
--   Rate limits vary by endpoint and account
--   May affect both individual users and applications
+-   Sign-in attempts are blocked from unfamiliar locations or automated systems
+-   Production servers and cloud deployments commonly trigger these restrictions
+-   Authentication flow completes locally but fails in deployment environments
+-   No clear error indication that location-based blocking is the cause
 
-### Workaround
-
-Implement proper retry logic with exponential backoff:
-
-```typescript
-async function authenticateWithRetry(email, password, maxRetries = 3) {
-	for (let attempt = 1; attempt <= maxRetries; attempt++) {
-		try {
-			return await authenticate(email, password);
-		} catch (error) {
-			if (attempt === maxRetries) throw error;
-
-			// Exponential backoff
-			const delay = Math.pow(2, attempt) * 1000;
-			await new Promise(resolve => setTimeout(resolve, delay));
-		}
-	}
-}
-```
+> [!NOTE]
+> This issue commonly occurs when deploying applications to cloud servers or when the application runs from a different geographic location than your usual sign-in pattern.
 
 ## Token Expiration
 

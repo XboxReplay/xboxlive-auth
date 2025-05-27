@@ -162,7 +162,7 @@ try {
 
 		switch (attributes.code) {
 			case 'INVALID_CREDENTIALS_OR_2FA_ENABLED':
-				console.log('Invalid username or password');
+				console.log('Invalid credentials or 2FA enabled');
 				break;
 			default:
 				console.log('Live authentication error:', error.message);

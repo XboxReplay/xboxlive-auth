@@ -29,5 +29,5 @@ export type FetchResponse<T = any> = {
 	data: T;
 	response: Response;
 	headers: Record<string, string>;
-	status: number;
+	statusCode: number;
 };

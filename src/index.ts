@@ -96,4 +96,9 @@ const xnet = {
 	},
 };
 
+export * from './types/lib.types';
+export * from './shared/classes/Fetch/Fetch.types';
+export * from './shared/libs/live/modules/requests/requests.types';
+export * from './shared/libs/xbox-network/modules/requests/requests.types';
+
 export { authenticate, live, xnet, XSAPIClient };

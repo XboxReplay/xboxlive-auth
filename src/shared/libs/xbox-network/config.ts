@@ -48,7 +48,7 @@ const config = {
 		XKMS: 'http://xkms.xboxlive.com',
 		XLINK: 'http://xlink.xboxlive.com',
 	},
-	displayClaims: ['mgt', 'mgs', 'umg'],
-} as const;
+	displayClaims: ['gtg', 'xid', 'uhs', 'agg', 'usr', 'utr', 'prv', 'mgt', 'umg', 'mgs'],
+};
 
 export { config };

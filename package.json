@@ -27,10 +27,17 @@
 	"main": "./dist/index.js",
 	"module": "./dist/index.js",
 	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
+		}
+	},
 	"files": [
-		"dist",
-		"LICENSE",
-		"README.md"
+		"./dist",
+		"./LICENSE",
+		"./README.md"
 	],
 	"sideEffects": false,
 	"scripts": {
@@ -38,8 +45,8 @@
 		"build:watch": "tsc --watch",
 		"clean": "rimraf ./dist",
 		"prepublishOnly": "npm run test && npm run build",
-		"test:integration": "jest --runInBand tests/integration",
-		"test:e2e": "touch .env.test && dotenv -e .env.test -- jest --runInBand tests/e2e",
+		"test:integration": "jest --runInBand ./tests/integration",
+		"test:e2e": "touch .env.test && dotenv -e .env.test -- jest --runInBand ./tests/e2e",
 		"test": "npm run test:integration && npm run test:e2e",
 		"typecheck": "tsc --noEmit"
 	},

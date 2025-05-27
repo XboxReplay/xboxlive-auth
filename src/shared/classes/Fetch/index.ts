@@ -287,7 +287,7 @@ abstract class XRFetch {
 	 * @protected
 	 */
 	protected static createResponse<T>(data: T, response: Response, headers: Record<string, string>): FetchResponse<T> {
-		return { data, response, headers, status: response.status };
+		return { data, response, headers, statusCode: response.status };
 	}
 }
 
