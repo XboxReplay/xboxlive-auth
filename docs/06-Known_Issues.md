@@ -23,10 +23,10 @@ import { live } from '@xboxreplay/xboxlive-auth';
 
 // 1. Get authorization URL
 const authorizeUrl = live.getAuthorizeUrl({
-	clientId: 'YOUR_CLIENT_ID',
-	scope: 'XboxLive.signin XboxLive.offline_access',
-	responseType: 'code',
-	redirectUri: 'YOUR_REDIRECT_URI',
+  clientId: 'YOUR_CLIENT_ID',
+  scope: 'XboxLive.signin XboxLive.offline_access',
+  responseType: 'code',
+  redirectUri: 'YOUR_REDIRECT_URI',
 });
 
 // 2. Direct user to authorizeUrl for manual authentication
@@ -64,15 +64,15 @@ import { live, xnet } from '@xboxreplay/xboxlive-auth';
 
 // Get user token first
 const authResponse = await live.authenticateWithCredentials({
-	email: 'user@example.com',
-	password: 'password',
+  email: 'user@example.com',
+  password: 'password',
 });
 
 const userToken = await xnet.exchangeRpsTicketForUserToken(authResponse.access_token, 't');
 
 // Check age group using accounts RelyingParty
 const accountsResponse = await xnet.exchangeTokenForXSTSToken(userToken.Token, {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com',
+  XSTSRelyingParty: 'http://accounts.xboxlive.com',
 });
 
 const ageGroup = accountsResponse.DisplayClaims.xui[0].agg;
@@ -88,8 +88,8 @@ import { live, xnet } from '@xboxreplay/xboxlive-auth';
 
 // Standard authentication flow
 const authResponse = await live.authenticateWithCredentials({
-	email: 'child@example.com',
-	password: 'password',
+  email: 'child@example.com',
+  password: 'password',
 });
 
 const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(authResponse.access_token, 't');
@@ -99,13 +99,13 @@ const deviceTokenResponse = await xnet.experimental.createDummyWin32DeviceToken(
 
 // Exchange with device token
 const XSTSResponse = await xnet.exchangeTokensForXSTSToken(
-	{
-		userTokens: [userTokenResponse.Token],
-		deviceToken: deviceTokenResponse.Token,
-	},
-	{
-		XSTSRelyingParty: 'http://xboxlive.com',
-	}
+  {
+    userTokens: [userTokenResponse.Token],
+    deviceToken: deviceTokenResponse.Token,
+  },
+  {
+    XSTSRelyingParty: 'http://xboxlive.com',
+  }
 );
 
 console.log('Success with device token:', XSTSResponse);
@@ -119,13 +119,13 @@ const userToken = await xnet.exchangeRpsTicketForUserToken(rpsTicket, 'd');
 const deviceToken = await xnet.experimental.createDummyWin32DeviceToken();
 
 await xnet.exchangeTokensForXSTSToken(
-	{
-		userTokens: [userToken.Token],
-		deviceToken: deviceToken.Token,
-	},
-	{
-		XSTSRelyingParty: 'http://xboxlive.com',
-	}
+  {
+    userTokens: [userToken.Token],
+    deviceToken: deviceToken.Token,
+  },
+  {
+    XSTSRelyingParty: 'http://xboxlive.com',
+  }
 );
 ```
 
@@ -167,8 +167,8 @@ const expirationDate = new Date(result.expires_on);
 const isExpired = new Date() >= expirationDate;
 
 if (isExpired) {
-	console.log('Token has expired, need to re-authenticate');
-	// Re-authenticate or use refresh token
+  console.log('Token has expired, need to re-authenticate');
+  // Re-authenticate or use refresh token
 }
 ```
 
@@ -183,17 +183,17 @@ import { live } from '@xboxreplay/xboxlive-auth';
 let refreshToken = 'stored_refresh_token';
 
 try {
-	// Attempt to use existing token
-	await makeXboxLiveAPICall();
+  // Attempt to use existing token
+  await makeXboxLiveAPICall();
 } catch (error) {
-	if (error.status === 401) {
-		// Token expired, refresh it
-		const freshTokens = await live.refreshAccessToken(refreshToken);
-		refreshToken = freshTokens.refresh_token; // Update stored token
+  if (error.status === 401) {
+    // Token expired, refresh it
+    const freshTokens = await live.refreshAccessToken(refreshToken);
+    refreshToken = freshTokens.refresh_token; // Update stored token
 
-		// Retry the API call with fresh token
-		await makeXboxLiveAPICall();
-	}
+    // Retry the API call with fresh token
+    await makeXboxLiveAPICall();
+  }
 }
 ```
 
@@ -219,12 +219,12 @@ const express = require('express');
 const { authenticate } = require('@xboxreplay/xboxlive-auth');
 
 app.post('/auth', async (req, res) => {
-	try {
-		const result = await authenticate(req.body.email, req.body.password);
-		res.json(result);
-	} catch (error) {
-		res.status(401).json({ error: 'Authentication failed' });
-	}
+  try {
+    const result = await authenticate(req.body.email, req.body.password);
+    res.json(result);
+  } catch (error) {
+    res.status(401).json({ error: 'Authentication failed' });
+  }
 });
 
 // ❌ Client-side usage (Browser) - Will not work
@@ -254,10 +254,10 @@ const userToken = await xnet.exchangeRpsTicketForUserToken(rpsTicket, 'd');
 
 // Custom authorization URL
 const authorizeUrl = live.getAuthorizeUrl({
-	clientId: 'YOUR_CUSTOM_CLIENT_ID',
-	scope: 'XboxLive.signin XboxLive.offline_access',
-	responseType: 'code',
-	redirectUri: 'https://your-domain.com/callback',
+  clientId: 'YOUR_CUSTOM_CLIENT_ID',
+  scope: 'XboxLive.signin XboxLive.offline_access',
+  responseType: 'code',
+  redirectUri: 'https://your-domain.com/callback',
 });
 ```
 
@@ -279,27 +279,27 @@ Implement proper error handling and retry logic:
 
 ```typescript
 async function robustAuthenticate(email, password) {
-	const maxRetries = 3;
-	const timeout = 10000; // 10 seconds
+  const maxRetries = 3;
+  const timeout = 10000; // 10 seconds
 
-	for (let attempt = 1; attempt <= maxRetries; attempt++) {
-		try {
-			// Add timeout to authentication
-			const authPromise = authenticate(email, password);
-			const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout));
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      // Add timeout to authentication
+      const authPromise = authenticate(email, password);
+      const timeoutPromise = new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), timeout));
 
-			return await Promise.race([authPromise, timeoutPromise]);
-		} catch (error) {
-			console.log(`Attempt ${attempt} failed:`, error.message);
+      return await Promise.race([authPromise, timeoutPromise]);
+    } catch (error) {
+      console.log(`Attempt ${attempt} failed:`, error.message);
 
-			if (attempt === maxRetries) {
-				throw new Error(`Authentication failed after ${maxRetries} attempts`);
-			}
+      if (attempt === maxRetries) {
+        throw new Error(`Authentication failed after ${maxRetries} attempts`);
+      }
 
-			// Wait before retry
-			await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
-		}
-	}
+      // Wait before retry
+      await new Promise(resolve => setTimeout(resolve, 2000 * attempt));
+    }
+  }
 }
 ```
 

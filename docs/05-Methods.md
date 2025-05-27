@@ -27,9 +27,9 @@ authenticate(email: Email, password: string, options: AuthenticateOptions & { ra
 
 ```typescript
 const result = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://xboxlive.com',
-	optionalDisplayClaims: ['gtg', 'mgt'],
-	raw: false,
+  XSTSRelyingParty: 'http://xboxlive.com',
+  optionalDisplayClaims: ['gtg', 'mgt'],
+  raw: false,
 });
 ```
 
@@ -50,11 +50,11 @@ console.log(preAuthResponse);
 
 ```json
 {
-	"cookie": "MSA=...; X=...; ...",
-	"matches": {
-		"PPFT": "abcde...",
-		"urlPost": "https://login.live.com/..."
-	}
+  "cookie": "MSA=...; X=...; ...",
+  "matches": {
+    "PPFT": "abcde...",
+    "urlPost": "https://login.live.com/..."
+  }
 }
 ```
 
@@ -72,10 +72,10 @@ console.log(authorizeUrl);
 
 ```typescript
 const authorizeUrl = live.getAuthorizeUrl({
-	clientId: 'YOUR_CLIENT_ID',
-	scope: 'XboxLive.signin XboxLive.offline_access',
-	responseType: 'code',
-	redirectUri: 'YOUR_REDIRECT_URI',
+  clientId: 'YOUR_CLIENT_ID',
+  scope: 'XboxLive.signin XboxLive.offline_access',
+  responseType: 'code',
+  redirectUri: 'YOUR_REDIRECT_URI',
 });
 ```
 
@@ -85,8 +85,8 @@ Authenticate directly with user credentials.
 
 ```typescript
 const authResponse = await live.authenticateWithCredentials({
-	email: 'user@example.com',
-	password: 'password',
+  email: 'user@example.com',
+  password: 'password',
 });
 
 console.log(authResponse);
@@ -96,12 +96,12 @@ console.log(authResponse);
 
 ```json
 {
-	"token_type": "bearer",
-	"expires_in": 86400,
-	"access_token": "EwAIA+pvBAAUK...",
-	"refresh_token": "M.R3_BAY...",
-	"scope": "service::user.auth.xboxlive.com::MBI_SSL",
-	"user_id": "123abc..."
+  "token_type": "bearer",
+  "expires_in": 86400,
+  "access_token": "EwAIA+pvBAAUK...",
+  "refresh_token": "M.R3_BAY...",
+  "scope": "service::user.auth.xboxlive.com::MBI_SSL",
+  "user_id": "123abc..."
 }
 ```
 
@@ -127,12 +127,12 @@ console.log(freshTokens);
 
 ```json
 {
-	"token_type": "bearer",
-	"expires_in": 86400,
-	"access_token": "EwAIA+pvBAAUK...",
-	"refresh_token": "M.R3_BAY...",
-	"scope": "service::user.auth.xboxlive.com::MBI_SSL",
-	"user_id": "123abc..."
+  "token_type": "bearer",
+  "expires_in": 86400,
+  "access_token": "EwAIA+pvBAAUK...",
+  "refresh_token": "M.R3_BAY...",
+  "scope": "service::user.auth.xboxlive.com::MBI_SSL",
+  "user_id": "123abc..."
 }
 ```
 
@@ -146,8 +146,8 @@ Exchange a Live.com RPS ticket for an Xbox Network user token.
 
 ```typescript
 const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(
-	'RPS_TICKET',
-	't' // or 'd' for custom Azure applications
+  'RPS_TICKET',
+  't' // or 'd' for custom Azure applications
 );
 
 console.log(userTokenResponse);
@@ -157,16 +157,16 @@ console.log(userTokenResponse);
 
 ```json
 {
-	"IssueInstant": "2021-01-14T18:55:20.0082007Z",
-	"NotAfter": "2021-01-15T10:55:20.0082007Z",
-	"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-	"DisplayClaims": {
-		"xui": [
-			{
-				"uhs": "3218841136841218711"
-			}
-		]
-	}
+  "IssueInstant": "2021-01-14T18:55:20.0082007Z",
+  "NotAfter": "2021-01-15T10:55:20.0082007Z",
+  "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "DisplayClaims": {
+    "xui": [
+      {
+        "uhs": "3218841136841218711"
+      }
+    ]
+  }
 }
 ```
 
@@ -176,9 +176,9 @@ Exchange a user token for an XSTS token (single token version).
 
 ```typescript
 const XSTSResponse = await xnet.exchangeTokenForXSTSToken('USER_TOKEN', {
-	XSTSRelyingParty: 'http://xboxlive.com',
-	optionalDisplayClaims: ['gtg', 'xid'],
-	sandboxId: 'RETAIL',
+  XSTSRelyingParty: 'http://xboxlive.com',
+  optionalDisplayClaims: ['gtg', 'xid'],
+  sandboxId: 'RETAIL',
 });
 ```
 
@@ -188,16 +188,16 @@ Exchange multiple tokens (user tokens, device tokens, title tokens) for an XSTS 
 
 ```typescript
 const XSTSResponse = await xnet.exchangeTokensForXSTSToken(
-	{
-		userTokens: ['USER_TOKEN_1', 'USER_TOKEN_2'],
-		deviceToken: 'DEVICE_TOKEN', // optional
-		titleToken: 'TITLE_TOKEN', // optional
-	},
-	{
-		XSTSRelyingParty: 'http://xboxlive.com',
-		optionalDisplayClaims: ['gtg', 'mgt'],
-		sandboxId: 'RETAIL',
-	}
+  {
+    userTokens: ['USER_TOKEN_1', 'USER_TOKEN_2'],
+    deviceToken: 'DEVICE_TOKEN', // optional
+    titleToken: 'TITLE_TOKEN', // optional
+  },
+  {
+    XSTSRelyingParty: 'http://xboxlive.com',
+    optionalDisplayClaims: ['gtg', 'mgt'],
+    sandboxId: 'RETAIL',
+  }
 );
 ```
 
@@ -226,15 +226,15 @@ console.log(deviceTokenResponse);
 
 ```json
 {
-	"IssueInstant": "2021-01-14T18:55:20.0082007Z",
-	"NotAfter": "2021-01-15T10:55:20.0082007Z",
-	"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-	"DisplayClaims": {
-		"xdi": {
-			"did": "F50CDD8781FF4476",
-			"dcs": "87411"
-		}
-	}
+  "IssueInstant": "2021-01-14T18:55:20.0082007Z",
+  "NotAfter": "2021-01-15T10:55:20.0082007Z",
+  "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "DisplayClaims": {
+    "xdi": {
+      "did": "F50CDD8781FF4476",
+      "dcs": "87411"
+    }
+  }
 }
 ```
 
@@ -247,13 +247,13 @@ import { XSAPIClient } from '@xboxreplay/xboxlive-auth';
 
 // GET request
 await XSAPIClient.get('https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?settings=Gamerscore', {
-	options: { contractVersion: 2, userHash: 'YOUR_USER_HASH', XSTSToken: 'YOUR_XSTS_TOKEN' },
+  options: { contractVersion: 2, userHash: 'YOUR_USER_HASH', XSTSToken: 'YOUR_XSTS_TOKEN' },
 });
 
 // POST request
 await XSAPIClient.get('https://account.xboxlive.com/users/me/profile/gamertag', {
-	body: { gamertag: 'Join Waypoint' },
-	options: { contractVersion: 4, userHash: 'YOUR_USER_HASH', XSTSToken: 'YOUR_XSTS_TOKEN' },
+  body: { gamertag: 'Join Waypoint' },
+  options: { contractVersion: 4, userHash: 'YOUR_USER_HASH', XSTSToken: 'YOUR_XSTS_TOKEN' },
 });
 ```
 
@@ -263,10 +263,10 @@ await XSAPIClient.get('https://account.xboxlive.com/users/me/profile/gamertag', 
 
 ```typescript
 type AuthenticateOptions = {
-	XSTSRelyingParty?: string;
-	optionalDisplayClaims?: string[];
-	sandboxId?: string;
-	raw?: boolean;
+  XSTSRelyingParty?: string;
+  optionalDisplayClaims?: string[];
+  sandboxId?: string;
+  raw?: boolean;
 };
 ```
 
@@ -280,11 +280,11 @@ type Email = `${string}@${string}.${string}`;
 
 ```typescript
 type AuthenticateResponse = {
-	xuid: string | null;
-	user_hash: string;
-	xsts_token: string;
-	display_claims: XBLExchangeTokensResponse['DisplayClaims'];
-	expires_on: string;
+  xuid: string | null;
+  user_hash: string;
+  xsts_token: string;
+  display_claims: XBLExchangeTokensResponse['DisplayClaims'];
+  expires_on: string;
 };
 ```
 
@@ -292,9 +292,9 @@ type AuthenticateResponse = {
 
 ```typescript
 type AuthenticateRawResponse = {
-	'login.live.com': LiveAuthResponse;
-	'user.auth.xboxlive.com': XNETExchangeRpsTicketResponse;
-	'xsts.auth.xboxlive.com': XBLExchangeTokensResponse;
+  'login.live.com': LiveAuthResponse;
+  'user.auth.xboxlive.com': XNETExchangeRpsTicketResponse;
+  'xsts.auth.xboxlive.com': XBLExchangeTokensResponse;
 };
 ```
 
@@ -304,13 +304,13 @@ All methods can throw errors. Always use proper error handling:
 
 ```typescript
 try {
-	const result = await live.authenticateWithCredentials({
-		email: 'user@example.com',
-		password: 'password',
-	});
+  const result = await live.authenticateWithCredentials({
+    email: 'user@example.com',
+    password: 'password',
+  });
 } catch (error) {
-	console.error('Authentication failed:', error);
-	// Handle specific error cases
+  console.error('Authentication failed:', error);
+  // Handle specific error cases
 }
 ```
 

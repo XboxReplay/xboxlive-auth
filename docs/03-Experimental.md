@@ -19,15 +19,15 @@ console.log(deviceTokenResponse);
 
 ```json
 {
-	"IssueInstant": "2021-01-14T18:55:20.0082007Z",
-	"NotAfter": "2021-01-15T10:55:20.0082007Z",
-	"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-	"DisplayClaims": {
-		"xdi": {
-			"did": "F50CDD8781FF4476",
-			"dcs": "87411"
-		}
-	}
+  "IssueInstant": "2021-01-14T18:55:20.0082007Z",
+  "NotAfter": "2021-01-15T10:55:20.0082007Z",
+  "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "DisplayClaims": {
+    "xdi": {
+      "did": "F50CDD8781FF4476",
+      "dcs": "87411"
+    }
+  }
 }
 ```
 
@@ -42,8 +42,8 @@ import { live, xnet } from '@xboxreplay/xboxlive-auth';
 
 // Step 1: Authenticate with Microsoft Live
 const authResponse = await live.authenticateWithCredentials({
-	email: 'user@example.com',
-	password: 'password',
+  email: 'user@example.com',
+  password: 'password',
 });
 
 // Step 2: Get user token
@@ -54,13 +54,13 @@ const deviceTokenResponse = await xnet.experimental.createDummyWin32DeviceToken(
 
 // Step 4: Exchange for XSTS token with device token
 const XSTSResponse = await xnet.exchangeTokensForXSTSToken(
-	{
-		userTokens: [userTokenResponse.Token],
-		deviceToken: deviceTokenResponse.Token,
-	},
-	{
-		XSTSRelyingParty: 'http://xboxlive.com',
-	}
+  {
+    userTokens: [userTokenResponse.Token],
+    deviceToken: deviceTokenResponse.Token,
+  },
+  {
+    XSTSRelyingParty: 'http://xboxlive.com',
+  }
 );
 
 console.log(XSTSResponse);
@@ -78,8 +78,8 @@ const tokens = await live.exchangeCodeForAccessToken('AUTHORIZATION_CODE');
 
 // Get user token (note the 'd' parameter for custom Azure apps)
 const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(
-	tokens.access_token,
-	'd' // Required for custom Azure applications
+  tokens.access_token,
+  'd' // Required for custom Azure applications
 );
 
 // Create device token
@@ -87,13 +87,13 @@ const deviceTokenResponse = await xnet.experimental.createDummyWin32DeviceToken(
 
 // Exchange for XSTS token
 const XSTSResponse = await xnet.exchangeTokensForXSTSToken(
-	{
-		userTokens: [userTokenResponse.Token],
-		deviceToken: deviceTokenResponse.Token,
-	},
-	{
-		XSTSRelyingParty: 'http://xboxlive.com',
-	}
+  {
+    userTokens: [userTokenResponse.Token],
+    deviceToken: deviceTokenResponse.Token,
+  },
+  {
+    XSTSRelyingParty: 'http://xboxlive.com',
+  }
 );
 ```
 
@@ -108,15 +108,15 @@ Child and Teen accounts often require device tokens for authentication:
 ```typescript
 // First, check the age group
 const ageCheckResponse = await xnet.exchangeTokenForXSTSToken(userToken, {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com',
+  XSTSRelyingParty: 'http://accounts.xboxlive.com',
 });
 
 const ageGroup = ageCheckResponse.DisplayClaims.xui[0].agg;
 
 if (ageGroup === 'Child' || ageGroup === 'Teen') {
-	// Use device token for authentication
-	const deviceToken = await xnet.experimental.createDummyWin32DeviceToken();
-	// Continue with device token authentication...
+  // Use device token for authentication
+  const deviceToken = await xnet.experimental.createDummyWin32DeviceToken();
+  // Continue with device token authentication...
 }
 ```
 
@@ -149,13 +149,13 @@ Always implement proper error handling when using experimental methods:
 
 ```typescript
 try {
-	const deviceToken = await xnet.experimental.createDummyWin32DeviceToken();
-	// Use device token...
+  const deviceToken = await xnet.experimental.createDummyWin32DeviceToken();
+  // Use device token...
 } catch (error) {
-	console.error('Device token generation failed:', error);
+  console.error('Device token generation failed:', error);
 
-	// Fallback to authentication without device token
-	const fallbackAuth = await authenticate('user@example.com', 'password');
+  // Fallback to authentication without device token
+  const fallbackAuth = await authenticate('user@example.com', 'password');
 }
 ```
 

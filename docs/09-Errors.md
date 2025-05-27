@@ -20,10 +20,10 @@ The base exception class that all other errors extend. It provides structured er
 
 ```typescript
 class XRBaseException<TAttributes> extends Error {
-	public readonly data: ErrorData<TAttributes>;
-	public message: string;
-	public name: string;
-	public stack?: string;
+  public readonly data: ErrorData<TAttributes>;
+  public message: string;
+  public name: string;
+  public stack?: string;
 }
 ```
 
@@ -33,14 +33,14 @@ class XRBaseException<TAttributes> extends Error {
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
 try {
-	const result = await authenticate('user@example.com', 'password');
+  const result = await authenticate('user@example.com', 'password');
 } catch (error) {
-	if (error instanceof XRBaseException) {
-		console.log('Error name:', error.name);
-		console.log('Error message:', error.message);
-		console.log('Error data:', error.data);
-		console.log('Error attributes:', error.getAttributes());
-	}
+  if (error instanceof XRBaseException) {
+    console.log('Error name:', error.name);
+    console.log('Error message:', error.message);
+    console.log('Error data:', error.data);
+    console.log('Error attributes:', error.getAttributes());
+  }
 }
 ```
 
@@ -109,18 +109,18 @@ XRFetchClientException: Bad Request
 import { XSAPIClient } from '@xboxreplay/xboxlive-auth';
 
 try {
-	const response = await XSAPIClient.get('https://profile.xboxlive.com/users/me', {
-		options: { XSTSToken: 'invalid_token', userHash: 'hash' },
-	});
+  const response = await XSAPIClient.get('https://profile.xboxlive.com/users/me', {
+    options: { XSTSToken: 'invalid_token', userHash: 'hash' },
+  });
 } catch (error) {
-	if (error instanceof XRFetchClientException) {
-		const attributes = error.getAttributes();
+  if (error instanceof XRFetchClientException) {
+    const attributes = error.getAttributes();
 
-		console.log('Status Code:', attributes.extra?.statusCode);
-		console.log('URL:', attributes.extra?.url);
-		console.log('Response Body:', attributes.extra?.response?.body);
-		console.log('Response Headers:', attributes.extra?.response?.headers);
-	}
+    console.log('Status Code:', attributes.extra?.statusCode);
+    console.log('URL:', attributes.extra?.url);
+    console.log('Response Body:', attributes.extra?.response?.body);
+    console.log('Response Headers:', attributes.extra?.response?.headers);
+  }
 }
 ```
 
@@ -152,22 +152,22 @@ XRLiveLibraryException: The authentication has failed
 import { live } from '@xboxreplay/xboxlive-auth';
 
 try {
-	const result = await live.authenticateWithCredentials({
-		email: 'user@example.com',
-		password: 'wrong_password',
-	});
+  const result = await live.authenticateWithCredentials({
+    email: 'user@example.com',
+    password: 'wrong_password',
+  });
 } catch (error) {
-	if (error instanceof XRLiveLibraryException) {
-		const attributes = error.getAttributes();
+  if (error instanceof XRLiveLibraryException) {
+    const attributes = error.getAttributes();
 
-		switch (attributes.code) {
-			case 'INVALID_CREDENTIALS_OR_2FA_ENABLED':
-				console.log('Invalid credentials or 2FA enabled');
-				break;
-			default:
-				console.log('Live authentication error:', error.message);
-		}
-	}
+    switch (attributes.code) {
+      case 'INVALID_CREDENTIALS_OR_2FA_ENABLED':
+        console.log('Invalid credentials or 2FA enabled');
+        break;
+      default:
+        console.log('Live authentication error:', error.message);
+    }
+  }
 }
 ```
 
@@ -176,14 +176,14 @@ try {
 ```typescript
 // Network connectivity problems
 try {
-	await authenticate('user@example.com', 'password');
+  await authenticate('user@example.com', 'password');
 } catch (error) {
-	if (error instanceof XRFetchClientException) {
-		const attributes = error.getAttributes();
-		if (attributes.code === 'NETWORK_ERROR') {
-			console.log('Check your internet connection');
-		}
-	}
+  if (error instanceof XRFetchClientException) {
+    const attributes = error.getAttributes();
+    if (attributes.code === 'NETWORK_ERROR') {
+      console.log('Check your internet connection');
+    }
+  }
 }
 ```
 
@@ -196,13 +196,13 @@ try {
 process.env.NODE_ENV = 'development';
 
 try {
-	await authenticate(email, password);
+  await authenticate(email, password);
 } catch (error) {
-	if (error instanceof XRBaseException) {
-		console.log('Full error details:', error.toJSON());
-		console.log('Original error:', error.getAttributes()._originalError);
-		console.log('Original stack:', error.getAttributes()._originalStack);
-	}
+  if (error instanceof XRBaseException) {
+    console.log('Full error details:', error.toJSON());
+    console.log('Original error:', error.getAttributes()._originalError);
+    console.log('Original stack:', error.getAttributes()._originalStack);
+  }
 }
 ```
 

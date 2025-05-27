@@ -27,19 +27,19 @@ authenticate('name@domain.com', 'password').then(console.info).catch(console.err
 
 ```json
 {
-	"xuid": "2584878536129841",
-	"user_hash": "3218841136841218711",
-	"xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-	"display_claims": {
-		"gtg": "Zeny IC",
-		"xid": "2584878536129841",
-		"uhs": "3218841136841218711",
-		"agg": "Adult",
-		"usr": "234",
-		"utr": "190",
-		"prv": "185 186 187 188 191 192 ..."
-	},
-	"expires_on": "2025-04-13T05:43:32.6275675Z"
+  "xuid": "2584878536129841",
+  "user_hash": "3218841136841218711",
+  "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "display_claims": {
+    "gtg": "Zeny IC",
+    "xid": "2584878536129841",
+    "uhs": "3218841136841218711",
+    "agg": "Adult",
+    "usr": "234",
+    "utr": "190",
+    "prv": "185 186 187 188 191 192 ..."
+  },
+  "expires_on": "2025-04-13T05:43:32.6275675Z"
 }
 ```
 
@@ -55,7 +55,7 @@ import { authenticate } from '@xboxreplay/xboxlive-auth';
 
 // Get raw responses from all authentication steps
 const rawResponse = await authenticate('email@example.com', 'password', {
-	raw: true,
+  raw: true,
 });
 
 console.log(rawResponse);
@@ -73,9 +73,9 @@ console.log(rawResponse);
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
 const result = await authenticate('email@example.com', 'password', {
-	XSTSRelyingParty: 'http://xboxlive.com',
-	optionalDisplayClaims: ['gtg', 'xid'],
-	sandboxId: 'RETAIL',
+  XSTSRelyingParty: 'http://xboxlive.com',
+  optionalDisplayClaims: ['gtg', 'xid'],
+  sandboxId: 'RETAIL',
 });
 ```
 
@@ -125,7 +125,7 @@ The library includes an XSAPI client that's a Fetch wrapper designed specificall
 
 ```typescript
 await XSAPIClient.get('https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?settings=Gamerscore', {
-	options: { contractVersion: 2, userHash: 'YOUR_USER_HASH', XSTSToken: 'YOUR_XSTS_TOKEN' },
+  options: { contractVersion: 2, userHash: 'YOUR_USER_HASH', XSTSToken: 'YOUR_XSTS_TOKEN' },
 });
 ```
 

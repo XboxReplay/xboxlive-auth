@@ -52,10 +52,10 @@ Generate the URL where users will authenticate:
 import { live } from '@xboxreplay/xboxlive-auth';
 
 const authorizeUrl = live.getAuthorizeUrl({
-	clientId: 'YOUR_CLIENT_ID',
-	scope: 'XboxLive.signin XboxLive.offline_access',
-	responseType: 'code',
-	redirectUri: 'YOUR_REDIRECT_URI',
+  clientId: 'YOUR_CLIENT_ID',
+  scope: 'XboxLive.signin XboxLive.offline_access',
+  responseType: 'code',
+  redirectUri: 'YOUR_REDIRECT_URI',
 });
 
 console.log('Direct user to:', authorizeUrl);
@@ -88,12 +88,12 @@ console.log('Token Response:', tokenResponse);
 
 ```json
 {
-	"token_type": "bearer",
-	"expires_in": 3600,
-	"access_token": "EwAIA+pvBAAUK...",
-	"refresh_token": "M.R3_BAY...",
-	"scope": "service::user.auth.xboxlive.com::MBI_SSL XboxLive.signin XboxLive.offline_access",
-	"user_id": "123abc..."
+  "token_type": "bearer",
+  "expires_in": 3600,
+  "access_token": "EwAIA+pvBAAUK...",
+  "refresh_token": "M.R3_BAY...",
+  "scope": "service::user.auth.xboxlive.com::MBI_SSL XboxLive.signin XboxLive.offline_access",
+  "user_id": "123abc..."
 }
 ```
 
@@ -104,13 +104,13 @@ Convert the access token to Xbox Network tokens:
 ```typescript
 // Get user token (note the 'd' parameter for custom Azure applications)
 const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(
-	tokenResponse.access_token,
-	'd' // Required for custom Azure applications
+  tokenResponse.access_token,
+  'd' // Required for custom Azure applications
 );
 
 // Get XSTS token
 const XSTSTokenResponse = await xnet.exchangeTokenForXSTSToken(userTokenResponse.Token, {
-	XSTSRelyingParty: 'http://xboxlive.com',
+  XSTSRelyingParty: 'http://xboxlive.com',
 });
 
 console.log('Xbox Network Authentication Complete:', XSTSTokenResponse);
@@ -130,57 +130,57 @@ const REDIRECT_URI = 'http://localhost:3000/auth/callback';
 
 // Step 1: Initiate authentication
 app.get('/auth/login', (req, res) => {
-	const authorizeUrl = live.getAuthorizeUrl({
-		clientId: CLIENT_ID,
-		scope: 'XboxLive.signin XboxLive.offline_access',
-		responseType: 'code',
-		redirectUri: REDIRECT_URI,
-	});
+  const authorizeUrl = live.getAuthorizeUrl({
+    clientId: CLIENT_ID,
+    scope: 'XboxLive.signin XboxLive.offline_access',
+    responseType: 'code',
+    redirectUri: REDIRECT_URI,
+  });
 
-	res.redirect(authorizeUrl);
+  res.redirect(authorizeUrl);
 });
 
 // Step 2: Handle callback
 app.get('/auth/callback', async (req, res) => {
-	try {
-		const { code } = req.query;
+  try {
+    const { code } = req.query;
 
-		if (!code) {
-			return res.status(400).send('Authorization code not provided');
-		}
+    if (!code) {
+      return res.status(400).send('Authorization code not provided');
+    }
 
-		// Exchange code for tokens
-		const tokenResponse = await live.exchangeCodeForAccessToken(code);
+    // Exchange code for tokens
+    const tokenResponse = await live.exchangeCodeForAccessToken(code);
 
-		// Get Xbox Network tokens
-		const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(tokenResponse.access_token, 'd');
+    // Get Xbox Network tokens
+    const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(tokenResponse.access_token, 'd');
 
-		const XSTSTokenResponse = await xnet.exchangeTokenForXSTSToken(userTokenResponse.Token, {
-			XSTSRelyingParty: 'http://xboxlive.com',
-		});
+    const XSTSTokenResponse = await xnet.exchangeTokenForXSTSToken(userTokenResponse.Token, {
+      XSTSRelyingParty: 'http://xboxlive.com',
+    });
 
-		// Store tokens securely (implement your own storage logic)
-		const userSession = {
-			xuid: XSTSTokenResponse.DisplayClaims.xui[0]?.xid,
-			user_hash: XSTSTokenResponse.DisplayClaims.xui[0]?.uhs,
-			xsts_token: XSTSTokenResponse.Token,
-			refresh_token: tokenResponse.refresh_token,
-			expires_on: XSTSTokenResponse.NotAfter,
-		};
+    // Store tokens securely (implement your own storage logic)
+    const userSession = {
+      xuid: XSTSTokenResponse.DisplayClaims.xui[0]?.xid,
+      user_hash: XSTSTokenResponse.DisplayClaims.xui[0]?.uhs,
+      xsts_token: XSTSTokenResponse.Token,
+      refresh_token: tokenResponse.refresh_token,
+      expires_on: XSTSTokenResponse.NotAfter,
+    };
 
-		// In a real app, store this in session/database
-		req.session.xbox = userSession;
+    // In a real app, store this in session/database
+    req.session.xbox = userSession;
 
-		res.json({ success: true, user: userSession });
-	} catch (error) {
-		console.error('Authentication error:', error);
-		res.status(500).json({ error: 'Authentication failed' });
-	}
+    res.json({ success: true, user: userSession });
+  } catch (error) {
+    console.error('Authentication error:', error);
+    res.status(500).json({ error: 'Authentication failed' });
+  }
 });
 
 app.listen(3000, () => {
-	console.log('Server running on http://localhost:3000');
-	console.log('Visit http://localhost:3000/auth/login to start authentication');
+  console.log('Server running on http://localhost:3000');
+  console.log('Visit http://localhost:3000/auth/login to start authentication');
 });
 ```
 
@@ -190,53 +190,53 @@ Implement automatic token refresh for long-running applications:
 
 ```typescript
 class XboxAuthManager {
-	private refreshToken: string;
-	private xstsToken: string;
-	private expiresOn: string;
+  private refreshToken: string;
+  private xstsToken: string;
+  private expiresOn: string;
 
-	constructor(initialTokens: any) {
-		this.refreshToken = initialTokens.refresh_token;
-		this.xstsToken = initialTokens.xsts_token;
-		this.expiresOn = initialTokens.expires_on;
-	}
+  constructor(initialTokens: any) {
+    this.refreshToken = initialTokens.refresh_token;
+    this.xstsToken = initialTokens.xsts_token;
+    this.expiresOn = initialTokens.expires_on;
+  }
 
-	async getValidToken(): Promise<string> {
-		// Check if current token is still valid
-		const isExpired = new Date() >= new Date(this.expiresOn);
+  async getValidToken(): Promise<string> {
+    // Check if current token is still valid
+    const isExpired = new Date() >= new Date(this.expiresOn);
 
-		if (!isExpired) {
-			return this.xstsToken;
-		}
+    if (!isExpired) {
+      return this.xstsToken;
+    }
 
-		// Token expired, refresh it
-		console.log('Token expired, refreshing...');
-		await this.refreshTokens();
-		return this.xstsToken;
-	}
+    // Token expired, refresh it
+    console.log('Token expired, refreshing...');
+    await this.refreshTokens();
+    return this.xstsToken;
+  }
 
-	private async refreshTokens(): Promise<void> {
-		try {
-			// Refresh the access token
-			const refreshResponse = await live.refreshAccessToken(this.refreshToken);
+  private async refreshTokens(): Promise<void> {
+    try {
+      // Refresh the access token
+      const refreshResponse = await live.refreshAccessToken(this.refreshToken);
 
-			// Get new Xbox Network tokens
-			const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(refreshResponse.access_token, 'd');
+      // Get new Xbox Network tokens
+      const userTokenResponse = await xnet.exchangeRpsTicketForUserToken(refreshResponse.access_token, 'd');
 
-			const XSTSResponse = await xnet.exchangeTokenForXSTSToken(userTokenResponse.Token, {
-				XSTSRelyingParty: 'http://xboxlive.com',
-			});
+      const XSTSResponse = await xnet.exchangeTokenForXSTSToken(userTokenResponse.Token, {
+        XSTSRelyingParty: 'http://xboxlive.com',
+      });
 
-			// Update stored tokens
-			this.refreshToken = refreshResponse.refresh_token || this.refreshToken;
-			this.xstsToken = XSTSResponse.Token;
-			this.expiresOn = XSTSResponse.NotAfter;
+      // Update stored tokens
+      this.refreshToken = refreshResponse.refresh_token || this.refreshToken;
+      this.xstsToken = XSTSResponse.Token;
+      this.expiresOn = XSTSResponse.NotAfter;
 
-			console.log('Tokens refreshed successfully');
-		} catch (error) {
-			console.error('Token refresh failed:', error);
-			throw new Error('Failed to refresh authentication tokens');
-		}
-	}
+      console.log('Tokens refreshed successfully');
+    } catch (error) {
+      console.error('Token refresh failed:', error);
+      throw new Error('Failed to refresh authentication tokens');
+    }
+  }
 }
 
 // Usage
@@ -254,10 +254,10 @@ Different scopes provide access to different Xbox Network services:
 
 ```typescript
 const authorizeUrl = live.getAuthorizeUrl({
-	clientId: 'YOUR_CLIENT_ID',
-	scope: 'XboxLive.signin XboxLive.offline_access', // Multiple scopes
-	responseType: 'code',
-	redirectUri: 'YOUR_REDIRECT_URI',
+  clientId: 'YOUR_CLIENT_ID',
+  scope: 'XboxLive.signin XboxLive.offline_access', // Multiple scopes
+  responseType: 'code',
+  redirectUri: 'YOUR_REDIRECT_URI',
 });
 ```
 
@@ -269,11 +269,11 @@ Use the state parameter to prevent CSRF attacks:
 const state = crypto.randomBytes(16).toString('hex');
 
 const authorizeUrl = live.getAuthorizeUrl({
-	clientId: 'YOUR_CLIENT_ID',
-	scope: 'XboxLive.signin XboxLive.offline_access',
-	responseType: 'code',
-	redirectUri: 'YOUR_REDIRECT_URI',
-	state,
+  clientId: 'YOUR_CLIENT_ID',
+  scope: 'XboxLive.signin XboxLive.offline_access',
+  responseType: 'code',
+  redirectUri: 'YOUR_REDIRECT_URI',
+  state,
 });
 
 // Store state in session to verify later
@@ -284,13 +284,13 @@ Verify state in callback:
 
 ```typescript
 app.get('/auth/callback', (req, res) => {
-	const { code, state } = req.query;
+  const { code, state } = req.query;
 
-	if (state !== req.session.oauthState) {
-		return res.status(400).send('Invalid state parameter');
-	}
+  if (state !== req.session.oauthState) {
+    return res.status(400).send('Invalid state parameter');
+  }
 
-	// Continue with token exchange...
+  // Continue with token exchange...
 });
 ```
 
@@ -304,30 +304,30 @@ Never store tokens in plain text:
 import crypto from 'crypto';
 
 class SecureTokenStorage {
-	private encryptionKey: string;
+  private encryptionKey: string;
 
-	constructor(key: string) {
-		this.encryptionKey = key;
-	}
+  constructor(key: string) {
+    this.encryptionKey = key;
+  }
 
-	encrypt(text: string): string {
-		const cipher = crypto.createCipher('aes-256-cbc', this.encryptionKey);
-		let encrypted = cipher.update(text, 'utf8', 'hex');
-		encrypted += cipher.final('hex');
-		return encrypted;
-	}
+  encrypt(text: string): string {
+    const cipher = crypto.createCipher('aes-256-cbc', this.encryptionKey);
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return encrypted;
+  }
 
-	decrypt(encryptedText: string): string {
-		const decipher = crypto.createDecipher('aes-256-cbc', this.encryptionKey);
-		let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
-		decrypted += decipher.final('utf8');
-		return decrypted;
-	}
+  decrypt(encryptedText: string): string {
+    const decipher = crypto.createDecipher('aes-256-cbc', this.encryptionKey);
+    let decrypted = decipher.update(encryptedText, 'hex', 'utf8');
+    decrypted += decipher.final('utf8');
+    return decrypted;
+  }
 
-	storeTokens(tokens: any): void {
-		const encryptedTokens = this.encrypt(JSON.stringify(tokens));
-		// Store encryptedTokens in your database/file system
-	}
+  storeTokens(tokens: any): void {
+    const encryptedTokens = this.encrypt(JSON.stringify(tokens));
+    // Store encryptedTokens in your database/file system
+  }
 }
 ```
 
@@ -349,16 +349,16 @@ Validate tokens before use:
 
 ```typescript
 function isTokenValid(token: any): boolean {
-	if (!token || !token.xsts_token || !token.expires_on) {
-		return false;
-	}
+  if (!token || !token.xsts_token || !token.expires_on) {
+    return false;
+  }
 
-	const expirationDate = new Date(token.expires_on);
-	const now = new Date();
+  const expirationDate = new Date(token.expires_on);
+  const now = new Date();
 
-	// Check if token expires within the next 5 minutes
-	const bufferTime = 5 * 60 * 1000; // 5 minutes in milliseconds
-	return now.getTime() + bufferTime < expirationDate.getTime();
+  // Check if token expires within the next 5 minutes
+  const bufferTime = 5 * 60 * 1000; // 5 minutes in milliseconds
+  return now.getTime() + bufferTime < expirationDate.getTime();
 }
 ```
 

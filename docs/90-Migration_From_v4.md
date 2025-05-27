@@ -30,9 +30,9 @@ Methods are now organized under namespaces instead of being directly exported.
 
 ```javascript
 import {
-	exchangeRpsTicketForUserToken,
-	exchangeTokenForXSTSToken,
-	exchangeTokensForXSTSToken,
+  exchangeRpsTicketForUserToken,
+  exchangeTokenForXSTSToken,
+  exchangeTokensForXSTSToken,
 } from '@xboxreplay/xboxlive-auth';
 
 await exchangeRpsTicketForUserToken(token, 't');
@@ -138,11 +138,11 @@ Only specific methods are now exported at the root level.
 ```javascript
 // Many methods were directly importable
 import {
-	authenticate,
-	authenticateWithUserCredentials,
-	authenticateWithUserRefreshToken,
-	exchangeRpsTicketForUserToken,
-	// ... and many others
+  authenticate,
+  authenticateWithUserCredentials,
+  authenticateWithUserRefreshToken,
+  exchangeRpsTicketForUserToken,
+  // ... and many others
 } from '@xboxreplay/xboxlive-auth';
 ```
 
@@ -151,10 +151,10 @@ import {
 ```javascript
 // Only four main exports
 import {
-	authenticate, // Main authentication function
-	live, // Microsoft Live authentication methods
-	xnet, // Xbox Network token exchange methods
-	XSAPIClient, // XSAPI client for Xbox Network API calls
+  authenticate, // Main authentication function
+  live, // Microsoft Live authentication methods
+  xnet, // Xbox Network token exchange methods
+  XSAPIClient, // XSAPI client for Xbox Network API calls
 } from '@xboxreplay/xboxlive-auth';
 ```
 

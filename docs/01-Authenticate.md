@@ -17,19 +17,19 @@ console.log(result);
 
 ```json
 {
-	"xuid": "2584878536129841",
-	"user_hash": "3218841136841218711",
-	"xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-	"display_claims": {
-		"gtg": "Zeny IC",
-		"xid": "2584878536129841",
-		"uhs": "3218841136841218711",
-		"agg": "Adult",
-		"usr": "234",
-		"utr": "190",
-		"prv": "185 186 187 188 191 192 ..."
-	},
-	"expires_on": "2025-04-13T05:43:32.6275675Z"
+  "xuid": "2584878536129841",
+  "user_hash": "3218841136841218711",
+  "xsts_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "display_claims": {
+    "gtg": "Zeny IC",
+    "xid": "2584878536129841",
+    "uhs": "3218841136841218711",
+    "agg": "Adult",
+    "usr": "234",
+    "utr": "190",
+    "prv": "185 186 187 188 191 192 ..."
+  },
+  "expires_on": "2025-04-13T05:43:32.6275675Z"
 }
 ```
 
@@ -42,10 +42,10 @@ The `authenticate` function accepts an optional third parameter with configurati
 
 ```typescript
 const result = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://xboxlive.com',
-	optionalDisplayClaims: ['gtg', 'xid', 'mgt'],
-	sandboxId: 'RETAIL',
-	raw: false,
+  XSTSRelyingParty: 'http://xboxlive.com',
+  optionalDisplayClaims: ['gtg', 'xid', 'mgt'],
+  sandboxId: 'RETAIL',
+  raw: false,
 });
 ```
 
@@ -62,7 +62,7 @@ When `raw: true` is specified, the function returns the raw responses from all a
 
 ```typescript
 const rawResult = await authenticate('user@example.com', 'password', {
-	raw: true,
+  raw: true,
 });
 
 console.log(rawResult);
@@ -72,44 +72,44 @@ console.log(rawResult);
 
 ```json
 {
-	"login.live.com": {
-		"token_type": "bearer",
-		"expires_in": 86400,
-		"access_token": "EwAIA+pvBAAUK...",
-		"refresh_token": "M.R3_BAY...",
-		"scope": "service::user.auth.xboxlive.com::MBI_SSL",
-		"user_id": "123abc..."
-	},
-	"user.auth.xboxlive.com": {
-		"IssueInstant": "2025-01-14T18:55:20.0082007Z",
-		"NotAfter": "2025-01-15T10:55:20.0082007Z",
-		"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-		"DisplayClaims": {
-			"xui": [
-				{
-					"uhs": "3218841136841218711"
-				}
-			]
-		}
-	},
-	"xsts.auth.xboxlive.com": {
-		"IssueInstant": "2025-01-14T18:55:20.0082007Z",
-		"NotAfter": "2025-01-15T10:55:20.0082007Z",
-		"Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-		"DisplayClaims": {
-			"xui": [
-				{
-					"gtg": "Zeny IC",
-					"xid": "2584878536129841",
-					"uhs": "3218841136841218711",
-					"agg": "Adult",
-					"usr": "234",
-					"utr": "190",
-					"prv": "185 186 187 188 191 192 ..."
-				}
-			]
-		}
-	}
+  "login.live.com": {
+    "token_type": "bearer",
+    "expires_in": 86400,
+    "access_token": "EwAIA+pvBAAUK...",
+    "refresh_token": "M.R3_BAY...",
+    "scope": "service::user.auth.xboxlive.com::MBI_SSL",
+    "user_id": "123abc..."
+  },
+  "user.auth.xboxlive.com": {
+    "IssueInstant": "2025-01-14T18:55:20.0082007Z",
+    "NotAfter": "2025-01-15T10:55:20.0082007Z",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "DisplayClaims": {
+      "xui": [
+        {
+          "uhs": "3218841136841218711"
+        }
+      ]
+    }
+  },
+  "xsts.auth.xboxlive.com": {
+    "IssueInstant": "2025-01-14T18:55:20.0082007Z",
+    "NotAfter": "2025-01-15T10:55:20.0082007Z",
+    "Token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "DisplayClaims": {
+      "xui": [
+        {
+          "gtg": "Zeny IC",
+          "xid": "2584878536129841",
+          "uhs": "3218841136841218711",
+          "agg": "Adult",
+          "usr": "234",
+          "utr": "190",
+          "prv": "185 186 187 188 191 192 ..."
+        }
+      ]
+    }
+  }
 }
 ```
 
@@ -139,22 +139,22 @@ Always wrap authentication calls using try-catch or promise chaining to handle e
 
 ```typescript
 await authenticate('user@example.com', 'password')
-	.then(res => {
-		console.log('Authentication successful:', res);
-	})
-	.catch(err => {
-		console.error('Authentication failed:', err);
-	});
+  .then(res => {
+    console.log('Authentication successful:', res);
+  })
+  .catch(err => {
+    console.error('Authentication failed:', err);
+  });
 ```
 
 ### Option 2: Async/Await with try-catch
 
 ```typescript
 try {
-	const res = await authenticate('user@example.com', 'password');
-	console.log('Authentication successful:', res);
+  const res = await authenticate('user@example.com', 'password');
+  console.log('Authentication successful:', res);
 } catch (err) {
-	console.error('Authentication failed:', err);
+  console.error('Authentication failed:', err);
 }
 ```
 

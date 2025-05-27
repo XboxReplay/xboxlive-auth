@@ -25,7 +25,7 @@ You can specify a custom RelyingParty for specific services:
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
 const authWithCustomRP = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'https://prod.xsts.halowaypoint.com/',
+  XSTSRelyingParty: 'https://prod.xsts.halowaypoint.com/',
 });
 
 console.log(authWithCustomRP);
@@ -68,8 +68,8 @@ Different RelyingParty configurations may support additional claims that aren't 
 import { authenticate } from '@xboxreplay/xboxlive-auth';
 
 const authWithOptionalClaims = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://xboxlive.com',
-	optionalDisplayClaims: ['mgt', 'umg', 'mgs'],
+  XSTSRelyingParty: 'http://xboxlive.com',
+  optionalDisplayClaims: ['mgt', 'umg', 'mgs'],
 });
 
 console.log(authWithOptionalClaims);
@@ -101,12 +101,12 @@ Some claims are only available with specific RelyingParty values:
 ```typescript
 // General Xbox Network - basic claims
 const basicAuth = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://xboxlive.com',
+  XSTSRelyingParty: 'http://xboxlive.com',
 });
 
 // Accounts service - may include additional account information
 const accountsAuth = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com',
+  XSTSRelyingParty: 'http://accounts.xboxlive.com',
 });
 ```
 
@@ -116,14 +116,14 @@ The `xuid` field may be `null` for certain RelyingParty configurations:
 
 ```typescript
 const result = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com',
+  XSTSRelyingParty: 'http://accounts.xboxlive.com',
 });
 
 // result.xuid might be null for this RelyingParty
 if (result.xuid) {
-	console.log('User XUID:', result.xuid);
+  console.log('User XUID:', result.xuid);
 } else {
-	console.log('XUID not available for this RelyingParty');
+  console.log('XUID not available for this RelyingParty');
 }
 ```
 
@@ -136,13 +136,13 @@ Some RelyingParty values may require additional authentication steps or tokens:
 const deviceToken = await xnet.experimental.createDummyWin32DeviceToken();
 
 const serviceAuth = await xnet.exchangeTokensForXSTSToken(
-	{
-		userTokens: [userToken],
-		deviceToken: deviceToken.Token,
-	},
-	{
-		XSTSRelyingParty: 'https://specific-service.com/',
-	}
+  {
+    userTokens: [userToken],
+    deviceToken: deviceToken.Token,
+  },
+  {
+    XSTSRelyingParty: 'https://specific-service.com/',
+  }
 );
 ```
 
@@ -158,15 +158,15 @@ const userToken = 'YOUR_USER_TOKEN';
 
 // Use accounts RP to check age group
 const accountsResponse = await xnet.exchangeTokenForXSTSToken(userToken, {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com',
+  XSTSRelyingParty: 'http://accounts.xboxlive.com',
 });
 
 const ageGroup = accountsResponse.DisplayClaims.xui[0].agg;
 console.log('Age Group:', ageGroup); // "Adult", "Teen", or "Child"
 
 if (ageGroup === 'Child' || ageGroup === 'Teen') {
-	console.log('Account has age restrictions');
-	// May need device token for full authentication
+  console.log('Account has age restrictions');
+  // May need device token for full authentication
 }
 ```
 
@@ -176,8 +176,8 @@ Along with RelyingParty, you can specify a sandbox ID:
 
 ```typescript
 const result = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://xboxlive.com',
-	sandboxId: 'RETAIL', // or 'XDKS.1' for development
+  XSTSRelyingParty: 'http://xboxlive.com',
+  sandboxId: 'RETAIL', // or 'XDKS.1' for development
 });
 ```
 
@@ -194,9 +194,9 @@ When using raw mode, you can see exactly how different RelyingParty values affec
 
 ```typescript
 const rawResult = await authenticate('user@example.com', 'password', {
-	XSTSRelyingParty: 'http://accounts.xboxlive.com',
-	optionalDisplayClaims: ['mgt', 'umg'],
-	raw: true,
+  XSTSRelyingParty: 'http://accounts.xboxlive.com',
+  optionalDisplayClaims: ['mgt', 'umg'],
+  raw: true,
 });
 
 // Examine the XSTS response for this specific RelyingParty
@@ -212,9 +212,9 @@ import { xnet } from '@xboxreplay/xboxlive-auth';
 
 // Exchange with custom RelyingParty and claims
 const XSTSResponse = await xnet.exchangeTokenForXSTSToken(userToken, {
-	XSTSRelyingParty: 'https://prod.xsts.halowaypoint.com/',
-	optionalDisplayClaims: ['gtg', 'mgt', 'umg'],
-	sandboxId: 'RETAIL',
+  XSTSRelyingParty: 'https://prod.xsts.halowaypoint.com/',
+  optionalDisplayClaims: ['gtg', 'mgt', 'umg'],
+  sandboxId: 'RETAIL',
 });
 
 console.log('Custom RP Response:', XSTSResponse);
@@ -226,11 +226,11 @@ Different RelyingParty values may result in different error conditions:
 
 ```typescript
 try {
-	await authenticate('user@example.com', 'password', {
-		XSTSRelyingParty: 'http://custom-service.com/',
-	});
+  await authenticate('user@example.com', 'password', {
+    XSTSRelyingParty: 'http://custom-service.com/',
+  });
 } catch (err) {
-	console.error('Account may not have access to this service', err);
+  console.error('Account may not have access to this service', err);
 }
 ```
 
