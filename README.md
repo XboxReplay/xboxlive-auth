@@ -149,4 +149,4 @@ Please refer to the [dedicated documentation](https://github.com/XboxReplay/xbox
 
 ## License
 
-[Apache Version 2.0](/LICENCE)
+[Apache Version 2.0](https://github.com/XboxReplay/xboxlive-auth/tree/bc/5.0.0/LICENCE)
