@@ -35,7 +35,7 @@
 		}
 	},
 	"files": [
-		"./dist",
+		"./dist/**/*",
 		"./LICENSE",
 		"./README.md"
 	],
