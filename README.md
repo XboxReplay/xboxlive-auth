@@ -2,7 +2,7 @@
 
 A lightweight, zero-dependency Xbox Network (Xbox Live) authentication library for Node.js with OAuth 2.0 support.
 
-⚠️ **Breaking Changes Notice**: Significant breaking changes have been introduced since v4. Please review the [Migration Guide](docs/90-Migration_From_v4.md) for detailed upgrade instructions and code examples.
+⚠️ **Breaking Changes Notice**: Significant breaking changes have been introduced since v4. Please review the [Migration Guide](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/90-Migration_From_v4.md) for detailed upgrade instructions and code examples.
 
 > [!IMPORTANT]
 > The main `authenticate()` function remains backward compatible for basic usage, but method imports and advanced features have changed significantly.
@@ -111,13 +111,13 @@ The library is fully typed with TypeScript. Key types include:
 
 ## Documentation
 
--   [Basic authentication](/docs/01-Authenticate.md)
--   [Use a custom Azure Application (OAuth2.0)](/docs/02-Custom_Azure_Application.md)
--   [Experimental methods, such as "deviceToken" generation](/docs/03-Experimental.md)
--   [What's a RelyingParty and how to use it](/docs/04-RelyingParty.md)
--   [Available methods in this library](/docs/05-Methods.md)
--   [Known issues and possible workarounds](/docs/06-Known_Issues.md)
--   [How to deal with unauthorized "AgeGroup" authentication](/docs/07-Detect_Unauthorized_AgeGroup.md)
+-   [Basic authentication](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/01-Authenticate.md)
+-   [Use a custom Azure Application (OAuth2.0)](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/02-Custom_Azure_Application.md)
+-   [Experimental methods, such as "deviceToken" generation](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/03-Experimental.md)
+-   [What's a RelyingParty and how to use it](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/04-RelyingParty.md)
+-   [Available methods in this library](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/05-Methods.md)
+-   [Known issues and possible workarounds](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/06-Known_Issues.md)
+-   [How to deal with unauthorized "AgeGroup" authentication](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/07-Detect_Unauthorized_AgeGroup.md)
 
 ## Using the XSAPI Client
 
@@ -141,11 +141,11 @@ curl 'https://profile.xboxlive.com/users/gt(Major%20Nelson)/profile/settings?set
 
 ### Two-Factor Authentication (2FA)
 
-The exposed `authenticate` method cannot deal with 2FA, but a workaround may be possible using OAuth2.0 flows with refresh tokens. Please take a look at the [authenticate documentation](/docs/01-Authenticate.md). Additional improvements regarding this issue are not currently planned.
+The exposed `authenticate` method cannot deal with 2FA, but a workaround may be possible using OAuth2.0 flows with refresh tokens. Please take a look at the [authenticate documentation](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/01-Authenticate.md). Additional improvements regarding this issue are not currently planned.
 
 ### Other Issues
 
-Please refer to the [dedicated documentation](/docs/06-Known_Issues.md) for other known issues and workarounds.
+Please refer to the [dedicated documentation](https://github.com/XboxReplay/xboxlive-auth/tree/master/docs/06-Known_Issues.md) for other known issues and workarounds.
 
 ## License
 
