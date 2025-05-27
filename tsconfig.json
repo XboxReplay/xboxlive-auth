@@ -8,7 +8,7 @@
 		"resolveJsonModule": true,
 		"isolatedModules": true,
 		"verbatimModuleSyntax": true,
-		"outDir": "dist",
+		"outDir": "dist/esm",
 		"rootDir": "src",
 		"sourceMap": false,
 		"declaration": true,
