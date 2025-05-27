@@ -38,7 +38,7 @@ export type XNETExchangeRpsTicketResponse = {
 	DisplayClaims: { xui: Array<{ uhs: string }> };
 };
 
-export type XBLExchangeTokensResponse = Omit<XNETExchangeRpsTicketResponse, 'DisplayClaims'> & {
+export type XNETExchangeTokensResponse = Omit<XNETExchangeRpsTicketResponse, 'DisplayClaims'> & {
 	DisplayClaims: { xui: Array<{ xid?: string; uhs: string } & (string & {})> };
 };
 
