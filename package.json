@@ -1,7 +1,7 @@
 {
 	"name": "@xboxreplay/xboxlive-auth",
 	"description": "A lightweight, zero-dependency Xbox Network (Xbox Live) authentication library for Node.js with OAuth 2.0 support.",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"keywords": [
 		"xboxnetwork",
 		"xboxreplay",
