@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import HTTPClient from './shared/classes/Fetch/Clients';
 import XSAPIClient from './shared/classes/Fetch/Clients/XSAPIFetchClient';
 import { createDummyWin32DeviceToken } from './shared/libs/xbox-network/modules/requests/experimental';
 import type { XNETTokens } from './shared/libs/xbox-network/modules/requests/requests.types';
@@ -46,7 +47,7 @@ type AuthenticateFn = {
  * @returns {Promise<AuthenticateRawResponse | AuthenticateResponse>} The authentication result, either raw responses or a simplified object
  */
 // @ts-expect-error overload
-const authenticate: AuthenticateFn = async (
+export const authenticate: AuthenticateFn = async (
 	email: Email,
 	password: string,
 	options: AuthenticateOptions = {}
@@ -78,7 +79,7 @@ const authenticate: AuthenticateFn = async (
 	} satisfies AuthenticateResponse;
 };
 
-const live = {
+export const live = {
 	preAuth,
 	getAuthorizeUrl,
 	refreshAccessToken,
@@ -86,7 +87,7 @@ const live = {
 	exchangeCodeForAccessToken,
 };
 
-const xnet = {
+export const xnet = {
 	exchangeTokenForXSTSToken,
 	exchangeTokensForXSTSToken,
 	exchangeCodeForAccessToken,
@@ -101,4 +102,4 @@ export * from './shared/classes/Fetch/Fetch.types';
 export * from './shared/libs/live/modules/requests/requests.types';
 export * from './shared/libs/xbox-network/modules/requests/requests.types';
 
-export { authenticate, live, xnet, XSAPIClient };
+export { HTTPClient, XSAPIClient };
