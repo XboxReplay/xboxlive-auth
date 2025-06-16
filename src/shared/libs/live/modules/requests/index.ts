@@ -157,8 +157,8 @@ export const preAuth = async (options?: LivePreAuthOptions): Promise<LivePreAuth
 		.join('; ');
 
 	const matches: Partial<LivePreAuthMatchedParameters> = {
-		PPFT: getMatchForIndex(body, /sFTTag:'.*value=\"(.*)\"\/>'/, 1),
-		urlPost: getMatchForIndex(body, /urlPost:'(.+?(?=\'))/, 1),
+		PPFT: extractPPFT(body) ?? void 0,
+		urlPost: extractUrlPost(body) ?? void 0,
 	};
 
 	if (matches.PPFT !== void 0 && matches.urlPost !== void 0) {
@@ -166,7 +166,7 @@ export const preAuth = async (options?: LivePreAuthOptions): Promise<LivePreAuth
 	}
 
 	throw new XRLiveLibraryException(`Could not match required "preAuth" parameters`, {
-		attributes: { code: 'PRE_AUTH_ERROR' },
+		attributes: { code: 'PRE_AUTH_ERROR', extra: { matches } },
 	});
 };
 
@@ -231,13 +231,23 @@ export const authenticate = async (credentials: LiveCredentials): Promise<LiveAu
 };
 
 /**
- * Extracts a regex match group from a string by index
- * @param {string} entry - The string to search
- * @param {RegExp} regex - The regex to use
- * @param {number} [index=0] - The match group index
- * @returns {string|undefined} The matched string or undefined if not found
+ * Extracts the PPFT value from page
+ * @param htmlContent - The HTML content containing the PPFT input field
+ * @returns {string | null} The PPFT token value if found, null otherwise
  */
-const getMatchForIndex = (entry: string, regex: RegExp, index: number = 0): string | undefined => {
-	const match = entry.match(regex);
-	return match?.[index] || void 0;
+const extractPPFT = (htmlContent: string): string | null => {
+	const ppftRegex = /name=\\?"PPFT\\?"[^>]*value=\\?"([^"\\]+)\\?"/i;
+	const match = htmlContent.match(ppftRegex);
+	return match !== null && match[1] !== void 0 ? match[1] : null;
+};
+
+/**
+ * Extracts the urlPost value from the page
+ * @param htmlContent - The HTML content containing the ServerData JavaScript object
+ * @returns {string | null} The urlPost URL if found, null otherwise
+ */
+const extractUrlPost = (htmlContent: string): string | null => {
+	const urlPostRegex = /\\?['"]?urlPost\\?['"]?:\s*\\?['"]([^'"\\]+)\\?['"]/i;
+	const match = htmlContent.match(urlPostRegex);
+	return match !== null && match[1] !== void 0 ? match[1] : null;
 };
