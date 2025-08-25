@@ -35,6 +35,8 @@ Creates a dummy Win32 device token that can be used during the authentication pr
 }
 ```
 
+**Usage:**
+
 ```typescript
 import { xnet } from '@xboxreplay/xboxlive-auth';
 
