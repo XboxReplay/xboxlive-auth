@@ -20,21 +20,26 @@ import type { XNETDummyDeviceTokenResponse } from '../requests.types';
 
 /**
  * Creates a dummy Win32 device token for Xbox Network authentication (experimental)
+ * @warning This is a workaround for the Xbox Network authentication and the associated device ID may be banned by Xbox Network in the future
  * @returns {Promise<XNETDummyDeviceTokenResponse>} The dummy device token response
  */
 export const createDummyWin32DeviceToken = async (): Promise<XNETDummyDeviceTokenResponse> => {
-	const serviceTrustedParty = 'https://xboxreplay.net/';
-	const serviceDeviceId = '{51354D2F-352F-472F-5842-5233706C6179}';
-	const serviceSignature =
-		'AAAAAQHbSkl5oWVQaUcyd9w0phS546Pj7OMt0pXjJsBq2kzwS5iLVxIpkqqt5fqtYh3T9Z42LoHarn58wD6JP27zC8uVOSkQYIoXiA==';
+	const signature =
+		'AAAAAQHcFbBVEuAAHfvqYcbt4rhMgxAKtPiOJgct4UTCX2HqbQNLTHsnwjp9zcYNZMKHEknpyGWNqsIhyXaAd2v8ADmGrfh11oMS1g==';
 
-	const serviceProofKey = {
-		crv: 'P-256',
-		alg: 'ES256',
-		use: 'sig',
-		kty: 'EC',
-		x: 'v0pdipnZ5pVB5F8FhJy8B2StVRjB6tiQc1YsOFuABNY',
-		y: 'PuRfclnYeqBroHVhX_QLPmOMGB6zUjK4bIScxpKIVh4',
+	const properties = {
+		AuthMethod: 'ProofOfPossession',
+		Id: '91dc36cd-080a-4493-8234-3b585c78b0d5',
+		DeviceType: 'Win32',
+		Version: '10.0.19042',
+		ProofKey: {
+			crv: 'P-256',
+			alg: 'ES256',
+			use: 'sig',
+			kty: 'EC',
+			x: 'qMKczrK1b5opLCIX-tzyqOWztlbERh1i5sxDzdHrdxs',
+			y: '23uwwgd2oSnWzyjHflRKaLxFsxX0-oE-mECf6c0gOaE',
+		},
 	};
 
 	return XSAPIFetchClient.post<XNETDummyDeviceTokenResponse>(
@@ -42,15 +47,8 @@ export const createDummyWin32DeviceToken = async (): Promise<XNETDummyDeviceToke
 		{
 			RelyingParty: 'http://auth.xboxlive.com',
 			TokenType: 'JWT',
-			Properties: {
-				AuthMethod: 'ProofOfPossession',
-				Id: serviceDeviceId,
-				DeviceType: 'Win32',
-				Version: '10.0.19042',
-				ProofKey: serviceProofKey,
-				TrustedParty: serviceTrustedParty,
-			},
+			Properties: properties,
 		},
-		{ options: { signature: serviceSignature } }
+		{ options: { signature } }
 	).then(res => res.data);
 };
