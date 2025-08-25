@@ -8,6 +8,33 @@ This document covers experimental methods that may change or be removed in futur
 
 Creates a dummy Win32 device token that can be used during the authentication process. This is particularly useful for authenticating accounts with age restrictions or when additional device validation is required.
 
+> [!CAUTION]
+> Due to high usage, the `deviceId` may be **flagged and banned by Xbox services**. While this typically does not affect the linked account, **use it with caution and only as a last resort** for XSTS token generation. The token exchange response below indicates when this occurs.
+
+```json
+{
+  "response": {
+    "body": {
+        "Identity": "xdi",
+        "XErr": 2148916227,
+        "Redirect": "https://start.ui.xboxlive.com/enforcement"
+    },
+    "headers": {
+        "cache-control": "no-cache, no-store",
+        "content-length": "91",
+        "content-type": "application/json",
+        "date": "Sun, 22 Aug 2025 13:21:01 GMT",
+        "ms-cv": "4fbQV1uQjEao73beFAHdn1.0",
+        "www-authenticate": "XSTS error=\"Msft_ban\"",
+        "x-content-type-options": "nosniff",
+        "x-xblcorrelationid": "5c14ade8-8395-4744-a453-962120adddb5"
+    }
+  }
+}
+```
+
+**Usage:**
+
 ```typescript
 import { xnet } from '@xboxreplay/xboxlive-auth';
 
