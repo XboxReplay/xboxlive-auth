@@ -1,4 +1,4 @@
-name: Deprecated Version Warning
+name: Could not match PPFT parameter
 description: Guide users on what to do when seeing the "Could not match PPFT parameter" error.
 title: "[IMPORTANT] Check library version and authentication error"
 labels: ["invalid", "question"]
