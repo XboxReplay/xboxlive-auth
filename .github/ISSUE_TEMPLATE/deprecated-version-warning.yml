@@ -26,3 +26,10 @@ body:
         Following this will help keep this repository focused on genuine bugs related to the current library version.  
 
         Thank you for your understanding! 🙏
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: "Additional context or steps you tried (optional)"
+      description: "You can fill this if you have extra info, otherwise leave blank."
+      placeholder: "Describe what you did and any additional info..."
