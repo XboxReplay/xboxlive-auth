@@ -1,0 +1,28 @@
+name: Deprecated Version Warning
+description: Guide users on what to do when seeing the "Could not match PPFT parameter" error.
+title: "[IMPORTANT] Check library version and authentication error"
+labels: ["invalid", "question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        **⚠️ Attention!**
+
+        It looks like you are encountering the following error when using `@xboxreplay/xboxlive-auth`:
+
+        ```
+        XboxReplayError: Could not match "PPFT" parameter
+        ```
+
+        **Important:** This error is **not caused by this library directly**. It usually happens when using an outdated version or due to changes in Microsoft's authentication flow.
+
+        **Do NOT open an issue in this repository for this error.** Instead:
+
+        1. Verify that you are using a supported version of `@xboxreplay/xboxlive-auth`:
+           - Either you are directly using version **>= 5.1.0**
+           - Or the library you are using (e.g., `prismarine-auth`) depends on **@xboxreplay/xboxlive-auth >= 5.1.0**
+        2. If the error persists while using a supported version, please **proceed to open an issue** on the official repository.
+
+        Following this will help keep this repository focused on genuine bugs related to the current library version.  
+
+        Thank you for your understanding! 🙏
